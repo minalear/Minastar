@@ -9,23 +9,33 @@
 #include "window.h"
 #include "shader_program.h"
 #include "asteroid.h"
+#include "ship.h"
 
 const int NUM_ASTEROIDS = 5;
+const int NUM_SHIPS = 1;
 
-void init_buffer_data(asteroid *asteroids, uint32_t &vao, uint32_t &vbo) {
-    //Count the total number of vertices for each asteroid
+void init_buffer_data(asteroid *asteroids, ship *ships, uint32_t &vao, uint32_t &vbo) {
+    //Count the total number of vertices for each game_entity
     int total_vertex_count = 0;
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
         total_vertex_count += asteroids[i].vertex_count;
     }
+    for (int i = 0; i < NUM_SHIPS; i++) {
+        total_vertex_count += ships[i].vertex_count;
+    }
 
-    //Copy each asteroid's buffer data into a single VBO
+    //Copy each game_entity's buffer data into a single VBO
     float *bufferData = new float[total_vertex_count * 5];
 
     int index = 0;
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
         for (int k = 0; k < asteroids[i].vertex_count * 5; k++) {
             bufferData[index++] = asteroids[i].buffer_data[k];
+        }
+    }
+    for (int i = 0; i < NUM_SHIPS; i++) {
+        for (int k = 0; k < ships[i].vertex_count * 5; k++) {
+            bufferData[index++] = ships[i].buffer_data[k];
         }
     }
 
@@ -71,7 +81,11 @@ int main(int argc, char *argv[]) {
     //Initialize VAO and VBO buffers
     uint32_t vao, vbo;
     asteroid asteroids[NUM_ASTEROIDS];
-    init_buffer_data(asteroids, vao, vbo);
+    ship ships[NUM_SHIPS];
+
+    ship *player = &ships[0];
+
+    init_buffer_data(asteroids, ships, vao, vbo);
 
     //Initialize shader program
     minalear::shader_program shader(
@@ -109,6 +123,8 @@ int main(int argc, char *argv[]) {
                 break;
         }
 
+        float dt = minalear::dt();
+
         glClear(GL_COLOR_BUFFER_BIT);
 
         glm::vec2 player_force = glm::vec2(0.f);
@@ -120,20 +136,30 @@ int main(int argc, char *argv[]) {
         if (y_axis < -8000.f || y_axis > 8000.f)
             player_force.y = y_axis / 65536.f;
 
-        asteroids[0].apply_force(player_force);
-        asteroids[0].update(1.f);
+        const float PLAYER_FORCE_FACTOR = 10.f;
+        player->apply_force(player_force * PLAYER_FORCE_FACTOR);
+        player->update(dt);
+
+        if (player_force.length() != 0.f)
+            player->rotation = atan2f(player_force.y, player_force.x);
 
         int vertex_count = 0;
         for (int i = 0; i < NUM_ASTEROIDS; i++) {
-            asteroids[i].rotation += 0.0025f;
-            asteroids[i].rotation = fmodf(asteroids[i].rotation, 6.2832f);
+            asteroids[i].rotation += 0.1f * dt;
             model = glm::translate(glm::mat4(1.f), glm::vec3(asteroids[i].position, 0.f)) *
                     glm::rotate(glm::mat4(1.f), asteroids[i].rotation, glm::vec3(0.f, 0.f, 1.f));
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-            //glDrawArrays(GL_TRIANGLE_FAN, vertex_count, asteroids[i].vertex_count);
             glDrawArrays(GL_LINE_LOOP, vertex_count, asteroids[i].vertex_count);
             vertex_count += asteroids[i].vertex_count;
+        }
+        for (int i = 0; i < NUM_SHIPS; i++) {
+            model = glm::translate(glm::mat4(1.f), glm::vec3(ships[i].position, 0.f)) *
+                    glm::rotate(glm::mat4(1.f), ships[i].rotation, glm::vec3(0.f, 0.f, 1.f));
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+            glDrawArrays(GL_LINE_LOOP, vertex_count, ships[i].vertex_count);
+            vertex_count += ships[i].vertex_count;
         }
 
         minalear::swap_buffers();

@@ -16,9 +16,7 @@ find_package(MINGW32 REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-set(SOURCE_FILES ${SOURCE_FILES} C:/Libraries/OpenGL/GLAD/src/glad.c src/game_entity.cpp src/game_entity.h src/asteroid.cpp src/asteroid.h)
-
-add_executable(sinistar ${SOURCE_FILES})
+add_executable(sinistar ${SOURCE_FILES} C:/Libraries/OpenGL/GLAD/src/glad.c)
 target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB})
 
 add_custom_command(

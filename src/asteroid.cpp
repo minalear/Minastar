@@ -8,8 +8,8 @@
 
 const float ASTEROID_RADIUS_MIN = 12.f;
 const float ASTEROID_RADIUS_MAX = 48.f;
-const float ASTEROID_VARIATION_MIN = 0.9f;
-const float ASTEROID_VARIATION_MAX = 1.5f;
+const float ASTEROID_VARIATION_MIN = 0.87f;
+const float ASTEROID_VARIATION_MAX = 1.21f;
 
 float rand_float(float min, float max) {
     return (rand() / (float)RAND_MAX) * (max - min) + min;

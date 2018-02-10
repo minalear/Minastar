@@ -8,11 +8,23 @@
 #include "SDL2/SDL.h"
 #include "glad/glad.h"
 
+#ifndef LAPTOP_BUILD
+#define LAPTOP_BUILD
+#endif
+
+#ifdef LAPTOP_BUILD
+const int OPENGL_MAJOR_VERSION = 3;
+const int OPENGL_MINOR_VERSION = 1;
+#endif
+#ifdef PC_BUILD
 const int OPENGL_MAJOR_VERSION = 4;
 const int OPENGL_MINOR_VERSION = 0;
+#endif
 
 SDL_Window* window;
 SDL_GLContext context;
+
+uint32_t start_time;
 
 void minalear::init_game_window(const int windowWidth, const int windowHeight) {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -27,6 +39,8 @@ void minalear::init_game_window(const int windowWidth, const int windowHeight) {
                               windowWidth, windowHeight,
                               SDL_WINDOW_OPENGL);
     context = SDL_GL_CreateContext(window);
+
+    start_time = SDL_GetTicks();
 }
 
 void minalear::init_opengl() {
@@ -36,4 +50,12 @@ void minalear::init_opengl() {
 
 void minalear::swap_buffers() {
     SDL_GL_SwapWindow(window);
+}
+
+float minalear::dt() {
+    uint32_t ticks = SDL_GetTicks() - start_time;
+    float dt = ticks * 0.001f;
+    start_time = SDL_GetTicks();
+
+    return dt;
 }
