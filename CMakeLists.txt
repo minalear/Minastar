@@ -4,7 +4,10 @@ project(sinistar)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
-file(GLOB SOURCE_FILES src/*.cpp src/*.h)
+file(GLOB SOURCE_FILES
+        src/*.cpp src/*.h
+        src/engine/*.cpp src/engine/*.h)
+message(${SOURCE_FILES})
 file(GLOB SHADER_FILES shaders/*.glsl)
 file(GLOB RESOURCE_FILES textures/*.png)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders)

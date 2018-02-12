@@ -3,11 +3,13 @@
 #include "SDL2/SDL.h"
 #include "glad/glad.h"
 #include "glm.hpp"
+#include "gtc/vec1.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
-#include "filer_handler.h"
-#include "window.h"
-#include "shader_program.h"
+#include "engine/filer_handler.h"
+#include "engine/window.h"
+#include "engine/shader_program.h"
+#include "engine/input.h"
 #include "asteroid.h"
 #include "ship.h"
 
@@ -110,9 +112,8 @@ int main(int argc, char *argv[]) {
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
     //Setup controller input
-    SDL_Joystick *joystick;
-    SDL_JoystickEventState(SDL_ENABLE);
-    joystick = SDL_JoystickOpen(0);
+    minalear::init_input();
+    minalear::controller_state *main_controller = minalear::get_controller_state();
 
     //Begin main game loop
     SDL_Event windowEvent;
@@ -124,24 +125,22 @@ int main(int argc, char *argv[]) {
         }
 
         float dt = minalear::dt();
+        minalear::handle_input();
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glm::vec2 player_force = glm::vec2(0.f);
-        int x_axis = SDL_JoystickGetAxis(joystick, 0);
-        int y_axis = SDL_JoystickGetAxis(joystick, 1);
+        if (main_controller->left_stick_length > 0.9f) {
+            const float PLAYER_FORCE_FACTOR = 10.f;
+            player->apply_force(main_controller->left_stick * PLAYER_FORCE_FACTOR);
+            player->rotation = atan2f(main_controller->left_stick.y, main_controller->left_stick.x);
 
-        if (x_axis < -8000.f || x_axis > 8000.f)
-            player_force.x = x_axis / 65536.f;
-        if (y_axis < -8000.f || y_axis > 8000.f)
-            player_force.y = y_axis / 65536.f;
+            printf("{%f, %f} - len: %f\n",
+                   main_controller->left_stick.x,
+                   main_controller->left_stick.y,
+                   main_controller->left_stick_length);
+            }
 
-        const float PLAYER_FORCE_FACTOR = 10.f;
-        player->apply_force(player_force * PLAYER_FORCE_FACTOR);
         player->update(dt);
-
-        if (player_force.length() != 0.f)
-            player->rotation = atan2f(player_force.y, player_force.x);
 
         int vertex_count = 0;
         for (int i = 0; i < NUM_ASTEROIDS; i++) {
