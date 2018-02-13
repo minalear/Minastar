@@ -23,7 +23,7 @@ public:
     game_entity();
     ~game_entity();
 
-    void update(float dt);
+    virtual void update(float dt);
     void apply_force(glm::vec2 force);
 };
 

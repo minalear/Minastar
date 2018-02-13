@@ -16,6 +16,7 @@ float rand_float(float min, float max) {
 }
 
 void generate_asteroid_shape(asteroid *object) {
+    //TODO: Look into fractal asteroid generation
     int vertex_count = rand() % 10 + 8;
     float *buffer_data = new float[vertex_count * 5];
 
@@ -49,4 +50,9 @@ void generate_asteroid_shape(asteroid *object) {
 
 asteroid::asteroid() {
     generate_asteroid_shape(this);
+}
+
+void asteroid::update(float dt) {
+    rotation += 0.1f * dt;
+    game_entity::update(dt);
 }

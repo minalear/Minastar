@@ -5,6 +5,8 @@
 #include <cstdio>
 #include "glad/glad.h"
 #include "shader_program.h"
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
 
 bool checkShaderCompilation(GLuint shaderID) {
     GLint compileStatus = 0;
@@ -47,4 +49,19 @@ void minalear::shader_program::load_shaders(const char *vertexSource, const char
     glDetachShader(programID, fragmentShaderID);
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
+}
+
+void minalear::shader_program::init_uniforms() {
+    projLoc  = glGetUniformLocation(programID, "proj");
+    viewLoc  = glGetUniformLocation(programID, "view");
+    modelLoc = glGetUniformLocation(programID, "model");
+}
+void minalear::shader_program::set_proj_mat4(const glm::mat4 &proj) {
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+}
+void minalear::shader_program::set_view_mat4(const glm::mat4 &view) {
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+}
+void minalear::shader_program::set_model_mat4(const glm::mat4 &model) {
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 }

@@ -36,3 +36,7 @@ void generate_ship_shape(ship *ship) {
 ship::ship() {
     generate_ship_shape(this);
 }
+
+void ship::update(float dt) {
+    game_entity::update(dt);
+}

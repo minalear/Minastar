@@ -11,6 +11,7 @@
 class ship: public game_entity {
 public:
     ship();
+    void update(float dt) override ;
 };
 
 

@@ -10,6 +10,7 @@
 class asteroid: public game_entity {
 public:
     asteroid();
+    void update(float dt);
 };
 
 
