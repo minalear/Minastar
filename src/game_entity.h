@@ -11,7 +11,8 @@
 enum struct ENTITY_TYPES {
     Asteroid,
     Ship,
-    Bullet
+    Bullet,
+    Sinistar
 };
 
 class game_entity {

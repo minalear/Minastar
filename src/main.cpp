@@ -14,6 +14,7 @@
 #include "asteroid.h"
 #include "ship.h"
 #include "ship_controller.h"
+#include "sinistar.h"
 
 const int NUM_ASTEROIDS = 5;
 const int NUM_SHIPS = 1;
@@ -48,6 +49,7 @@ int main(int argc, char *argv[]) {
 
     game_world.add_entities(asteroids, NUM_ASTEROIDS);
     game_world.add_entities(ships, NUM_SHIPS);
+    game_world.add_entity(new sinistar);
 
     game_world.generate_buffer_data();
 
