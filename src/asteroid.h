@@ -10,7 +10,8 @@
 class asteroid: public game_entity {
 public:
     asteroid();
-    void update(float dt);
+    void update(float dt) override;
+    void handle_collision(const game_entity &other) override;
 };
 
 

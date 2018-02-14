@@ -7,9 +7,16 @@
 
 #include "glm.hpp"
 
+enum struct ENTITY_TYPES {
+    Asteroid,
+    Ship,
+    Bullet
+};
 
 class game_entity {
 public:
+    ENTITY_TYPES entity_type;
+
     glm::vec2 position;
     glm::vec2 velocity;
     glm::vec2 force_accumulator;
@@ -20,11 +27,14 @@ public:
     float *buffer_data;
     int vertex_count;
 
+    bool do_destroy;
+
     game_entity();
     ~game_entity();
-
+    
     virtual void update(float dt);
-    void apply_force(glm::vec2 force);
+    virtual void apply_force(glm::vec2 force);
+    virtual void handle_collision(const game_entity &other);
 };
 
 

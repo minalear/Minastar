@@ -7,6 +7,7 @@
 #include "collision_handler.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
+bool mark_for_update = false;
 
 world::world() {
 
@@ -15,29 +16,34 @@ world::~world() {
     entities.clear();
 }
 
-///Paints an entity red
-void paint_entity(const game_entity &entity) {
-    for (int i = 0; i < entity.vertex_count; i++) {
-        entity.buffer_data[i * 5 + 2] = 1.f; //R
-        entity.buffer_data[i * 5 + 3] = 0.f; //G
-        entity.buffer_data[i * 5 + 4] = 0.f; //B
-    }
-}
 void world::update(float dt) {
     //Update each individual entity in the world
     for (int i = 0; i < entities.size(); i++) {
         entities[i]->update(dt);
 
+        if (entities[i]->do_destroy) {
+            //TODO: Refactor to ensure cleanup
+            entities.erase(entities.begin() + i);
+            mark_for_update = true;
+
+            i--;
+            continue;
+        }
+
         //Check for collisions with other entities
         //TODO: Optimize this by investigating binary partitions
         for (int k = 0; k < entities.size(); k++) {
             if (i != k && check_collision(*entities[i], *entities[k])) {
-                paint_entity(*entities[k]);
-
-                //TODO: Mark for update and ensure we update max once per frame
-                update_buffer_data();
+                entities[i]->handle_collision(*entities[k]);
+                mark_for_update = true;
             }
         }
+    }
+
+    //Update game buffer if flag is marked
+    if (mark_for_update) {
+        update_buffer_data();
+        mark_for_update = false;
     }
 }
 void world::draw(minalear::shader_program *shader) {
@@ -93,6 +99,7 @@ void world::update_buffer_data() {
     }
 
     //Copy each entity's buffer data into a single VBO
+    //TODO: Change this from 'new' to using a predefined, large array
     float *bufferData = new float[total_vertex_count * ATTRIBUTE_VERTEX_COUNT];
 
     int index = 0;

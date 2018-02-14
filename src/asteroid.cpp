@@ -40,6 +40,7 @@ void generate_asteroid_shape(asteroid *object) {
         theta += theta_delta;
     }
 
+    object->entity_type = ENTITY_TYPES::Asteroid;
     object->vertex_count = vertex_count;
     object->buffer_data = buffer_data;
     object->bounding_radius = asteroid_scale;
@@ -55,4 +56,9 @@ asteroid::asteroid() {
 void asteroid::update(float dt) {
     rotation += 0.1f * dt;
     game_entity::update(dt);
+}
+void asteroid::handle_collision(const game_entity &other) {
+    if (other.entity_type == ENTITY_TYPES::Ship) {
+        do_destroy = true;
+    }
 }

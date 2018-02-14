@@ -27,6 +27,7 @@ void generate_ship_shape(ship *ship) {
     buffer_data[15] = -1.5f * ship_scale;
     buffer_data[16] = -1.0f * ship_scale;
 
+    ship->entity_type = ENTITY_TYPES::Ship;
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = ship_scale;
