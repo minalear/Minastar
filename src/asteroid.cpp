@@ -11,6 +11,11 @@ const float ASTEROID_RADIUS_MAX = 48.f;
 const float ASTEROID_VARIATION_MIN = 0.87f;
 const float ASTEROID_VARIATION_MAX = 1.21f;
 
+const glm::vec3 ASTEROID_COLOR = glm::vec3(
+        137 / 255.f,  //R
+        129 / 255.f,  //G
+        114 / 255.f); //B
+
 float rand_float(float min, float max) {
     return (rand() / (float)RAND_MAX) * (max - min) + min;
 }
@@ -33,9 +38,9 @@ void generate_asteroid_shape(asteroid *object) {
         buffer_data[i * 5 + 1] = pos.y * (asteroid_scale * rand_scale);
 
         //Color (RGB)
-        buffer_data[i * 5 + 2] = 167 / 255.f;
-        buffer_data[i * 5 + 3] = 162 / 255.f;
-        buffer_data[i * 5 + 4] = 159 / 255.f;
+        buffer_data[i * 5 + 2] = ASTEROID_COLOR.r;
+        buffer_data[i * 5 + 3] = ASTEROID_COLOR.g;
+        buffer_data[i * 5 + 4] = ASTEROID_COLOR.b;
 
         theta += theta_delta;
     }

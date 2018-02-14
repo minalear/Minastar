@@ -8,7 +8,7 @@
 #include "world.h"
 
 float bullet_timer = 0.f;
-const float BULLET_FIRE_RATE = 1.f;
+const float BULLET_FIRE_RATE = 0.3f;
 
 ship_controller::ship_controller(ship *owner) {
     this->owner = owner;
@@ -30,7 +30,7 @@ void ship_controller::update(float dt) {
         bullet_velocity.x = cosf(owner->rotation);
         bullet_velocity.y = sinf(owner->rotation);
 
-        owner->game_world->add_entity(new bullet(owner->position, bullet_velocity * 10.f));
+        owner->game_world->add_entity(new bullet(owner->position, (bullet_velocity * 125.f) + owner->velocity));
     }
 }
 void ship_controller::fire_bullet() {

@@ -9,7 +9,7 @@ void generate_bullet_shape(bullet *bullet) {
     int vertex_count = 4;
     float *buffer_data = new float[vertex_count * 5];
 
-    const float bullet_scale = 3.f;
+    const float bullet_scale = 2.3f;
     const float theta_delta = (2.f * 3.14159f) / vertex_count;
     float theta = 0.f;
 
@@ -38,7 +38,7 @@ bullet::bullet(glm::vec2 pos, glm::vec2 vel) {
     generate_bullet_shape(this);
     this->position = pos;
     this->velocity = vel;
-    this->friction_coefficient = 1.f;
+    this->friction_coefficient = 1.f; //No friction
 };
 void bullet::update(float dt) {
     game_entity::update(dt);

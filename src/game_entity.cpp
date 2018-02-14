@@ -19,6 +19,7 @@ game_entity::~game_entity() {
 
 void game_entity::update(float dt) {
     this->position += this->velocity * dt;
+    //TODO: Friction Coefficient seems to not work on laptop workstation, may need to scale by dt?
     this->velocity *= friction_coefficient; //Apply subtle friction
     this->velocity += force_accumulator;
 
@@ -27,6 +28,4 @@ void game_entity::update(float dt) {
 void game_entity::apply_force(glm::vec2 force) {
     this->force_accumulator += force;
 }
-void game_entity::handle_collision(const game_entity &other) {
-
-}
+void game_entity::handle_collision(const game_entity &other) { }
