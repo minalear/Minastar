@@ -26,6 +26,7 @@ public:
 
     float rotation;
     float bounding_radius;
+    float friction_coefficient;
 
     float *buffer_data;
     int vertex_count;

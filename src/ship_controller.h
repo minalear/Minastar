@@ -14,6 +14,7 @@ public:
     ship_controller(ship *owner);
 
     virtual void update(float dt);
+    void fire_bullet();
 };
 
 

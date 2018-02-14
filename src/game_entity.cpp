@@ -9,6 +9,7 @@ game_entity::game_entity() {
     bounding_radius = 0.f;
     vertex_count = 0;
     do_destroy = false;
+    friction_coefficient = 0.9f;
 }
 game_entity::~game_entity() {
     if (this->buffer_data) {
@@ -18,7 +19,7 @@ game_entity::~game_entity() {
 
 void game_entity::update(float dt) {
     this->position += this->velocity * dt;
-    this->velocity *= 0.9f; //Apply subtle friction
+    this->velocity *= friction_coefficient; //Apply subtle friction
     this->velocity += force_accumulator;
 
     this->force_accumulator = glm::vec2(0.f);
