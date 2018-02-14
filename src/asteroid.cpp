@@ -42,7 +42,7 @@ void generate_asteroid_shape(asteroid *object) {
 
     object->vertex_count = vertex_count;
     object->buffer_data = buffer_data;
-    object->bounding_radius = asteroid_scale * 2.f;
+    object->bounding_radius = asteroid_scale;
     object->position = glm::vec2(
             rand_float(asteroid_scale, 800.f - asteroid_scale),
             rand_float(asteroid_scale, 450.f - asteroid_scale));

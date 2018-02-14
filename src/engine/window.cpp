@@ -8,9 +8,7 @@
 #include "SDL2/SDL.h"
 #include "glad/glad.h"
 
-#ifndef LAPTOP_BUILD
-#define LAPTOP_BUILD
-#endif
+#define PC_BUILD
 
 #ifdef LAPTOP_BUILD
 const int OPENGL_MAJOR_VERSION = 3;

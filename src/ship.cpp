@@ -29,7 +29,7 @@ void generate_ship_shape(ship *ship) {
 
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
-    ship->bounding_radius = ship_scale * 2.f;
+    ship->bounding_radius = ship_scale;
     ship->position = glm::vec2(0.f, 0.f);
 }
 

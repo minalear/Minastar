@@ -6,7 +6,7 @@
 #include "gtc/vec1.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
-#include "engine/filer_handler.h"
+#include "engine/file_handler.h"
 #include "engine/window.h"
 #include "engine/shader_program.h"
 #include "engine/input.h"
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     //glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
 
-    glEnable(GL_LINE_SMOOTH);
+    //glEnable(GL_LINE_SMOOTH);
     //glEnable(GL_POLYGON_SMOOTH);
 
     glEnable(GL_BLEND);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         if (main_controller->left_stick_length > 0.15f) {
-            const float PLAYER_FORCE_FACTOR = 10.f;
+            float PLAYER_FORCE_FACTOR = 10.f * main_controller->left_stick_length;
             player->apply_force(main_controller->left_stick * PLAYER_FORCE_FACTOR);
             player->rotation = atan2f(main_controller->left_stick.y, main_controller->left_stick.x);
         }

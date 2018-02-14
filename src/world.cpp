@@ -4,6 +4,7 @@
 
 #include "world.h"
 #include "gtc/matrix_transform.hpp"
+#include "collision_handler.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 
@@ -14,14 +15,35 @@ world::~world() {
     entities.clear();
 }
 
+///Paints an entity red
+void paint_entity(const game_entity &entity) {
+    for (int i = 0; i < entity.vertex_count; i++) {
+        entity.buffer_data[i * 5 + 2] = 1.f; //R
+        entity.buffer_data[i * 5 + 3] = 0.f; //G
+        entity.buffer_data[i * 5 + 4] = 0.f; //B
+    }
+}
 void world::update(float dt) {
+    //Update each individual entity in the world
     for (int i = 0; i < entities.size(); i++) {
         entities[i]->update(dt);
+
+        //Check for collisions with other entities
+        //TODO: Optimize this by investigating binary partitions
+        for (int k = 0; k < entities.size(); k++) {
+            if (i != k && check_collision(*entities[i], *entities[k])) {
+                paint_entity(*entities[k]);
+
+                //TODO: Mark for update and ensure we update max once per frame
+                update_buffer_data();
+            }
+        }
     }
 }
 void world::draw(minalear::shader_program *shader) {
     glm::mat4 model = glm::mat4(1.f);
 
+    glBindVertexArray(vao);
     int vertex_count = 0;
     for (int i = 0; i < entities.size(); i++) {
         model = glm::translate(glm::mat4(1.f), glm::vec3(entities[i]->position, 0.f)) *
@@ -32,6 +54,7 @@ void world::draw(minalear::shader_program *shader) {
 
         vertex_count += entities[i]->vertex_count;
     }
+    glBindVertexArray(0);
 }
 
 void world::add_entity(game_entity *entity) {
@@ -44,6 +67,25 @@ void world::add_entities(game_entity *entities, int count) {
 }
 
 void world::generate_buffer_data() {
+    //Initialize VAO and VBO
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    float temp_buffer[5] = { 0.f, 0.f, 0.f, 0.f, 0.f };
+    glBufferData(GL_ARRAY_BUFFER, sizeof(temp_buffer), temp_buffer, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0); //Position
+    glEnableVertexAttribArray(1); //Color
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, ATTRIBUTE_VERTEX_COUNT * sizeof(float), (GLvoid*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, ATTRIBUTE_VERTEX_COUNT * sizeof(float), (GLvoid*)(2 * sizeof(float)));
+
+    update_buffer_data();
+}
+void world::update_buffer_data() {
     //Count the total number of vertices for each game_entity
     int total_vertex_count = 0;
     for (int i = 0; i < entities.size(); i++) {
@@ -60,21 +102,9 @@ void world::generate_buffer_data() {
         }
     }
 
-    //Initialize VAO and VBO
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-
-    glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * total_vertex_count * ATTRIBUTE_VERTEX_COUNT, bufferData, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * total_vertex_count * 5, bufferData, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0); //Position
-    glEnableVertexAttribArray(1); //Color
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (GLvoid*)(2 * sizeof(float)));
-
-    //Cleanup
     delete[] bufferData;
 }

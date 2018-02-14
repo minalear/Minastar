@@ -2,7 +2,7 @@
 // Created by Trevor Fisher on 1/19/2018.
 //
 
-#include "filer_handler.h"
+#include "file_handler.h"
 
 const char* minalear::readFile(const char* filename) {
     std::fstream file(filename);
