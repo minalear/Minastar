@@ -64,6 +64,7 @@ void world::draw(minalear::shader_program *shader) {
 }
 
 void world::add_entity(game_entity *entity) {
+    entity->game_world = this;
     entities.push_back(entity);
 }
 void world::add_entities(game_entity *entities, int count) {

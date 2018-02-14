@@ -6,6 +6,7 @@
 #define SINISTAR_GAME_ENTITY_H
 
 #include "glm.hpp"
+//#include "world.h"
 
 enum struct ENTITY_TYPES {
     Asteroid,
@@ -16,6 +17,8 @@ enum struct ENTITY_TYPES {
 class game_entity {
 public:
     ENTITY_TYPES entity_type;
+    //TODO: What?
+    class world *game_world;
 
     glm::vec2 position;
     glm::vec2 velocity;

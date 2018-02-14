@@ -6,7 +6,6 @@
 #define SINISTAR_SHIP_H
 
 #include "game_entity.h"
-#include "SDL2/SDL.h"
 
 class ship: public game_entity {
 public:

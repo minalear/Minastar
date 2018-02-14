@@ -13,6 +13,7 @@
 #include "world.h"
 #include "asteroid.h"
 #include "ship.h"
+#include "ship_controller.h"
 
 const int NUM_ASTEROIDS = 5;
 const int NUM_SHIPS = 1;
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
     asteroid asteroids[NUM_ASTEROIDS];
     ship ships[NUM_SHIPS];
 
-    ship *player = &ships[0];
+    ship_controller player_controller(&ships[0]);
 
     game_world.add_entities(asteroids, NUM_ASTEROIDS);
     game_world.add_entities(ships, NUM_SHIPS);
@@ -69,7 +70,6 @@ int main(int argc, char *argv[]) {
 
     //Setup controller input
     minalear::init_input();
-    minalear::controller_state *main_controller = minalear::get_controller_ptr();
 
     //Begin main game loop
     SDL_Event windowEvent;
@@ -85,11 +85,7 @@ int main(int argc, char *argv[]) {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        if (main_controller->left_stick_length > 0.15f) {
-            float PLAYER_FORCE_FACTOR = 10.f * main_controller->left_stick_length;
-            player->apply_force(main_controller->left_stick * PLAYER_FORCE_FACTOR);
-            player->rotation = atan2f(main_controller->left_stick.y, main_controller->left_stick.x);
-        }
+        player_controller.update(dt);
 
         game_world.update(dt);
         game_world.draw(&shader);
