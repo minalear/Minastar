@@ -22,7 +22,7 @@ void world::update(float dt) {
         entities[i]->update(dt);
 
         if (entities[i]->do_destroy) {
-            //TODO: Refactor to ensure cleanup
+            //TODO: Refactor to ensure cleanup (smart pointers?)
             entities.erase(entities.begin() + i);
             mark_for_update = true;
 

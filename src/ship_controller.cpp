@@ -8,7 +8,7 @@
 #include "world.h"
 
 float bullet_timer = 0.f;
-const float BULLET_FIRE_RATE = 0.3f;
+const float BULLET_FIRE_RATE = 0.12f;
 
 ship_controller::ship_controller(ship *owner) {
     this->owner = owner;

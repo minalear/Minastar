@@ -16,7 +16,7 @@
 #include "ship_controller.h"
 #include "sinistar.h"
 
-const int NUM_ASTEROIDS = 5;
+const int NUM_ASTEROIDS = 6;
 const int NUM_SHIPS = 1;
 
 int main(int argc, char *argv[]) {

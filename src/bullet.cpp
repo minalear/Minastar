@@ -44,7 +44,7 @@ void bullet::update(float dt) {
     game_entity::update(dt);
 }
 void bullet::handle_collision(const game_entity &other) {
-    if (other.entity_type == ENTITY_TYPES::Asteroid) {
+    if (other.entity_type == ENTITY_TYPES::Asteroid || other.entity_type == ENTITY_TYPES::Sinistar) {
         do_destroy = true;
     }
 }
