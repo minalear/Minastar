@@ -7,8 +7,6 @@
 
 #include "glm.hpp"
 
-
-
 namespace minalear {
     enum struct JOYSTICK_BUTTONS {
         A = 0, //PS4 X

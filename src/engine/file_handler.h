@@ -8,8 +8,8 @@
 #include <fstream>
 
 namespace minalear {
-    const char *readFile(const char *filename);
-    const char *readBinaryFile(const char *filename);
+    const char *read_file(const char *filename);
+    const char *read_binary_file(const char *filename, uint32_t &file_size);
 }
 
 #endif //MINALEAR_FILER_HANDLER_H

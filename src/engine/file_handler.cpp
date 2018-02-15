@@ -4,7 +4,7 @@
 
 #include "file_handler.h"
 
-const char* minalear::readFile(const char* filename) {
+const char* minalear::read_file(const char *filename) {
     std::fstream file(filename);
 
     std::string line, output;
@@ -22,14 +22,14 @@ const char* minalear::readFile(const char* filename) {
     return source;
 }
 
-const char* minalear::readBinaryFile(const char* filename) {
+const char* minalear::read_binary_file(const char *filename, uint32_t &file_size) {
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
     file.seekg(0, std::ios::end);
-    std::streampos filesize = file.tellg();
+    file_size = (uint32_t)file.tellg();
     file.seekg(0, std::ios::beg);
 
-    char* data = new char[filesize];
-    file.read(data, filesize);
+    char* data = new char[file_size];
+    file.read(data, file_size);
 
     file.close();
     return data;

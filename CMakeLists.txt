@@ -8,13 +8,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 file(GLOB SOURCE_FILES
         src/*.cpp src/*.h
         src/engine/*.cpp src/engine/*.h)
-message(${SOURCE_FILES})
 file(GLOB SHADER_FILES shaders/*.glsl)
-file(GLOB RESOURCE_FILES textures/*.png)
+file(GLOB FONT_FILES fonts/*.fnt fonts/*.png)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders)
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/textures)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/fonts)
 file(COPY ${SHADER_FILES} DESTINATION ${PROJECT_BINARY_DIR}/shaders)
-file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/textures)
+file(COPY ${FONT_FILES} DESTINATION ${PROJECT_BINARY_DIR}/fonts)
 
 find_package(MINGW32 REQUIRED)
 find_package(SDL2 REQUIRED)

@@ -10,12 +10,12 @@
 #include "engine/window.h"
 #include "engine/shader_program.h"
 #include "engine/input.h"
+#include "engine/font.h"
 #include "world.h"
 #include "asteroid.h"
 #include "ship.h"
 #include "ship_controller.h"
 #include "sinistar.h"
-#include "collision_handler.h"
 
 const int NUM_ASTEROIDS = 6;
 const int NUM_SHIPS = 1;
@@ -37,6 +37,8 @@ int main(int argc, char *argv[]) {
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
+    minalear::font font("fonts/main.png", "fonts/main.fnt");
+
     //Seed random number generator
     srand((unsigned int)time(NULL));
 
@@ -56,8 +58,8 @@ int main(int argc, char *argv[]) {
 
     //Initialize shader program
     minalear::shader_program shader(
-            minalear::readFile("shaders/basic_vertex.glsl"),
-            minalear::readFile("shaders/basic_frag.glsl"));
+            minalear::read_file("shaders/basic_vertex.glsl"),
+            minalear::read_file("shaders/basic_frag.glsl"));
     shader.use();
     shader.init_uniforms();
 
