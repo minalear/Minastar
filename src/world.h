@@ -28,6 +28,8 @@ public:
 
     void generate_buffer_data();
     void update_buffer_data();
+
+    game_entity* find_entity(ENTITY_TYPES type);
 };
 
 

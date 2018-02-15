@@ -116,3 +116,12 @@ void world::update_buffer_data() {
 
     delete[] bufferData;
 }
+
+game_entity* world::find_entity(ENTITY_TYPES type) {
+    for (int i = 0; i < entities.size(); i++) {
+        if (entities[i]->entity_type == type)
+            return entities[i];
+    }
+
+    return nullptr;
+}

@@ -4,6 +4,7 @@
 
 #include "ship_controller.h"
 #include "bullet.h"
+#include "sinibomb.h"
 #include "engine/input.h"
 #include "world.h"
 
@@ -23,14 +24,22 @@ void ship_controller::update(float dt) {
     }
 
     bullet_timer = glm::clamp(bullet_timer - dt, 0.f, bullet_timer);
-    if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::X) && bullet_timer <= 0.f) {
-        bullet_timer = BULLET_FIRE_RATE;
+    if (bullet_timer <= 0.f) {
+        //Fire a normal bullet
+        if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::X)) {
+            bullet_timer = BULLET_FIRE_RATE;
 
-        glm::vec2 bullet_velocity = glm::vec2(1.f);
-        bullet_velocity.x = cosf(owner->rotation);
-        bullet_velocity.y = sinf(owner->rotation);
+            glm::vec2 bullet_velocity = glm::vec2(1.f);
+            bullet_velocity.x = cosf(owner->rotation);
+            bullet_velocity.y = sinf(owner->rotation);
 
-        owner->game_world->add_entity(new bullet(owner->position, (bullet_velocity * 125.f) + owner->velocity));
+            owner->game_world->add_entity(new bullet(owner->position, (bullet_velocity * 125.f) + owner->velocity));
+        }
+        //Fire a SINIBOMB
+        else if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y)) {
+            bullet_timer = BULLET_FIRE_RATE;
+            owner->game_world->add_entity(new sinibomb(owner->position));
+        }
     }
 }
 void ship_controller::fire_bullet() {
