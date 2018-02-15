@@ -33,8 +33,9 @@ void world::update(float dt) {
         //Check for collisions with other entities
         //TODO: Optimize this by investigating binary partitions
         for (int k = 0; k < entities.size(); k++) {
-            if (i != k && check_collision(*entities[i], *entities[k])) {
-                entities[i]->handle_collision(*entities[k]);
+            glm::vec2 collision_point = glm::vec2(0.f);
+            if (i != k && check_collision(*entities[i], *entities[k], collision_point)) {
+                entities[i]->handle_collision(*entities[k], collision_point);
                 mark_for_update = true;
             }
         }

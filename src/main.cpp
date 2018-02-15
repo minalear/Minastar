@@ -15,6 +15,7 @@
 #include "ship.h"
 #include "ship_controller.h"
 #include "sinistar.h"
+#include "collision_handler.h"
 
 const int NUM_ASTEROIDS = 6;
 const int NUM_SHIPS = 1;

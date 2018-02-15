@@ -43,7 +43,7 @@ bullet::bullet(glm::vec2 pos, glm::vec2 vel) {
 void bullet::update(float dt) {
     game_entity::update(dt);
 }
-void bullet::handle_collision(const game_entity &other) {
+void bullet::handle_collision(const game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Asteroid || other.entity_type == ENTITY_TYPES::Sinistar) {
         do_destroy = true;
     }

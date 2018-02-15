@@ -28,4 +28,4 @@ void game_entity::update(float dt) {
 void game_entity::apply_force(glm::vec2 force) {
     this->force_accumulator += force;
 }
-void game_entity::handle_collision(const game_entity &other) { }
+void game_entity::handle_collision(const game_entity &other, glm::vec2 point) { }

@@ -5,6 +5,8 @@
 #include <cmath>
 #include <random>
 #include "asteroid.h"
+#include "world.h"
+#include "sinibomb.h"
 
 const float ASTEROID_RADIUS_MIN = 12.f;
 const float ASTEROID_RADIUS_MAX = 48.f;
@@ -62,8 +64,9 @@ void asteroid::update(float dt) {
     rotation += 0.1f * dt;
     game_entity::update(dt);
 }
-void asteroid::handle_collision(const game_entity &other) {
-    if (other.entity_type == ENTITY_TYPES::Ship) {
+void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Bullet) {
         do_destroy = true;
+        game_world->add_entity(new sinibomb(point));
     }
 }

@@ -40,7 +40,7 @@ public:
     
     virtual void update(float dt);
     virtual void apply_force(glm::vec2 force);
-    virtual void handle_collision(const game_entity &other);
+    virtual void handle_collision(const game_entity &other, glm::vec2 point);
 };
 
 

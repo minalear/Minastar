@@ -11,7 +11,7 @@ class bullet: public game_entity {
 public:
     bullet(glm::vec2 pos, glm::vec2 vel);
     void update(float dt) override;
-    void handle_collision(const game_entity &other) override;
+    void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
 
 

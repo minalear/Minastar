@@ -18,7 +18,7 @@ void generate_sinistar_shape(sinistar *sinistar) {
         buffer_data[i * 5 + 4] = 0.15f;
     }
 
-    const float sinistar_scale = 10.f;
+    const float sinistar_scale = 8.f;
 
     //region /* Sinistar Point Data */
     buffer_data[0] = -7.00f * sinistar_scale;

@@ -57,7 +57,7 @@ void sinibomb::update(float dt) {
     velocity = move_vector * BOMB_SPEED;
     game_entity::update(dt);
 }
-void sinibomb::handle_collision(const game_entity &other) {
+void sinibomb::handle_collision(const game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Sinistar) {
         do_destroy = true;
     }
