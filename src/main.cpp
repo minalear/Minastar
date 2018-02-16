@@ -11,6 +11,7 @@
 #include "engine/shader_program.h"
 #include "engine/input.h"
 #include "engine/font.h"
+#include "text_renderer.h"
 #include "world.h"
 #include "asteroid.h"
 #include "ship.h"
@@ -37,8 +38,6 @@ int main(int argc, char *argv[]) {
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
 
-    minalear::font font("fonts/main.png", "fonts/main.fnt");
-
     //Seed random number generator
     srand((unsigned int)time(NULL));
 
@@ -56,12 +55,18 @@ int main(int argc, char *argv[]) {
 
     game_world.generate_buffer_data();
 
-    //Initialize shader program
-    minalear::shader_program shader(
-            minalear::read_file("shaders/basic_vertex.glsl"),
+    //Initialize shader programs
+    minalear::shader_program game_shader(
+            minalear::read_file("shaders/basic_vert.glsl"),
             minalear::read_file("shaders/basic_frag.glsl"));
-    shader.use();
-    shader.init_uniforms();
+    game_shader.use();
+    game_shader.init_uniforms();
+
+    minalear::shader_program text_shader(
+            minalear::read_file("shaders/text_vert.glsl"),
+            minalear::read_file("shaders/text_frag.glsl"));
+    text_shader.use();
+    text_shader.init_uniforms();
 
     //Initialize matrices
     glm::mat4 proj, view, model;
@@ -69,9 +74,18 @@ int main(int argc, char *argv[]) {
     view  = glm::mat4(1.f);
     model = glm::mat4(1.f);
 
-    shader.set_proj_mat4(proj);
-    shader.set_view_mat4(view);
-    shader.set_model_mat4(model);
+    game_shader.use();
+    game_shader.set_proj_mat4(proj);
+    game_shader.set_view_mat4(view);
+    game_shader.set_model_mat4(model);
+
+    text_shader.use();
+    text_shader.set_proj_mat4(proj);
+    text_shader.set_view_mat4(view);
+    text_shader.set_model_mat4(model);
+
+    //Text renderer
+    text_renderer text_renderer("main");
 
     //Setup controller input
     minalear::init_input();
@@ -92,8 +106,12 @@ int main(int argc, char *argv[]) {
 
         player_controller.update(dt);
 
+        game_shader.use();
         game_world.update(dt);
-        game_world.draw(&shader);
+        game_world.draw(&game_shader);
+
+        text_shader.use();
+        text_renderer.draw_string(&text_shader, "Hello my dude", glm::vec2(10.f));
 
         minalear::swap_buffers();
 

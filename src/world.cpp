@@ -92,6 +92,8 @@ void world::generate_buffer_data() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, ATTRIBUTE_VERTEX_COUNT * sizeof(float), (GLvoid*)(2 * sizeof(float)));
 
     update_buffer_data();
+
+    glBindVertexArray(0);
 }
 void world::update_buffer_data() {
     //Count the total number of vertices for each game_entity

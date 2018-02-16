@@ -31,7 +31,7 @@ void minalear::init_game_window(const int windowWidth, const int windowHeight) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, OPENGL_MAJOR_VERSION);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, OPENGL_MINOR_VERSION);
 
-    window = SDL_CreateWindow("ASCII Adventure Demo",
+    window = SDL_CreateWindow("Sinistar",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               windowWidth, windowHeight,

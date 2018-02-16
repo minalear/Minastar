@@ -1,8 +1,8 @@
 #version 400
 in vec3 Color;
 
-out vec4 fragmentColor;
+out vec4 fragment_color;
 
 void main() {
-    fragmentColor = vec4(Color, 1.0);
+    fragment_color = vec4(Color, 1.0);
 }
