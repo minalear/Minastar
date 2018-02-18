@@ -49,7 +49,9 @@ int main(int argc, char *argv[]) {
 
     ship_controller player_controller(&ships[0]);
 
-    game_world.add_entities(asteroids, NUM_ASTEROIDS);
+    for (int i = 0; i < NUM_ASTEROIDS; i++) {
+        game_world.add_entity(&asteroids[i]);
+    }
     game_world.add_entities(ships, NUM_SHIPS);
     game_world.add_entity(new sinistar);
 

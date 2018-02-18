@@ -9,7 +9,10 @@
 
 class asteroid: public game_entity {
 public:
+    int health = 0;
+
     asteroid();
+    asteroid(float size);
     void update(float dt) override;
     void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
