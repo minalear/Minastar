@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     text_shader.set_model_mat4(model);
 
     //Text renderer
-    //text_renderer text_renderer("main");
+    text_renderer text_renderer("main");
 
     //Setup controller input
     minalear::init_input();
@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
         game_world.update(dt);
         game_world.draw(&game_shader);
 
-        //text_shader.use();
-        //text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
+        text_shader.use();
+        text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();
 

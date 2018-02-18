@@ -41,8 +41,15 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
                       glm::scale(glm::mat4(1.f), glm::vec3(scale, 1.f));
     text_shader->set_model_mat4(model);
 
+    //Count the number of valid characters
+    int valid_character_count = 0;
+    for (int i = 0; i < str.size(); i++) {
+        if (str[i] == ' ' || str[i] == '\n') continue;
+        valid_character_count++;
+    }
+
     //Initialize buffer data TODO: Very unoptimized
-    float *buffer_data = new float[str.size() * 24];
+    float *buffer_data = new float[valid_character_count * 24];
 
     float cursor_x = 0.f;
     float cursor_y = 0.f;
@@ -50,6 +57,7 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
     float bitmap_width  = text_font->bitmap->getWidth();
     float bitmap_height = text_font->bitmap->getHeight();
 
+    int ch_index = 0;
     for (int i = 0; i < str.size(); i++) {
         char ch = str[i];
 
@@ -76,50 +84,51 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
         float uv_top    = char_data.y / bitmap_height;
         float uv_bottom = uv_top + (char_data.height / bitmap_height);
 
-        buffer_data[i * 24 +  0] = pos_x;
-        buffer_data[i * 24 +  1] = pos_y;
-        buffer_data[i * 24 +  2] = uv_left;
-        buffer_data[i * 24 +  3] = uv_top;
+        buffer_data[ch_index * 24 +  0] = pos_x;
+        buffer_data[ch_index * 24 +  1] = pos_y;
+        buffer_data[ch_index * 24 +  2] = uv_left;
+        buffer_data[ch_index * 24 +  3] = uv_top;
 
-        buffer_data[i * 24 +  4] = pos_x;
-        buffer_data[i * 24 +  5] = pos_y + char_data.height;
-        buffer_data[i * 24 +  6] = uv_left;
-        buffer_data[i * 24 +  7] = uv_bottom;
+        buffer_data[ch_index * 24 +  4] = pos_x;
+        buffer_data[ch_index * 24 +  5] = pos_y + char_data.height;
+        buffer_data[ch_index * 24 +  6] = uv_left;
+        buffer_data[ch_index * 24 +  7] = uv_bottom;
 
-        buffer_data[i * 24 +  8] = pos_x + char_data.width;
-        buffer_data[i * 24 +  9] = pos_y;
-        buffer_data[i * 24 + 10] = uv_right;
-        buffer_data[i * 24 + 11] = uv_top;
+        buffer_data[ch_index * 24 +  8] = pos_x + char_data.width;
+        buffer_data[ch_index * 24 +  9] = pos_y;
+        buffer_data[ch_index * 24 + 10] = uv_right;
+        buffer_data[ch_index * 24 + 11] = uv_top;
 
 
-        buffer_data[i * 24 + 12] = pos_x + char_data.width;
-        buffer_data[i * 24 + 13] = pos_y;
-        buffer_data[i * 24 + 14] = uv_right;
-        buffer_data[i * 24 + 15] = uv_top;
+        buffer_data[ch_index * 24 + 12] = pos_x + char_data.width;
+        buffer_data[ch_index * 24 + 13] = pos_y;
+        buffer_data[ch_index * 24 + 14] = uv_right;
+        buffer_data[ch_index * 24 + 15] = uv_top;
 
-        buffer_data[i * 24 + 16] = pos_x;
-        buffer_data[i * 24 + 17] = pos_y + char_data.height;
-        buffer_data[i * 24 + 18] = uv_left;
-        buffer_data[i * 24 + 19] = uv_bottom;
+        buffer_data[ch_index * 24 + 16] = pos_x;
+        buffer_data[ch_index * 24 + 17] = pos_y + char_data.height;
+        buffer_data[ch_index * 24 + 18] = uv_left;
+        buffer_data[ch_index * 24 + 19] = uv_bottom;
 
-        buffer_data[i * 24 + 20] = pos_x + char_data.width;
-        buffer_data[i * 24 + 21] = pos_y + char_data.height;
-        buffer_data[i * 24 + 22] = uv_right;
-        buffer_data[i * 24 + 23] = uv_bottom;
+        buffer_data[ch_index * 24 + 20] = pos_x + char_data.width;
+        buffer_data[ch_index * 24 + 21] = pos_y + char_data.height;
+        buffer_data[ch_index * 24 + 22] = uv_right;
+        buffer_data[ch_index * 24 + 23] = uv_bottom;
 
         cursor_x += char_data.x_advance;
+        ch_index++;
     }
 
     //Update VBO
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * str.size() * 24, buffer_data, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * valid_character_count * 24, buffer_data, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     //Draw buffer
     text_font->bitmap->bind();
 
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, str.size() * 6);
+    glDrawArrays(GL_TRIANGLES, 0, valid_character_count * 6);
     glBindVertexArray(0);
 
     delete[] buffer_data;
