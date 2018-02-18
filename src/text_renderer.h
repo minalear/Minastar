@@ -20,7 +20,7 @@ public:
     text_renderer(const std::string font_name);
     ~text_renderer();
 
-    void draw_string(minalear::shader_program *text_shader, std::string str, glm::vec2 pos);
+    void draw_string(minalear::shader_program *text_shader, std::string str, glm::vec2 pos, glm::vec2 scale);
 };
 
 

@@ -35,9 +35,10 @@ text_renderer::~text_renderer() {
     delete text_font;
 }
 
-void text_renderer::draw_string(minalear::shader_program *text_shader, const std::string str, glm::vec2 pos) {
+void text_renderer::draw_string(minalear::shader_program *text_shader, const std::string str, glm::vec2 pos, glm::vec2 scale) {
     //Set transform information
-    glm::mat4 model = glm::translate(glm::mat4(1.f), glm::vec3(pos, 0.f));
+    glm::mat4 model = glm::translate(glm::mat4(1.f), glm::vec3(pos, 0.f)) *
+                      glm::scale(glm::mat4(1.f), glm::vec3(scale, 1.f));
     text_shader->set_model_mat4(model);
 
     //Initialize buffer data TODO: Very unoptimized
@@ -55,6 +56,13 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
         //Skip spaces
         if (ch == ' ') {
             cursor_x += text_font->info.font_size;
+            continue;
+        }
+
+        //Adjust cursor for new lines
+        if (ch == '\n') {
+            cursor_x  = 0.f;
+            cursor_y += text_font->common.line_height;
             continue;
         }
 

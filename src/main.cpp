@@ -85,10 +85,14 @@ int main(int argc, char *argv[]) {
     text_shader.set_model_mat4(model);
 
     //Text renderer
-    text_renderer text_renderer("main");
+    //text_renderer text_renderer("main");
 
     //Setup controller input
     minalear::init_input();
+
+    int frame_count = 0, fps = 0;
+    float current_time = 0.f;
+    float last_time = SDL_GetTicks();
 
     //Begin main game loop
     SDL_Event windowEvent;
@@ -110,13 +114,23 @@ int main(int argc, char *argv[]) {
         game_world.update(dt);
         game_world.draw(&game_shader);
 
-        text_shader.use();
-        text_renderer.draw_string(&text_shader, "Hello my dude", glm::vec2(10.f));
+        //text_shader.use();
+        //text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();
 
         //TODO: look into laggy joystick input
         SDL_FlushEvent(SDL_JOYAXISMOTION);
+
+        //Calculate FPS
+        frame_count++;
+        current_time = SDL_GetTicks();
+        if (current_time > last_time + 1000.f) {
+            fps = frame_count;
+            frame_count = 0;
+
+            last_time = current_time;
+        }
     } //end main game loop
 
     return 0;
