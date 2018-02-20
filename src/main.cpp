@@ -92,9 +92,8 @@ int main(int argc, char *argv[]) {
     //Setup controller input
     minalear::init_input();
 
-    int frame_count = 0, fps = 0;
-    float current_time = 0.f;
-    float last_time = SDL_GetTicks();
+    //Time accumulator
+    double time_accumulator = 0.f;
 
     //Begin main game loop
     SDL_Event windowEvent;
@@ -105,19 +104,26 @@ int main(int argc, char *argv[]) {
                 break;
         }
 
-        float dt = minalear::dt();
-        minalear::handle_input();
-
         glClear(GL_COLOR_BUFFER_BIT);
 
-        player_controller.update(dt);
+        minalear::handle_input();
 
+        //Accumulate time and update logic if past the desired accumulation time
+        time_accumulator += minalear::dt();
+
+        const float CONST_DT = 0.016f;
+        if (time_accumulator >= CONST_DT) {
+            player_controller.update(CONST_DT);
+            game_world.update(CONST_DT);
+
+            time_accumulator = 0.f;
+        }
+
+        //Draw the game world
         game_shader.use();
-        game_world.update(dt);
         game_world.draw(&game_shader);
 
         text_shader.use();
-        //text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
         text_renderer.draw_string(&text_shader,
                                   "minerals " + std::to_string(player_controller.owner->mineral_count),
                                   glm::vec2(10.f), glm::vec2(0.4f));
@@ -126,16 +132,6 @@ int main(int argc, char *argv[]) {
 
         //TODO: look into laggy joystick input
         SDL_FlushEvent(SDL_JOYAXISMOTION);
-
-        //Calculate FPS
-        frame_count++;
-        current_time = SDL_GetTicks();
-        if (current_time > last_time + 1000.f) {
-            fps = frame_count;
-            frame_count = 0;
-
-            last_time = current_time;
-        }
     } //end main game loop
 
     return 0;

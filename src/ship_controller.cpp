@@ -10,6 +10,7 @@
 
 float bullet_timer = 0.f;
 const float BULLET_FIRE_RATE = 0.12f;
+const float PLAYER_SPEED_FACTOR = 12.f;
 
 ship_controller::ship_controller(ship *owner) {
     this->owner = owner;
@@ -18,8 +19,8 @@ void ship_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
 
     if (joystick->left_stick_length > 0.15f) {
-        float PLAYER_FORCE_FACTOR = 10.f * joystick->left_stick_length;
-        owner->apply_force(joystick->left_stick * PLAYER_FORCE_FACTOR);
+        float force_factor = PLAYER_SPEED_FACTOR * joystick->left_stick_length;
+        owner->apply_force(joystick->left_stick * force_factor);
         owner->rotation = atan2f(joystick->left_stick.y, joystick->left_stick.x);
     }
 
