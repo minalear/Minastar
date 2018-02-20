@@ -9,8 +9,11 @@
 
 class ship: public game_entity {
 public:
+    int mineral_count;
+
     ship();
     void update(float dt) override;
+    void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
 
 

@@ -6,7 +6,7 @@
 #include <random>
 #include "asteroid.h"
 #include "world.h"
-#include "sinibomb.h"
+#include "mineral.h"
 
 const float ASTEROID_RADIUS_MIN = 12.f;
 const float ASTEROID_RADIUS_MAX = 48.f;
@@ -99,6 +99,11 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
             }
         }
 
-        game_world->add_entity(new sinibomb(point));
+        //one-in-ten chance of spawning
+        if (rand_float(0.f, 100.f) < 10.f) {
+            glm::vec2 mineral_vel = -other.velocity;
+            mineral_vel = glm::normalize(mineral_vel) * 10.f;
+            game_world->add_entity(new mineral(point, mineral_vel));
+        }
     }
 }

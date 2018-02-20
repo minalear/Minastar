@@ -36,8 +36,14 @@ void generate_ship_shape(ship *ship) {
 
 ship::ship() {
     generate_ship_shape(this);
+    mineral_count = 0;
 }
 
 void ship::update(float dt) {
     game_entity::update(dt);
+}
+void ship::handle_collision(const game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Mineral) {
+        mineral_count++;
+    }
 }

@@ -35,7 +35,11 @@ void world::update(float dt) {
         for (int k = 0; k < entities.size(); k++) {
             glm::vec2 collision_point = glm::vec2(0.f);
             if (i != k && check_collision(*entities[i], *entities[k], collision_point)) {
-                entities[i]->handle_collision(*entities[k], collision_point);
+                //TODO: Ensure the double call to handle_collsion doesn't screw up logic
+                if (!entities[i]->do_destroy && !entities[k]->do_destroy) {
+                    entities[i]->handle_collision(*entities[k], collision_point);
+                    entities[k]->handle_collision(*entities[i], collision_point);
+                }
                 mark_for_update = true;
             }
         }

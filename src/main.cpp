@@ -117,7 +117,10 @@ int main(int argc, char *argv[]) {
         game_world.draw(&game_shader);
 
         text_shader.use();
-        text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
+        //text_renderer.draw_string(&text_shader, "fps " + std::to_string(fps), glm::vec2(10.f), glm::vec2(0.4f));
+        text_renderer.draw_string(&text_shader,
+                                  "minerals " + std::to_string(player_controller.owner->mineral_count),
+                                  glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();
 

@@ -13,7 +13,8 @@ enum struct ENTITY_TYPES {
     Ship,
     Bullet,
     Sinistar,
-    Sinibomb
+    Sinibomb,
+    Mineral
 };
 
 class game_entity {
