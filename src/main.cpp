@@ -15,11 +15,10 @@
 #include "world.h"
 #include "asteroid.h"
 #include "ship.h"
-#include "ship_controller.h"
+#include "player_controller.h"
 #include "sinistar.h"
 
 const int NUM_ASTEROIDS = 6;
-const int NUM_SHIPS = 1;
 
 int main(int argc, char *argv[]) {
     //Initialize SDL and OpenGL
@@ -45,14 +44,14 @@ int main(int argc, char *argv[]) {
 
     //Create game entities
     asteroid asteroids[NUM_ASTEROIDS];
-    ship ships[NUM_SHIPS];
 
-    ship_controller player_controller(&ships[0]);
+    player_controller player_controller;
+    ship player_ship(&player_controller, ENTITY_TYPES::Player);
 
+    game_world.add_entity(&player_ship);
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
         game_world.add_entity(&asteroids[i]);
     }
-    game_world.add_entities(ships, NUM_SHIPS);
     game_world.add_entity(new sinistar);
 
     game_world.generate_buffer_data();
@@ -113,7 +112,7 @@ int main(int argc, char *argv[]) {
 
         const float CONST_DT = 0.016f;
         if (time_accumulator >= CONST_DT) {
-            player_controller.update(CONST_DT);
+            //player_controller.update(CONST_DT);
             game_world.update(CONST_DT);
 
             time_accumulator = 0.f;
@@ -126,7 +125,6 @@ int main(int argc, char *argv[]) {
                                       -player_controller.owner->position.y + minalear::get_window_height() / 2.f,
                                       0.f));
         game_shader.set_view_mat4(view);
-
         game_world.draw(&game_shader);
 
         text_shader.use();

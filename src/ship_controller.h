@@ -5,16 +5,13 @@
 #ifndef SINISTAR_SHIP_CONTROLLER_H
 #define SINISTAR_SHIP_CONTROLLER_H
 
-#include "ship.h"
 
 class ship_controller {
 public:
-    ship *owner;
+    class ship *owner;
 
-    ship_controller(ship *owner);
-
+    ship_controller();
     virtual void update(float dt);
-    void fire_bullet();
 };
 
 

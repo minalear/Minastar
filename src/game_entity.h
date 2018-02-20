@@ -10,7 +10,9 @@
 
 enum struct ENTITY_TYPES {
     Asteroid,
-    Ship,
+    Player,
+    Worker,
+    Soldier,
     Bullet,
     Sinistar,
     Sinibomb,

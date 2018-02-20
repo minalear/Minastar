@@ -9,9 +9,11 @@
 
 class ship: public game_entity {
 public:
+    class ship_controller *controller;
+
     int mineral_count;
 
-    ship();
+    ship(ship_controller *controller, ENTITY_TYPES ship_type);
     void update(float dt) override;
     void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
