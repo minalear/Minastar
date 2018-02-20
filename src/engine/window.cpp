@@ -22,9 +22,13 @@ const int OPENGL_MINOR_VERSION = 0;
 SDL_Window* window;
 SDL_GLContext context;
 
+struct {
+    int width, height;
+} window_info;
+
 uint32_t start_time;
 
-void minalear::init_game_window(const int windowWidth, const int windowHeight) {
+void minalear::init_game_window(const int window_width, const int window_height) {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -37,8 +41,11 @@ void minalear::init_game_window(const int windowWidth, const int windowHeight) {
     window = SDL_CreateWindow("Sinistar",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
-                              windowWidth, windowHeight,
+                              window_width, window_height,
                               SDL_WINDOW_OPENGL);
+    window_info.width = window_width;
+    window_info.height = window_height;
+
     context = SDL_GL_CreateContext(window);
     start_time = SDL_GetTicks();
 }
@@ -58,4 +65,11 @@ float minalear::dt() {
     start_time = SDL_GetTicks();
 
     return dt;
+}
+
+int minalear::get_window_width() {
+    return window_info.width;
+}
+int minalear::get_window_height() {
+    return window_info.height;
 }

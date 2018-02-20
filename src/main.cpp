@@ -121,6 +121,12 @@ int main(int argc, char *argv[]) {
 
         //Draw the game world
         game_shader.use();
+        view = glm::translate(glm::mat4(1.f), glm::vec3(
+                                      -player_controller.owner->position.x + minalear::get_window_width() / 2.f,
+                                      -player_controller.owner->position.y + minalear::get_window_height() / 2.f,
+                                      0.f));
+        game_shader.set_view_mat4(view);
+
         game_world.draw(&game_shader);
 
         text_shader.use();
@@ -130,7 +136,7 @@ int main(int argc, char *argv[]) {
 
         minalear::swap_buffers();
 
-        SDL_PumpEvents();
+        //SDL_PumpEvents(); //Not sure if this is exactly required
         SDL_FlushEvent(SDL_JOYAXISMOTION);
     } //end main game loop
 
