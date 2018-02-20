@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 
         minalear::swap_buffers();
 
-        //TODO: look into laggy joystick input
+        SDL_PumpEvents();
         SDL_FlushEvent(SDL_JOYAXISMOTION);
     } //end main game loop
 

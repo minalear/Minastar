@@ -47,14 +47,14 @@ void sinibomb::update(float dt) {
         sinistar_ptr = game_world->find_entity(ENTITY_TYPES::Sinistar);
     }
 
-    //TODO: This assumes sinistar_ptr is valid
+    //Track towards Sinistar, but only if he's present on the game world
+    if (sinistar_ptr) {
+        glm::vec2 target_position = sinistar_ptr->position + sinistar_ptr->velocity;
+        glm::vec2 move_vector = glm::normalize(target_position - position);
 
-    //Track towards him and kill 'em
-    glm::vec2 target_position = sinistar_ptr->position + sinistar_ptr->velocity;
-    glm::vec2 move_vector = glm::normalize(target_position - position);
-
-    const float BOMB_SPEED = 150.f;
-    velocity = move_vector * BOMB_SPEED;
+        const float BOMB_SPEED = 150.f;
+        velocity = move_vector * BOMB_SPEED;
+    }
     game_entity::update(dt);
 }
 void sinibomb::handle_collision(const game_entity &other, glm::vec2 point) {

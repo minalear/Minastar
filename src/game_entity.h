@@ -20,7 +20,6 @@ enum struct ENTITY_TYPES {
 class game_entity {
 public:
     ENTITY_TYPES entity_type;
-    //TODO: What?
     class world *game_world;
 
     glm::vec2 position;
