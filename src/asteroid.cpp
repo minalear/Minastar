@@ -47,18 +47,19 @@ void generate_asteroid_shape(asteroid *asteroid, float size) {
     asteroid->vertex_count = vertex_count;
     asteroid->buffer_data = buffer_data;
     asteroid->bounding_radius = asteroid_scale;
-    asteroid->position = glm::vec2(
-            minalear::rand_float(asteroid_scale, 800.f - asteroid_scale),
-            minalear::rand_float(asteroid_scale, 450.f - asteroid_scale));
     asteroid->friction_coefficient = 1.f;
     asteroid->health = (int)asteroid_scale;
 }
 
 asteroid::asteroid() {
     generate_asteroid_shape(this, 0.f);
+    position = glm::vec2(
+            minalear::rand_float(bounding_radius, 800.f - bounding_radius),
+            minalear::rand_float(bounding_radius, 450.f - bounding_radius));
 }
-asteroid::asteroid(float size) {
+asteroid::asteroid(float size, glm::vec2 pos) {
     generate_asteroid_shape(this, size);
+    position = pos;
 }
 
 void asteroid::update(float dt) {
@@ -75,19 +76,17 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
             do_destroy = true;
             if (bounding_radius > 10.f) {
                 float asteroid_scale = bounding_radius / 2.f;
-                asteroid *left_asteroid  = new asteroid(asteroid_scale);
-                asteroid *right_asteroid = new asteroid(asteroid_scale);
-
                 auto left_pos  = glm::vec2(minalear::rand_float(position.x - asteroid_scale, position.x + asteroid_scale),
                                            minalear::rand_float(position.y - asteroid_scale, position.y + asteroid_scale));
                 auto right_pos = glm::vec2(minalear::rand_float(position.x - asteroid_scale, position.x + asteroid_scale),
                                            minalear::rand_float(position.y - asteroid_scale, position.y + asteroid_scale));
 
-                left_asteroid->position  = left_pos;
-                right_asteroid->position = right_pos;
+                asteroid *left_asteroid  = new asteroid(asteroid_scale, left_pos);
+                asteroid *right_asteroid = new asteroid(asteroid_scale, right_pos);
 
-                left_asteroid->velocity = left_pos - right_pos;
-                right_asteroid->velocity = right_pos - left_pos;
+                float vel_factor = minalear::rand_float(1.f, 1.2f);
+                left_asteroid->velocity = (left_pos - right_pos) * vel_factor;
+                right_asteroid->velocity = (right_pos - left_pos) * vel_factor;
 
                 game_world->add_entity(left_asteroid);
                 game_world->add_entity(right_asteroid);

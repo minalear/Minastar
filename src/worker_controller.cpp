@@ -30,9 +30,9 @@ void worker_controller::update(float dt) {
     float dist = -1.f;
     game_entity *closest_target = nullptr;
 
-    //Get closest mineral
+    //Get closest mineral (if within acceptable distance)
     closest_target = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
-    if (closest_target) {
+    if (closest_target && dist < 125.f) {
         seek(owner, closest_target->position);
         return;  //Early return to prevent seeking asteroids
     }
@@ -49,7 +49,7 @@ void worker_controller::update(float dt) {
             owner->velocity = owner->velocity * 0.8f;
 
             //Face the asteroid (in case it is moving)
-            glm::vec2 to_asteroid = glm::normalize(closest_target->position - owner->position);
+            glm::vec2 to_asteroid = glm::normalize((closest_target->position + closest_target->velocity) - owner->position);
             owner->rotation = atan2f(to_asteroid.y, to_asteroid.x);
 
             //SHOOT HER

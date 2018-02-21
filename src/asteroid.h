@@ -12,7 +12,7 @@ public:
     int health = 0;
 
     asteroid();
-    asteroid(float size);
+    asteroid(float size, glm::vec2 pos);
     void update(float dt) override;
     void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
