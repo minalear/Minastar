@@ -20,7 +20,11 @@ enum struct ENTITY_TYPES {
 };
 
 class game_entity {
+private:
+    static int next_valid_entity_id;
+
 public:
+    int unique_id;
     ENTITY_TYPES entity_type;
     class world *game_world;
 

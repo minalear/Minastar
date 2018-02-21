@@ -13,16 +13,14 @@ float bullet_timer = 0.f;
 const float BULLET_FIRE_RATE = 0.12f;
 const float PLAYER_SPEED_FACTOR = 12.f;
 
-player_controller::player_controller() {
-
-}
+player_controller::player_controller() { }
 void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
 
     if (joystick->left_stick_length > 0.15f) {
         float force_factor = PLAYER_SPEED_FACTOR * joystick->left_stick_length;
         owner->apply_force(joystick->left_stick * force_factor);
-        owner->rotation = atan2f(joystick->left_stick.y, joystick->left_stick.x);
+        //owner->rotation = atan2f(joystick->left_stick.y, joystick->left_stick.x);
     }
 
     bullet_timer = glm::clamp(bullet_timer - dt, 0.f, bullet_timer);
@@ -35,7 +33,7 @@ void player_controller::update(float dt) {
             bullet_velocity.x = cosf(owner->rotation);
             bullet_velocity.y = sinf(owner->rotation);
 
-            owner->game_world->add_entity(new bullet(owner->position, (bullet_velocity * 125.f) + owner->velocity));
+            owner->game_world->add_entity(new bullet(owner->unique_id, owner->position, (bullet_velocity * 125.f) + owner->velocity));
         }
             //Fire a SINIBOMB
         else if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y) && owner->mineral_count > 0) {

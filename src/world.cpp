@@ -9,9 +9,7 @@
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
 
-world::world() {
-
-}
+world::world() { }
 world::~world() {
     entities.clear();
 }
@@ -130,4 +128,20 @@ game_entity* world::find_entity(ENTITY_TYPES type) {
     }
 
     return nullptr;
+}
+game_entity* world::find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist) {
+    game_entity *closest_entity = nullptr;
+    float closest_dist = 100000.f;
+
+    for (int i = 0; i < entities.size(); i++) {
+        if (entities[i]->entity_type == type) {
+            float test_dist = distance_square(entities[i]->position, pos);
+            if (dist < closest_dist) {
+                closest_entity = entities[i];
+            }
+        }
+    }
+
+    dist = closest_dist;
+    return closest_entity;
 }

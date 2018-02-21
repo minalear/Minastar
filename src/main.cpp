@@ -16,6 +16,7 @@
 #include "asteroid.h"
 #include "ship.h"
 #include "player_controller.h"
+#include "worker_controller.h"
 #include "sinistar.h"
 
 const int NUM_ASTEROIDS = 6;
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]) {
     ship player_ship(&player_controller, ENTITY_TYPES::Player);
 
     game_world.add_entity(&player_ship);
+    game_world.add_entity(new ship(new worker_controller, ENTITY_TYPES::Worker));
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
         game_world.add_entity(&asteroids[i]);
     }

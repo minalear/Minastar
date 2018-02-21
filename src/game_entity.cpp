@@ -4,7 +4,10 @@
 
 #include "game_entity.h"
 
+int game_entity::next_valid_entity_id = 0;
+
 game_entity::game_entity() {
+    unique_id = next_valid_entity_id++;
     rotation = 0.f;
     bounding_radius = 0.f;
     vertex_count = 0;

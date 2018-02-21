@@ -30,6 +30,7 @@ public:
     void update_buffer_data();
 
     game_entity* find_entity(ENTITY_TYPES type);
+    game_entity* find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist);
 };
 
 
