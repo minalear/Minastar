@@ -5,23 +5,61 @@
 #include "worker_controller.h"
 #include "ship.h"
 #include "world.h"
+#include "bullet.h"
 
-const float WORKER_MOVE_SPEED = 32.f;
+const float BULLET_FIRE_RATE = 0.26f;
+const float WORKER_MOVE_SPEED = 12.f;
 
 worker_controller::worker_controller() { }
+
+void seek(game_entity *owner, glm::vec2 target) {
+    glm::vec2 target_vector = target - owner->position;
+    glm::vec2 adjusted_vel = glm::normalize(target_vector) * WORKER_MOVE_SPEED;
+
+    owner->velocity += adjusted_vel;
+}
 void worker_controller::update(float dt) {
 
     /* Workers will attempt to pickup nearby minerals (within a distance threshold)
      * or attempt to mine asteroids for said minerals.
-     * */
+     */
+
+    //Update timers
+    bullet_timer = glm::clamp(bullet_timer - dt, 0.f, bullet_timer);
 
     float dist = -1.f;
-    game_entity *closest_mineral = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
+    game_entity *closest_target = nullptr;
 
-    if (closest_mineral) {
-        glm::vec2 target_vector = closest_mineral->position - owner->position;
-        glm::vec2 adjusted_vel = glm::normalize(target_vector) * WORKER_MOVE_SPEED;
+    //Get closest mineral
+    closest_target = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
+    if (closest_target) {
+        seek(owner, closest_target->position);
+        return;  //Early return to prevent seeking asteroids
+    }
 
-        owner->velocity = adjusted_vel;
+    //Get closest asteroid
+    closest_target = owner->game_world->find_entity(ENTITY_TYPES::Asteroid, owner->position, dist);
+    if (closest_target) {
+        //Seek towards asteroids that are too far away, otherwise shoot them
+        if (dist > closest_target->bounding_radius + 40.f) {
+            seek(owner, closest_target->position);
+        }
+        else {
+            //Ensure we're slowing down
+            owner->velocity = owner->velocity * 0.8f;
+
+            //Face the asteroid (in case it is moving)
+            glm::vec2 to_asteroid = glm::normalize(closest_target->position - owner->position);
+            owner->rotation = atan2f(to_asteroid.y, to_asteroid.x);
+
+            //SHOOT HER
+            if (bullet_timer <= 0.f) {
+                bullet_timer = BULLET_FIRE_RATE;
+                glm::vec2 bullet_velocity = (to_asteroid * 90.f) + owner->velocity;
+                owner->game_world->add_entity(new bullet(owner->unique_id, owner->position, bullet_velocity));
+            }
+        }
+
+        return;  //Early return
     }
 }

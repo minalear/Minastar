@@ -131,17 +131,18 @@ game_entity* world::find_entity(ENTITY_TYPES type) {
 }
 game_entity* world::find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist) {
     game_entity *closest_entity = nullptr;
-    float closest_dist = 100000.f;
+    float closest_dist = -1.f;
 
     for (int i = 0; i < entities.size(); i++) {
         if (entities[i]->entity_type == type) {
-            float test_dist = distance_square(entities[i]->position, pos);
-            if (dist < closest_dist) {
+            dist = distance_square(entities[i]->position, pos);
+            if (dist < closest_dist || closest_dist == -1.f) {
                 closest_entity = entities[i];
+                closest_dist = dist;
             }
         }
     }
 
-    dist = closest_dist;
+    dist = sqrtf(closest_dist);
     return closest_entity;
 }

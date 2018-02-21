@@ -9,6 +9,8 @@
 
 class worker_controller: public ship_controller {
 public:
+    float bullet_timer;
+
     worker_controller();
     void update(float dt) override;
 };

@@ -114,10 +114,10 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
 }
 
 void ship::update(float dt) {
+    rotation = atan2f(velocity.y, velocity.x);
+
     controller->update(dt);
     game_entity::update(dt);
-
-    rotation = atan2f(velocity.y, velocity.x);
 }
 void ship::handle_collision(const game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Mineral) {
