@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9)
 project(sinistar)
 
 set(CMAKE_CXX_STANDARD 11)
-#set(CMAKE_CXX_FLAGS "-O2")
+set(CMAKE_CXX_FLAGS "-O2")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 file(GLOB SOURCE_FILES

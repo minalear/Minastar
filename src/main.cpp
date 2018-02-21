@@ -13,15 +13,14 @@
 #include "engine/font.h"
 #include "text_renderer.h"
 #include "world.h"
-#include "asteroid.h"
 #include "ship.h"
 #include "player_controller.h"
-#include "worker_controller.h"
-#include "sinistar.h"
-
-const int NUM_ASTEROIDS = 6;
 
 int main(int argc, char *argv[]) {
+    //TODO: Bullets need a lifetime before they despawn, otherwise they'll just travel forever
+    //TODO: Workers tend to clump on top of one another, blocking each others' bullets
+    //Either handle collision so they don't clump on top (preferred) or don't have allied bullets collide with allies
+
     //Initialize SDL and OpenGL
     minalear::init_game_window(800, 450);
     minalear::init_opengl();
@@ -41,21 +40,13 @@ int main(int argc, char *argv[]) {
     //Seed random number generator
     srand((unsigned int)time(NULL));
 
+    //Setup game world
     world game_world;
 
-    //Create game entities
-    asteroid asteroids[NUM_ASTEROIDS];
-
-    player_controller player_controller;
-    ship player_ship(&player_controller, ENTITY_TYPES::Player);
-
+    ship player_ship(new player_controller, ENTITY_TYPES::Player);
     game_world.add_entity(&player_ship);
-    game_world.add_entity(new ship(new worker_controller, ENTITY_TYPES::Worker));
-    for (int i = 0; i < NUM_ASTEROIDS; i++) {
-        game_world.add_entity(&asteroids[i]);
-    }
-    game_world.add_entity(new sinistar);
 
+    game_world.generate_game_world();
     game_world.generate_buffer_data();
 
     //Initialize shader programs
@@ -121,17 +112,19 @@ int main(int argc, char *argv[]) {
         }
 
         //Draw the game world
+        minalear::controller_state *c_state = minalear::get_controller_ptr();
+
         game_shader.use();
-        view = glm::translate(glm::mat4(1.f), glm::vec3(
-                                      -player_controller.owner->position.x + minalear::get_window_width() / 2.f,
-                                      -player_controller.owner->position.y + minalear::get_window_height() / 2.f,
-                                      0.f));
+        glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + minalear::get_window_width() / 2.f,
+                                      -player_ship.position.y + minalear::get_window_height() / 2.f);
+        view = glm::translate(glm::mat4(1.f), glm::vec3(cam_pos, 0.f)) *
+               glm::scale(glm::mat4(1.f), glm::vec3(0.25f));
         game_shader.set_view_mat4(view);
         game_world.draw(&game_shader);
 
         text_shader.use();
         text_renderer.draw_string(&text_shader,
-                                  "minerals " + std::to_string(player_controller.owner->mineral_count),
+                                  "minerals " + std::to_string(player_ship.mineral_count),
                                   glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();

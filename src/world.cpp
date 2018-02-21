@@ -6,6 +6,10 @@
 #include "gtc/matrix_transform.hpp"
 #include "collision_handler.h"
 #include "engine/math_utils.h"
+#include "asteroid.h"
+#include "ship.h"
+#include "worker_controller.h"
+#include "sinistar.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
@@ -77,7 +81,29 @@ void world::add_entities(game_entity *entities, int count) {
 }
 
 void world::generate_game_world() {
+    const int GAME_WORLD_MIN = 0;
+    const int GAME_WORLD_MAX = 8000;
 
+    const int NUM_ASTEROIDS = 800;
+    const int NUM_WORKERS = 75;
+
+    //Create asteroids
+    for (int i = 0; i < NUM_ASTEROIDS; i++) {
+        float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+        float y = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+
+        add_entity(new asteroid(glm::vec2(x, y)));
+    }
+
+    //Create workers
+    for (int i = 0; i < NUM_WORKERS; i++) {
+        float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+        float y = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+
+        ship *worker = new ship(new worker_controller, ENTITY_TYPES::Worker);
+        worker->position = glm::vec2(x, y);
+        add_entity(worker);
+    }
 }
 void world::generate_buffer_data() {
     //Initialize VAO and VBO

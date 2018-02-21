@@ -57,6 +57,10 @@ asteroid::asteroid() {
             minalear::rand_float(bounding_radius, 800.f - bounding_radius),
             minalear::rand_float(bounding_radius, 450.f - bounding_radius));
 }
+asteroid::asteroid(glm::vec2 pos) {
+    generate_asteroid_shape(this, 0.f);
+    position = pos;
+}
 asteroid::asteroid(float size, glm::vec2 pos) {
     generate_asteroid_shape(this, size);
     position = pos;
