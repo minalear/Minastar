@@ -26,6 +26,7 @@ public:
     void add_entity(game_entity *entity);
     void add_entities(game_entity *entities, int count);
 
+    void generate_game_world();
     void generate_buffer_data();
     void update_buffer_data();
 

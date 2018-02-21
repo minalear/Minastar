@@ -5,6 +5,7 @@
 #include "world.h"
 #include "gtc/matrix_transform.hpp"
 #include "collision_handler.h"
+#include "engine/math_utils.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
@@ -75,6 +76,9 @@ void world::add_entities(game_entity *entities, int count) {
     }
 }
 
+void world::generate_game_world() {
+
+}
 void world::generate_buffer_data() {
     //Initialize VAO and VBO
     glGenVertexArrays(1, &vao);
@@ -135,7 +139,7 @@ game_entity* world::find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist) {
 
     for (int i = 0; i < entities.size(); i++) {
         if (entities[i]->entity_type == type) {
-            dist = distance_square(entities[i]->position, pos);
+            dist = minalear::distance_square(entities[i]->position, pos);
             if (dist < closest_dist || closest_dist == -1.f) {
                 closest_entity = entities[i];
                 closest_dist = dist;
