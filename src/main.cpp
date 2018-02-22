@@ -17,8 +17,6 @@
 #include "player_controller.h"
 
 int main(int argc, char *argv[]) {
-    //TODO: Bullets need a lifetime before they despawn, otherwise they'll just travel forever
-    //TODO: Workers tend to clump on top of one another, blocking each others' bullets
     //Either handle collision so they don't clump on top (preferred) or don't have allied bullets collide with allies
 
     //Initialize SDL and OpenGL

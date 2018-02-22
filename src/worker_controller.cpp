@@ -11,7 +11,9 @@ const float BULLET_FIRE_RATE = 0.26f;
 const float BULLET_SPEED = 128.f;
 const float WORKER_MOVE_SPEED = 12.f;
 
-worker_controller::worker_controller() { }
+worker_controller::worker_controller() {
+    bullet_timer = 0.f;
+}
 
 void seek(game_entity *owner, glm::vec2 target) {
     glm::vec2 target_vector = target - owner->position;
@@ -26,7 +28,7 @@ void worker_controller::update(float dt) {
      */
 
     //Update timers
-    bullet_timer = glm::clamp(bullet_timer - dt, 0.f, bullet_timer);
+    bullet_timer += dt;
 
     float dist = -1.f;
     game_entity *closest_target = nullptr;
@@ -57,8 +59,8 @@ void worker_controller::update(float dt) {
             owner->rotation = atan2f(to_asteroid.y, to_asteroid.x);
 
             //SHOOT HER
-            if (bullet_timer <= 0.f) {
-                bullet_timer = BULLET_FIRE_RATE;
+            if (bullet_timer >= BULLET_FIRE_RATE) {
+                bullet_timer = 0.f;
                 glm::vec2 bullet_velocity = (to_asteroid * BULLET_SPEED) + owner->velocity;
                 shoot(owner->position, bullet_velocity);
             }

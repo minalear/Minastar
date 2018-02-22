@@ -25,5 +25,4 @@ void ship_controller::shoot(glm::vec2 pos, glm::vec2 vel) {
     }
 
     owner->game_world->add_entity(entity_bullet);
-    owner->mineral_count++;
 }

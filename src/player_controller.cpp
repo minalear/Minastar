@@ -13,23 +13,23 @@ const float BULLET_FIRE_RATE = 0.12f;
 const float BULLET_SPEED = 125.f;
 const float PLAYER_SPEED = 12.f;
 
-player_controller::player_controller() { }
+player_controller::player_controller() {
+    bullet_timer = 0.f;
+}
 void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
 
     if (joystick->left_stick_length > 0.15f) {
         float force_factor = PLAYER_SPEED * joystick->left_stick_length;
         owner->apply_force(joystick->left_stick * force_factor);
-        //owner->rotation = atan2f(joystick->left_stick.y, joystick->left_stick.x);
     }
 
-    bullet_timer = glm::clamp(bullet_timer - dt, 0.f, bullet_timer);
-    if (bullet_timer <= 0.f) {
+    bullet_timer += dt;
+    if (bullet_timer >= BULLET_FIRE_RATE) {
         //Fire a normal bullet
         if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::X)) {
-            bullet_timer = BULLET_FIRE_RATE;
+            bullet_timer = 0.f;
 
-            //TODO: Investigate CLion (presumably) bug where I cannot seem to shoot (or use face buttons?)
             //Only happens while RUNNING the application, starting it from outside the IDE or with the Debug button works FINE?!
             glm::vec2 bullet_velocity = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * BULLET_SPEED;
             shoot(owner->position, bullet_velocity + owner->velocity);
