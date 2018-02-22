@@ -5,7 +5,15 @@
 #include "collision_handler.h"
 #include "engine/math_utils.h"
 
-bool check_collision(const game_entity &a, const game_entity &b, glm::vec2 &collision_point) {
+bool collides_with(const game_entity &a, const game_entity &b, glm::vec2 &collision_point) {
+    //Check collision categories
+    if ((a.collides_with & b.collision_cat) == 0)
+        return false;
+
+    //Ensure neither are going to be destroyed
+    if (a.do_destroy || b.do_destroy)
+        return false;
+
     float dist_sqr = minalear::distance_square(a.position, b.position);
     float min_dist = (a.bounding_radius + b.bounding_radius) * (a.bounding_radius + b.bounding_radius);
 
@@ -25,4 +33,23 @@ bool check_collision(const game_entity &a, const game_entity &b, glm::vec2 &coll
     }
 
     return false;
+}
+void resolve_collision(game_entity &a, game_entity &b, glm::vec2 &collision_point) {
+    /*float dist = minalear::distance(a.position, b.position);
+    float overlap = a.bounding_radius - (dist - b.bounding_radius);
+    if (overlap < 0.f) overlap *= -1.f;
+    overlap += 0.5f;*/
+
+    //Push intersecting objects apart
+    if (minalear::distance_square(a.position, b.position) > 0.f) {
+        glm::vec2 vector = glm::normalize(a.position - b.position);
+
+        //Nudge each object slightly
+        a.position +=  vector * 0.05f;
+        b.position += -vector * 0.05f;
+
+        //Accelerate them away from one another
+        a.apply_force(vector);
+        b.apply_force(-vector);
+    }
 }

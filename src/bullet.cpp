@@ -5,6 +5,8 @@
 #include "bullet.h"
 #include "glm.hpp"
 
+const float MAX_BULLET_LIFETIME = 10.f;
+
 void generate_bullet_shape(bullet *bullet) {
     int vertex_count = 4;
     float *buffer_data = new float[vertex_count * 5];
@@ -34,23 +36,23 @@ void generate_bullet_shape(bullet *bullet) {
     bullet->bounding_radius = bullet_scale;
 }
 
-bullet::bullet(int owner_id, glm::vec2 pos, glm::vec2 vel) {
+bullet::bullet(glm::vec2 pos, glm::vec2 vel) {
     generate_bullet_shape(this);
-    this->owner_id = owner_id;
     this->position = pos;
     this->velocity = vel;
     this->friction_coefficient = 1.f; //No friction
+
+    this->lifetime = 0.f;
 };
 void bullet::update(float dt) {
     game_entity::update(dt);
-}
-void bullet::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Asteroid || other.entity_type == ENTITY_TYPES::Sinistar) {
+
+    //Destroy bullets if they exceed the max lifetime
+    this->lifetime += dt;
+    if (this->lifetime >= MAX_BULLET_LIFETIME) {
         do_destroy = true;
     }
-    else if (other.entity_type == ENTITY_TYPES::Player || other.entity_type == ENTITY_TYPES::Worker) {
-        if (other.unique_id != owner_id) {
-            do_destroy = true;
-        }
-    }
+}
+void bullet::handle_collision(const game_entity &other, glm::vec2 point) {
+    do_destroy = true;
 }

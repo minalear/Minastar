@@ -7,7 +7,7 @@
 
 #include "game_entity.h"
 
-bool check_collision(const game_entity &a, const game_entity &b, glm::vec2 &collision_point);
-//void handle_collision(const game_entity &a, const game_entity &b);
+bool collides_with(const game_entity &a, const game_entity &b, glm::vec2 &collision_point);
+void resolve_collision(game_entity &a, game_entity &b, glm::vec2 &collision_point);
 
 #endif //SINISTAR_COLLISION_HANDLER_H

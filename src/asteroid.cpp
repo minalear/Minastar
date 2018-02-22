@@ -47,8 +47,15 @@ void generate_asteroid_shape(asteroid *asteroid, float size) {
     asteroid->vertex_count = vertex_count;
     asteroid->buffer_data = buffer_data;
     asteroid->bounding_radius = asteroid_scale;
-    asteroid->friction_coefficient = 1.f;
+    asteroid->friction_coefficient = 0.999f;
     asteroid->health = (int)asteroid_scale;
+
+    asteroid->set_collision_category(COLLISION_CATEGORIES::Asteroid);
+    asteroid->add_collision_type(COLLISION_CATEGORIES::Player);
+    asteroid->add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+    asteroid->add_collision_type(COLLISION_CATEGORIES::Enemy);
+    asteroid->add_collision_type(COLLISION_CATEGORIES::Enemy_Bullet);
+    asteroid->add_collision_type(COLLISION_CATEGORIES::Asteroid); //Asteroids will push other asteroids
 }
 
 asteroid::asteroid() {
@@ -101,7 +108,13 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
         if (minalear::rand_float(0.f, 100.f) < 10.f) {
             glm::vec2 mineral_vel = -other.velocity;
             mineral_vel = glm::normalize(mineral_vel) * 10.f;
-            game_world->add_entity(new mineral(point, mineral_vel));
+
+            mineral *entity_mineral = new mineral(point, mineral_vel);
+            entity_mineral->set_collision_category(COLLISION_CATEGORIES::Mineral);
+            entity_mineral->add_collision_type(COLLISION_CATEGORIES::Player);
+            entity_mineral->add_collision_type(COLLISION_CATEGORIES::Enemy);
+
+            game_world->add_entity(entity_mineral);
         }
     }
 }

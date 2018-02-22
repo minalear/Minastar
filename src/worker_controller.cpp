@@ -8,6 +8,7 @@
 #include "bullet.h"
 
 const float BULLET_FIRE_RATE = 0.26f;
+const float BULLET_SPEED = 128.f;
 const float WORKER_MOVE_SPEED = 12.f;
 
 worker_controller::worker_controller() { }
@@ -44,19 +45,22 @@ void worker_controller::update(float dt) {
         if (dist > closest_target->bounding_radius + 40.f) {
             seek(owner, closest_target->position);
         }
-        else {
+        else if (dist != 0.f) {
             //Ensure we're slowing down
             owner->velocity = owner->velocity * 0.8f;
 
             //Face the asteroid (in case it is moving)
-            glm::vec2 to_asteroid = glm::normalize((closest_target->position + closest_target->velocity) - owner->position);
+
+            //TODO: Improve targeting (they don't deal with faster moving objects well)
+            glm::vec2 target_real_vel = closest_target->velocity * dt;
+            glm::vec2 to_asteroid = glm::normalize((closest_target->position + target_real_vel) - owner->position);
             owner->rotation = atan2f(to_asteroid.y, to_asteroid.x);
 
             //SHOOT HER
             if (bullet_timer <= 0.f) {
                 bullet_timer = BULLET_FIRE_RATE;
-                glm::vec2 bullet_velocity = (to_asteroid * 90.f) + owner->velocity;
-                owner->game_world->add_entity(new bullet(owner->unique_id, owner->position, bullet_velocity));
+                glm::vec2 bullet_velocity = (to_asteroid * BULLET_SPEED) + owner->velocity;
+                shoot(owner->position, bullet_velocity);
             }
         }
 

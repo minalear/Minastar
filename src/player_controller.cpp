@@ -29,13 +29,12 @@ void player_controller::update(float dt) {
         if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::X)) {
             bullet_timer = BULLET_FIRE_RATE;
 
-            glm::vec2 bullet_velocity = glm::vec2(1.f);
-            bullet_velocity.x = cosf(owner->rotation);
-            bullet_velocity.y = sinf(owner->rotation);
-
-            owner->game_world->add_entity(new bullet(owner->unique_id, owner->position, (bullet_velocity * BULLET_SPEED) + owner->velocity));
+            //TODO: Investigate CLion (presumably) bug where I cannot seem to shoot (or use face buttons?)
+            //Only happens while RUNNING the application, starting it from outside the IDE or with the Debug button works FINE?!
+            glm::vec2 bullet_velocity = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * BULLET_SPEED;
+            shoot(owner->position, bullet_velocity + owner->velocity);
         }
-            //Fire a SINIBOMB
+        //Fire a SINIBOMB
         else if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y) && owner->mineral_count > 0) {
             bullet_timer = BULLET_FIRE_RATE;
             owner->game_world->add_entity(new sinibomb(owner->position));

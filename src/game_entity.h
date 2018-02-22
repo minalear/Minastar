@@ -18,6 +18,25 @@ enum struct ENTITY_TYPES {
     Sinibomb,
     Mineral
 };
+enum struct COLLISION_CATEGORIES {
+    Player   = 1,
+    Enemy    = 2,
+    Asteroid = 4,
+    Mineral  = 8,
+    Ally_Bullet = 16,
+    Enemy_Bullet = 32,
+    All      = 255,
+};
+
+inline uint32_t operator | (COLLISION_CATEGORIES a, COLLISION_CATEGORIES b) {
+    return (static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+}
+inline uint32_t operator ^ (COLLISION_CATEGORIES a, COLLISION_CATEGORIES b) {
+    return (static_cast<uint32_t>(a) ^ static_cast<uint32_t>(b));
+}
+inline uint32_t operator & (COLLISION_CATEGORIES a, COLLISION_CATEGORIES b) {
+    return (static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+}
 
 class game_entity {
 private:
@@ -27,6 +46,8 @@ public:
     int unique_id;
     ENTITY_TYPES entity_type;
     class world *game_world;
+
+    uint32_t collision_cat, collides_with;
 
     glm::vec2 position;
     glm::vec2 velocity;
@@ -47,6 +68,9 @@ public:
     virtual void update(float dt);
     virtual void apply_force(glm::vec2 force);
     virtual void handle_collision(const game_entity &other, glm::vec2 point);
+
+    void set_collision_category(COLLISION_CATEGORIES category);
+    void add_collision_type(COLLISION_CATEGORIES category);
 };
 
 

@@ -41,11 +41,13 @@ void world::update(float dt) {
         //TODO: Optimize this by investigating binary partitions
         for (int k = 0; k < entities.size(); k++) {
             glm::vec2 collision_point = glm::vec2(0.f);
-            if (i != k && check_collision(*entities[i], *entities[k], collision_point)) {
-                if (!entities[i]->do_destroy && !entities[k]->do_destroy) {
-                    entities[i]->handle_collision(*entities[k], collision_point);
-                    entities[k]->handle_collision(*entities[i], collision_point);
-                }
+            if (i != k && collides_with(*entities[i], *entities[k], collision_point)) {
+                resolve_collision(*entities[i], *entities[k], collision_point);
+
+                //TODO: Should both entities handle collision here?
+                entities[i]->handle_collision(*entities[k], collision_point);
+                entities[k]->handle_collision(*entities[i], collision_point);
+
                 mark_for_update = true;
             }
         }
@@ -77,11 +79,15 @@ void world::draw(minalear::shader_program *shader) {
 void world::add_entity(game_entity *entity) {
     entity->game_world = this;
     entities.push_back(entity);
+
+    mark_for_update = true;
 }
 void world::add_entities(game_entity *entities, int count) {
     for (int i = 0; i < count; i++) {
         add_entity(&entities[i]);
     }
+
+    mark_for_update = true;
 }
 
 void world::generate_game_world() {
@@ -89,7 +95,7 @@ void world::generate_game_world() {
     const int GAME_WORLD_MAX = 5000;
 
     const int NUM_ASTEROIDS = 500;
-    const int NUM_WORKERS = 0;
+    const int NUM_WORKERS = 20;
 
     //Create asteroids
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
@@ -101,11 +107,21 @@ void world::generate_game_world() {
 
     //Create workers
     for (int i = 0; i < NUM_WORKERS; i++) {
+        //Randomly determine position
         float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
         float y = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
 
         ship *worker = new ship(new worker_controller, ENTITY_TYPES::Worker);
         worker->position = glm::vec2(x, y);
+
+        //Set collision categories
+        worker->set_collision_category(COLLISION_CATEGORIES::Enemy);
+        worker->add_collision_type(COLLISION_CATEGORIES::Player);
+        worker->add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+        worker->add_collision_type(COLLISION_CATEGORIES::Enemy);
+        worker->add_collision_type(COLLISION_CATEGORIES::Asteroid);
+        worker->add_collision_type(COLLISION_CATEGORIES::Mineral);
+
         add_entity(worker);
     }
 }

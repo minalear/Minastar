@@ -8,6 +8,10 @@ int game_entity::next_valid_entity_id = 0;
 
 game_entity::game_entity() {
     unique_id = next_valid_entity_id++;
+
+    collision_cat = 0x0;
+    collides_with = 0x0;
+
     rotation = 0.f;
     bounding_radius = 0.f;
     vertex_count = 0;
@@ -31,3 +35,10 @@ void game_entity::apply_force(glm::vec2 force) {
     this->force_accumulator += force;
 }
 void game_entity::handle_collision(const game_entity &other, glm::vec2 point) { }
+
+void game_entity::set_collision_category(COLLISION_CATEGORIES category) {
+    collision_cat = (COLLISION_CATEGORIES::All & category);
+}
+void game_entity::add_collision_type(COLLISION_CATEGORIES category) {
+    collides_with |= (COLLISION_CATEGORIES::All & category);
+}

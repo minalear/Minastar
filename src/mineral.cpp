@@ -43,7 +43,5 @@ void mineral::update(float dt) {
     game_entity::update(dt);
 }
 void mineral::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Player) {
-        do_destroy = true;
-    }
+    do_destroy = true;
 }

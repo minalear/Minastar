@@ -27,7 +27,6 @@ void generate_player_ship(ship *ship) {
     buffer_data[15] = -1.5f * ship_scale;
     buffer_data[16] = -1.0f * ship_scale;
 
-    ship->entity_type = ENTITY_TYPES::Player;
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = ship_scale;
@@ -93,7 +92,6 @@ void generate_worker_ship(ship *ship) {
     buffer_data[70] = -1.0f * ship_scale;
     buffer_data[71] =  1.0f * ship_scale;
 
-    ship->entity_type = ENTITY_TYPES::Player;
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = 2.5f * ship_scale;
@@ -104,6 +102,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     mineral_count = 0;
     this->controller = controller;
     this->controller->owner = this;
+    this->entity_type = ship_type;
 
     if (ship_type == ENTITY_TYPES::Player) {
         generate_player_ship(this);
