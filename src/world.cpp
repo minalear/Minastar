@@ -95,7 +95,7 @@ void world::generate_game_world() {
     const int GAME_WORLD_MAX = 5000;
 
     const int NUM_ASTEROIDS = 500;
-    const int NUM_WORKERS = 20;
+    const int NUM_WORKERS = 0;
 
     //Create asteroids
     for (int i = 0; i < NUM_ASTEROIDS; i++) {

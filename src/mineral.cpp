@@ -38,6 +38,10 @@ mineral::mineral(glm::vec2 pos, glm::vec2 vel){
     this->position = pos;
     this->velocity = vel;
     this->friction_coefficient = 1.f; //No friction
+
+    this->set_collision_category(COLLISION_CATEGORIES::Mineral);
+    this->add_collision_type(COLLISION_CATEGORIES::Player);
+    this->add_collision_type(COLLISION_CATEGORIES::Enemy);
 }
 void mineral::update(float dt) {
     game_entity::update(dt);

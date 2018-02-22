@@ -8,7 +8,7 @@
 #include "mineral.h"
 
 const float ASTEROID_RADIUS_MIN = 12.f;
-const float ASTEROID_RADIUS_MAX = 48.f;
+const float ASTEROID_RADIUS_MAX = 52.f;
 const float ASTEROID_VARIATION_MIN = 0.87f;
 const float ASTEROID_VARIATION_MAX = 1.21f;
 
@@ -82,38 +82,40 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
         //Update asteroid health
         health -= 4;
 
-        //If the asteroid is destroy, spawn two smaller ones, or destroy it completely (if too small)
+        //TODO: Balance mineral spawn amounts
+        //Asteroids will spawn various sized chunks
         if (health <= 0) {
             do_destroy = true;
             if (bounding_radius > 10.f) {
-                float asteroid_scale = bounding_radius / 2.f;
-                auto left_pos  = glm::vec2(minalear::rand_float(position.x - asteroid_scale, position.x + asteroid_scale),
-                                           minalear::rand_float(position.y - asteroid_scale, position.y + asteroid_scale));
-                auto right_pos = glm::vec2(minalear::rand_float(position.x - asteroid_scale, position.x + asteroid_scale),
-                                           minalear::rand_float(position.y - asteroid_scale, position.y + asteroid_scale));
+                float total_mass = bounding_radius * 2.f;
+                while (total_mass >= 0.f) {
+                    float chunk_mass = minalear::rand_float(5.f, total_mass / 1.5f);
+                    total_mass -= chunk_mass;
 
-                asteroid *left_asteroid  = new asteroid(asteroid_scale, left_pos);
-                asteroid *right_asteroid = new asteroid(asteroid_scale, right_pos);
+                    float chunk_radius = chunk_mass / 2.f;
+                    auto chunk_position = glm::vec2(minalear::rand_float(position.x - chunk_radius, position.x + chunk_mass),
+                                                    minalear::rand_float(position.y - chunk_radius, position.y + chunk_radius));
+                    auto to_asteroid_center = glm::normalize(chunk_position - position);
 
-                float vel_factor = minalear::rand_float(1.f, 1.2f);
-                left_asteroid->velocity = (left_pos - right_pos) * vel_factor;
-                right_asteroid->velocity = (right_pos - left_pos) * vel_factor;
-
-                game_world->add_entity(left_asteroid);
-                game_world->add_entity(right_asteroid);
+                    //Spawn minerals for small chunks, and spawn asteroids for larger ones
+                    if (chunk_mass < 10.f) {
+                        mineral *entity_mineral = new mineral(chunk_position, to_asteroid_center * 12.f);
+                        game_world->add_entity(entity_mineral);
+                    }
+                    else {
+                        asteroid *entity_asteroid = new asteroid(chunk_radius, chunk_position);
+                        game_world->add_entity(entity_asteroid);
+                    }
+                }
             }
         }
 
-        //one-in-ten chance of spawning
-        if (minalear::rand_float(0.f, 100.f) < 10.f) {
+        //Rare chance of spawning a mineral on shot
+        if (minalear::rand_float(0.f, 100.f) < 4.f) {
             glm::vec2 mineral_vel = -other.velocity;
             mineral_vel = glm::normalize(mineral_vel) * 10.f;
 
             mineral *entity_mineral = new mineral(point, mineral_vel);
-            entity_mineral->set_collision_category(COLLISION_CATEGORIES::Mineral);
-            entity_mineral->add_collision_type(COLLISION_CATEGORIES::Player);
-            entity_mineral->add_collision_type(COLLISION_CATEGORIES::Enemy);
-
             game_world->add_entity(entity_mineral);
         }
     }
