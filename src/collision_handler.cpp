@@ -7,7 +7,7 @@
 
 bool check_collision(const game_entity &a, const game_entity &b, glm::vec2 &collision_point) {
     float dist_sqr = minalear::distance_square(a.position, b.position);
-    float min_dist = powf(a.bounding_radius + b.bounding_radius, 2.f);
+    float min_dist = (a.bounding_radius + b.bounding_radius) * (a.bounding_radius + b.bounding_radius);
 
     if (dist_sqr <= min_dist) { //Valid collision
         //Calculate the point of collision

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.9)
 project(sinistar)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-O2")
+#set(CMAKE_CXX_FLAGS "-O2")
+#set(CMAKE_CXX_FLAGS "-pg -gdwarf-3")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 file(GLOB SOURCE_FILES
@@ -20,7 +21,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_executable(sinistar ${SOURCE_FILES} C:/Libraries/OpenGL/GLAD/src/glad.c)
-target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB})
+target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB} ${BROFILER_LIB})
 
 add_custom_command(
         TARGET sinistar POST_BUILD

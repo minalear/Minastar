@@ -112,13 +112,12 @@ int main(int argc, char *argv[]) {
         }
 
         //Draw the game world
-        minalear::controller_state *c_state = minalear::get_controller_ptr();
-
         game_shader.use();
-        glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + minalear::get_window_width() / 2.f,
-                                      -player_ship.position.y + minalear::get_window_height() / 2.f);
-        view = glm::translate(glm::mat4(1.f), glm::vec3(cam_pos, 0.f)) *
-               glm::scale(glm::mat4(1.f), glm::vec3(0.25f));
+        float camera_zoom = 0.1f;
+        glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + (minalear::get_window_width() / 2.f) / camera_zoom,
+                                      -player_ship.position.y + (minalear::get_window_height() / 2.f) / camera_zoom);
+        view = glm::scale(glm::mat4(1.f), glm::vec3(camera_zoom)) *
+               glm::translate(glm::mat4(1.f), glm::vec3(cam_pos, 0.f));
         game_shader.set_view_mat4(view);
         game_world.draw(&game_shader);
 

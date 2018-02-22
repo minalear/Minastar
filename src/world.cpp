@@ -16,6 +16,9 @@ bool mark_for_update = false;
 
 world::world() { }
 world::~world() {
+    for (int i = 0; i < entities.size(); i++) {
+        delete entities[i];
+    }
     entities.clear();
 }
 
@@ -26,6 +29,7 @@ void world::update(float dt) {
 
         if (entities[i]->do_destroy) {
             //TODO: Refactor to ensure cleanup (smart pointers?)
+            //delete entities[i];
             entities.erase(entities.begin() + i);
             mark_for_update = true;
 
@@ -82,10 +86,10 @@ void world::add_entities(game_entity *entities, int count) {
 
 void world::generate_game_world() {
     const int GAME_WORLD_MIN = 0;
-    const int GAME_WORLD_MAX = 8000;
+    const int GAME_WORLD_MAX = 5000;
 
-    const int NUM_ASTEROIDS = 800;
-    const int NUM_WORKERS = 75;
+    const int NUM_ASTEROIDS = 500;
+    const int NUM_WORKERS = 0;
 
     //Create asteroids
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
