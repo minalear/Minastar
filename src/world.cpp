@@ -92,9 +92,9 @@ void world::add_entities(game_entity *entities, int count) {
 
 void world::generate_game_world() {
     const int GAME_WORLD_MIN = 0;
-    const int GAME_WORLD_MAX = 10000;
+    const int GAME_WORLD_MAX = 5000;
 
-    const int NUM_ASTEROIDS = 500;
+    const int NUM_ASTEROIDS = 250;
     const int NUM_WORKERS = 5;
 
     //Create asteroids
@@ -169,6 +169,9 @@ void world::update_buffer_data() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     delete[] bufferData;
+}
+void world::mark_world_for_update() {
+    mark_for_update = true;
 }
 
 game_entity* world::find_entity(ENTITY_TYPES type) {

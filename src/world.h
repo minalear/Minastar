@@ -29,6 +29,7 @@ public:
     void generate_game_world();
     void generate_buffer_data();
     void update_buffer_data();
+    void mark_world_for_update();
 
     game_entity* find_entity(ENTITY_TYPES type);
     game_entity* find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist);

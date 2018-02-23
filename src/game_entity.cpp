@@ -3,6 +3,7 @@
 //
 
 #include "game_entity.h"
+#include "world.h"
 
 int game_entity::next_valid_entity_id = 0;
 
@@ -35,6 +36,15 @@ void game_entity::apply_force(glm::vec2 force) {
     this->force_accumulator += force;
 }
 void game_entity::handle_collision(const game_entity &other, glm::vec2 point) { }
+void game_entity::paint_color(glm::vec3 color) {
+    for (int i = 0; i < vertex_count; i++) {
+        buffer_data[i * 5 + 2] = color.r;
+        buffer_data[i * 5 + 3] = color.g;
+        buffer_data[i * 5 + 4] = color.b;
+    }
+
+    game_world->mark_world_for_update();
+}
 
 void game_entity::set_collision_category(COLLISION_CATEGORIES category) {
     collision_cat = (COLLISION_CATEGORIES::All & category);

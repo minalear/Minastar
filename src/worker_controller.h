@@ -7,10 +7,19 @@
 
 #include "ship_controller.h"
 
-class worker_controller: public ship_controller {
-public:
-    float bullet_timer;
+enum struct WORKER_STATES {
+    Mining,
+    Deliver,
+    Return
+};
 
+class worker_controller: public ship_controller {
+private:
+    float bullet_timer;
+    WORKER_STATES current_state;
+    glm::vec2 saved_pos;
+
+public:
     worker_controller();
     void update(float dt) override;
 };

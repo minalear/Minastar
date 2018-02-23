@@ -69,6 +69,7 @@ public:
     virtual void apply_force(glm::vec2 force);
     virtual void handle_collision(const game_entity &other, glm::vec2 point);
 
+    void paint_color(glm::vec3 color);
     void set_collision_category(COLLISION_CATEGORIES category);
     void add_collision_type(COLLISION_CATEGORIES category);
 };

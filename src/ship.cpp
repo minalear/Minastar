@@ -122,11 +122,5 @@ void ship::update(float dt) {
 void ship::handle_collision(const game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Mineral) {
         mineral_count++;
-
-        //Increment global mineral count
-        //TODO: Consider having workers deliver the minerals to Sinistar
-        if (this->entity_type == ENTITY_TYPES::Worker) {
-            campaign.worker_mineral_count++;
-        }
     }
 }
