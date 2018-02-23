@@ -36,7 +36,7 @@ void player_controller::update(float dt) {
         }
         //Fire a SINIBOMB
         else if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y) && owner->mineral_count > 0) {
-            bullet_timer = BULLET_FIRE_RATE;
+            bullet_timer = 0.f;
             owner->game_world->add_entity(new sinibomb(owner->position));
             owner->mineral_count--;
         }

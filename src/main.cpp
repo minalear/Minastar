@@ -15,6 +15,7 @@
 #include "world.h"
 #include "ship.h"
 #include "player_controller.h"
+#include "campaign.h"
 
 int main(int argc, char *argv[]) {
     //Either handle collision so they don't clump on top (preferred) or don't have allied bullets collide with allies
@@ -40,6 +41,7 @@ int main(int argc, char *argv[]) {
 
     //Setup game world
     world game_world;
+    campaign.init(&game_world);
 
     ship player_ship(new player_controller, ENTITY_TYPES::Player);
     player_ship.set_collision_category(COLLISION_CATEGORIES::Player);
@@ -47,7 +49,7 @@ int main(int argc, char *argv[]) {
     player_ship.add_collision_type(COLLISION_CATEGORIES::Enemy_Bullet);
     player_ship.add_collision_type(COLLISION_CATEGORIES::Asteroid);
     player_ship.add_collision_type(COLLISION_CATEGORIES::Mineral);
-    player_ship.position = glm::vec2(2500.f, 2500.f);
+    player_ship.position = glm::vec2(5000.f, 5000.f);
 
     game_world.add_entity(&player_ship);
 
@@ -112,13 +114,14 @@ int main(int argc, char *argv[]) {
         if (time_accumulator >= CONST_DT) {
             //player_controller.update(CONST_DT);
             game_world.update(CONST_DT);
+            campaign.update();
 
             time_accumulator = 0.f;
         }
 
         //Draw the game world
         game_shader.use();
-        float camera_zoom = 0.85f;
+        float camera_zoom = 1.f;
         glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + (minalear::get_window_width() / 2.f) / camera_zoom,
                                       -player_ship.position.y + (minalear::get_window_height() / 2.f) / camera_zoom);
         view = glm::scale(glm::mat4(1.f), glm::vec3(camera_zoom)) *
@@ -129,6 +132,7 @@ int main(int argc, char *argv[]) {
         text_shader.use();
         text_renderer.draw_string(&text_shader,
                                   "minerals " + std::to_string(player_ship.mineral_count),
+                                  //"debug " + std::to_string(campaign.worker_mineral_count),
                                   glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();

@@ -9,8 +9,11 @@
 
 class sinistar: public game_entity {
 public:
-    sinistar();
+    int health;
+
+    sinistar(glm::vec2 pos);
     void update(float dt) override;
+    void handle_collision(const game_entity &other, glm::vec2 point) override;
 };
 
 

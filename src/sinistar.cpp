@@ -3,7 +3,7 @@
 //
 
 #include "sinistar.h"
-#include "glm.hpp"
+#include "world.h"
 
 void generate_sinistar_shape(sinistar *sinistar) {
     int vertex_count = 68;
@@ -226,17 +226,45 @@ void generate_sinistar_shape(sinistar *sinistar) {
     buffer_data[336] = -3.50f * sinistar_scale;
     //endregion /* Sinistar Point Data */
 
-    sinistar->entity_type = ENTITY_TYPES::Sinistar;
     sinistar->vertex_count = vertex_count;
     sinistar->buffer_data = buffer_data;
     sinistar->bounding_radius = sinistar_scale * 8.1394f;
-    sinistar->position = glm::vec2(400.f, 225.f);
 }
 
-sinistar::sinistar() {
+sinistar::sinistar(glm::vec2 pos) {
     generate_sinistar_shape(this);
+
+    this->health = 20;
+    this->entity_type = ENTITY_TYPES::Sinistar;
+    this->position = pos;
+    this->friction_coefficient = 0.9f;
+
+    this->set_collision_category(COLLISION_CATEGORIES::Enemy);
+    this->add_collision_type(COLLISION_CATEGORIES::Player);
+    this->add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+    this->add_collision_type(COLLISION_CATEGORIES::Asteroid);
 }
 
 void sinistar::update(float dt) {
+    //TODO: Consider writing a controller for Sinistar?
+    float dist_to_player = -1.f;
+    game_entity *player = game_world->find_entity(ENTITY_TYPES::Player, this->position, dist_to_player);
+
+    if (player) {
+        glm::vec2 to_player = glm::normalize(player->position - this->position);
+        //this->velocity = to_player * 100.f;
+        this->apply_force(to_player * 35.f);
+    }
+
     game_entity::update(dt);
+}
+
+void sinistar::handle_collision(const game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Sinibomb) {
+        health--;
+
+        if (health <= 0) {
+            do_destroy = true;
+        }
+    }
 }
