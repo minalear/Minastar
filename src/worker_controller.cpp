@@ -71,7 +71,7 @@ void worker_controller::update(float dt) {
         }
 
         //Determine if we should deliver our current payload
-        if (owner->mineral_count >= 40) {
+        if (owner->mineral_count >= 20) {
             owner->paint_color(glm::vec3(0.f, 1.f, 0.2f));
             current_state = WORKER_STATES::Deliver;
             saved_pos = owner->position;
@@ -79,7 +79,10 @@ void worker_controller::update(float dt) {
     }
     else if (current_state == WORKER_STATES::Deliver) {
         //Seek out Sinistar and deliver minerals to him
-        float dist_to_goal = minalear::distance_square(owner->position, glm::vec2(0.f));
+        game_entity* sinistar = owner->game_world->find_entity(ENTITY_TYPES::Sinistar);
+        if (!sinistar) return; //Exit if we cannot find Sinistar
+
+        float dist_to_goal = minalear::distance_square(owner->position, sinistar->position);
         if (dist_to_goal <= 40.f * 40.f) {
             campaign.worker_mineral_count += owner->mineral_count;
             owner->mineral_count = 0;
@@ -87,7 +90,7 @@ void worker_controller::update(float dt) {
             current_state = WORKER_STATES::Return;
         }
         else {
-            seek(owner, glm::vec2(0.f));
+            seek(owner, sinistar->position);
         }
     }
     else if (current_state == WORKER_STATES::Return) {

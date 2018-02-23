@@ -97,6 +97,8 @@ void world::generate_game_world() {
     const int NUM_ASTEROIDS = 250;
     const int NUM_WORKERS = 5;
 
+    add_entity(new sinistar(glm::vec2(0.f)));
+
     //Create asteroids
     for (int i = 0; i < NUM_ASTEROIDS; i++) {
         float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);

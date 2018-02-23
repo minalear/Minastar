@@ -4,6 +4,7 @@
 
 #include "sinistar.h"
 #include "world.h"
+#include "campaign.h"
 
 void generate_sinistar_shape(sinistar *sinistar) {
     int vertex_count = 68;
@@ -247,13 +248,15 @@ sinistar::sinistar(glm::vec2 pos) {
 
 void sinistar::update(float dt) {
     //TODO: Consider writing a controller for Sinistar?
-    float dist_to_player = -1.f;
-    game_entity *player = game_world->find_entity(ENTITY_TYPES::Player, this->position, dist_to_player);
+    if (campaign.sinistar_released) {
+        float dist_to_player = -1.f;
+        game_entity *player = game_world->find_entity(ENTITY_TYPES::Player, this->position, dist_to_player);
 
-    if (player) {
-        glm::vec2 to_player = glm::normalize(player->position - this->position);
-        //this->velocity = to_player * 100.f;
-        this->apply_force(to_player * 12.f);
+        if (player) {
+            glm::vec2 to_player = glm::normalize(player->position - this->position);
+            //this->velocity = to_player * 100.f;
+            this->apply_force(to_player * 12.f);
+        }
     }
 
     game_entity::update(dt);

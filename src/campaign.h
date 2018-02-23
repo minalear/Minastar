@@ -9,9 +9,9 @@
 
 class game_campaign {
     world *game_world;
-    bool sinistar_released;
 
 public:
+    bool sinistar_released;
     int worker_mineral_count;
 
     game_campaign();
