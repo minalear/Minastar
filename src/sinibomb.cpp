@@ -43,6 +43,7 @@ sinibomb::sinibomb(glm::vec2 pos){
 
     this->set_collision_category(COLLISION_CATEGORIES::Ally_Bullet);
     this->add_collision_type(COLLISION_CATEGORIES::Enemy);
+    this->add_collision_type(COLLISION_CATEGORIES::Asteroid);
 }
 void sinibomb::update(float dt) {
     //Get pointer to Sinistar if we don't have one
@@ -61,7 +62,7 @@ void sinibomb::update(float dt) {
     game_entity::update(dt);
 }
 void sinibomb::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Sinistar) {
+    if (other.entity_type == ENTITY_TYPES::Sinistar || other.entity_type == ENTITY_TYPES::Asteroid) {
         do_destroy = true;
     }
 }

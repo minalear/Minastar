@@ -129,11 +129,11 @@ int main(int argc, char *argv[]) {
         game_shader.set_view_mat4(view);
         game_world.draw(&game_shader);
 
+        std::string ui_text = "minerals " + std::to_string(player_ship.mineral_count) + "\n" +
+                              "debug " + std::to_string(campaign.worker_mineral_count);
+
         text_shader.use();
-        text_renderer.draw_string(&text_shader,
-                                  "minerals " + std::to_string(player_ship.mineral_count),
-                                  //"debug " + std::to_string(campaign.worker_mineral_count),
-                                  glm::vec2(10.f), glm::vec2(0.4f));
+        text_renderer.draw_string(&text_shader, ui_text, glm::vec2(10.f), glm::vec2(0.4f));
 
         minalear::swap_buffers();
 

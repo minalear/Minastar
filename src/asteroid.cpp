@@ -78,9 +78,9 @@ void asteroid::update(float dt) {
     game_entity::update(dt);
 }
 void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Bullet) {
-        //Update asteroid health
-        health -= 4;
+    if (other.entity_type == ENTITY_TYPES::Bullet || other.entity_type == ENTITY_TYPES::Sinibomb) {
+        //Update asteroid health (sinibombs will one shot asteroids)
+        health -= (other.entity_type == ENTITY_TYPES::Bullet) ? 4 : health;
 
         //TODO: Balance mineral spawn amounts
         //Asteroids will spawn various sized chunks
