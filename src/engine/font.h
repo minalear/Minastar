@@ -10,7 +10,7 @@
 
 namespace minalear {
     struct font_char {
-        char ch;
+        unsigned char ch;
         uint32_t id;
         uint16_t x, y;
         uint16_t width, height;

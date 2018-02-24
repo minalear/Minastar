@@ -20,9 +20,12 @@ namespace minalear {
         R1 = 5,
         R3 = 9,
 
-        START = 7,
-        SELECT = 6,
-        GUIDE = 10
+        Start = 7,
+        Select = 6,
+        Guide = 10,
+
+        Left_Trigger,
+        Right_Trigger
 
         //TODO: Button 11 is unidentified (for ps4 controller)
         //TODO: Determine best way to test for L2/R2 (trigger) button presses
@@ -31,6 +34,7 @@ namespace minalear {
     struct controller_state {
         glm::vec2 left_stick, right_stick;
         float left_stick_length, right_stick_length;
+        float left_trigger, right_trigger;
     };
 
     void init_input();

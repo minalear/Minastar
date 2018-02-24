@@ -27,7 +27,7 @@ font::font(const char *image_filename, const char *data_filename) {
     //1 - info (header), 2 - common, 3 - pages, 4 - chars, 5 - kerning pairs
 
     //TODO: Remove the hardcoded value
-    const int NUM_CHARS = 67;
+    const int NUM_CHARS = 91;
     int char_index = 0;
     chars = new font_char[NUM_CHARS];
     num_chars = NUM_CHARS;
@@ -82,7 +82,7 @@ font::font(const char *image_filename, const char *data_filename) {
                         binary_data[index_ptr + 2] << 16 |
                         binary_data[index_ptr + 1] << 8 |
                         binary_data[index_ptr + 0];
-                chars[char_index].ch        = (char)chars[char_index].id;
+                chars[char_index].ch        = (unsigned char)chars[char_index].id;
                 chars[char_index].x         = binary_data[index_ptr +  5] << 8 | binary_data[index_ptr +  4];
                 chars[char_index].y         = binary_data[index_ptr +  7] << 8 | binary_data[index_ptr +  6];
                 chars[char_index].width     = binary_data[index_ptr +  9] << 8 | binary_data[index_ptr +  8];
