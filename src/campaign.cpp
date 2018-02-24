@@ -3,7 +3,6 @@
 //
 
 #include "campaign.h"
-#include "sinistar.h"
 
 game_campaign campaign;
 game_campaign::game_campaign() {
@@ -13,6 +12,8 @@ game_campaign::game_campaign() {
 
 void game_campaign::init(world *game_world) {
     this->game_world = game_world;
+    sinistar_entity = (sinistar*)this->game_world->find_entity(ENTITY_TYPES::Sinistar);
+    player_entity = (ship*)this->game_world->find_entity(ENTITY_TYPES::Player);
 }
 void game_campaign::update() {
     //I HUNGER

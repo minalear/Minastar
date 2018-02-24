@@ -236,6 +236,7 @@ sinistar::sinistar(glm::vec2 pos) {
     generate_sinistar_shape(this);
 
     this->health = 200;
+    this->max_health = 200;
     this->entity_type = ENTITY_TYPES::Sinistar;
     this->position = pos;
     this->friction_coefficient = 0.9f;
@@ -254,7 +255,6 @@ void sinistar::update(float dt) {
 
         if (player) {
             glm::vec2 to_player = glm::normalize(player->position - this->position);
-            //this->velocity = to_player * 100.f;
             this->apply_force(to_player * 12.f);
         }
     }

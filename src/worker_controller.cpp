@@ -38,6 +38,7 @@ void worker_controller::update(float dt) {
         game_entity *closest_target = nullptr;
 
         //Get closest mineral (if within acceptable distance)
+        //TODO: Investigate why sometimes workers won't seek out nearby minerals
         closest_target = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
         if (closest_target && dist < 125.f) {
             seek(owner, closest_target->position);
@@ -79,10 +80,9 @@ void worker_controller::update(float dt) {
     }
     else if (current_state == WORKER_STATES::Deliver) {
         //Seek out Sinistar and deliver minerals to him
-        game_entity* sinistar = owner->game_world->find_entity(ENTITY_TYPES::Sinistar);
-        if (!sinistar) return; //Exit if we cannot find Sinistar
+        if (!campaign.sinistar_entity) return; //Exit if we cannot find Sinistar
 
-        float dist_to_goal = minalear::distance_square(owner->position, sinistar->position);
+        float dist_to_goal = minalear::distance_square(owner->position, campaign.sinistar_entity->position);
         if (dist_to_goal <= 40.f * 40.f) {
             campaign.worker_mineral_count += owner->mineral_count;
             owner->mineral_count = 0;
@@ -90,7 +90,7 @@ void worker_controller::update(float dt) {
             current_state = WORKER_STATES::Return;
         }
         else {
-            seek(owner, sinistar->position);
+            seek(owner, campaign.sinistar_entity->position);
         }
     }
     else if (current_state == WORKER_STATES::Return) {

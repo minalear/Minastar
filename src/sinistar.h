@@ -9,7 +9,7 @@
 
 class sinistar: public game_entity {
 public:
-    int health;
+    int health, max_health;
 
     sinistar(glm::vec2 pos);
     void update(float dt) override;

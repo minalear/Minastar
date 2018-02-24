@@ -6,11 +6,15 @@
 #define SINISTAR_CAMPAIGN_H
 
 #include "world.h"
+#include "ship.h"
+#include "sinistar.h"
 
 class game_campaign {
-    world *game_world;
-
 public:
+    world *game_world;
+    sinistar *sinistar_entity;
+    ship *player_entity;
+
     bool sinistar_released;
     int worker_mineral_count;
 

@@ -3,9 +3,7 @@
 //
 
 #include "sinibomb.h"
-#include "world.h"
-
-game_entity *sinistar_ptr;
+#include "campaign.h"
 
 void generate_sinibomb_shape(sinibomb *bomb) {
     int vertex_count = 4;
@@ -46,14 +44,9 @@ sinibomb::sinibomb(glm::vec2 pos){
     this->add_collision_type(COLLISION_CATEGORIES::Asteroid);
 }
 void sinibomb::update(float dt) {
-    //Get pointer to Sinistar if we don't have one
-    if (!sinistar_ptr) {
-        sinistar_ptr = game_world->find_entity(ENTITY_TYPES::Sinistar);
-    }
-
     //Track towards Sinistar, but only if he's present on the game world
-    if (sinistar_ptr) {
-        glm::vec2 target_position = sinistar_ptr->position + (sinistar_ptr->velocity * dt);
+    if (campaign.sinistar_entity) {
+        glm::vec2 target_position = campaign.sinistar_entity->position + (campaign.sinistar_entity->velocity * dt);
         glm::vec2 move_vector = glm::normalize(target_position - position);
 
         const float BOMB_SPEED = 200.f;

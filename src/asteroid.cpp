@@ -78,37 +78,12 @@ void asteroid::update(float dt) {
     game_entity::update(dt);
 }
 void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Bullet || other.entity_type == ENTITY_TYPES::Sinibomb) {
-        //Update asteroid health (sinibombs will one shot asteroids)
-        health -= (other.entity_type == ENTITY_TYPES::Bullet) ? 4 : health;
-
-        //TODO: Balance mineral spawn amounts
-        //Asteroids will spawn various sized chunks
-        if (health <= 0) {
-            do_destroy = true;
-            if (bounding_radius > 10.f) {
-                float total_mass = bounding_radius * 2.f;
-                while (total_mass >= 0.f) {
-                    float chunk_mass = minalear::rand_float(5.f, total_mass / 1.5f);
-                    total_mass -= chunk_mass;
-
-                    float chunk_radius = chunk_mass / 2.f;
-                    auto chunk_position = glm::vec2(minalear::rand_float(position.x - chunk_radius, position.x + chunk_mass),
-                                                    minalear::rand_float(position.y - chunk_radius, position.y + chunk_radius));
-                    auto to_asteroid_center = glm::normalize(chunk_position - position);
-
-                    //Spawn minerals for small chunks, and spawn asteroids for larger ones
-                    if (chunk_mass < 10.f) {
-                        mineral *entity_mineral = new mineral(chunk_position, to_asteroid_center * 12.f);
-                        game_world->add_entity(entity_mineral);
-                    }
-                    else {
-                        asteroid *entity_asteroid = new asteroid(chunk_radius, chunk_position);
-                        game_world->add_entity(entity_asteroid);
-                    }
-                }
-            }
-        }
+    //If the asteroid comes into contact with Sinistar or a Sinibomb, it should automatically die
+    if (other.entity_type == ENTITY_TYPES::Sinibomb || other.entity_type == ENTITY_TYPES::Sinistar) {
+        health = 0;
+    }
+    else if (other.entity_type == ENTITY_TYPES::Bullet) {
+        health -= 4;
 
         //Rare chance of spawning a mineral on shot
         if (minalear::rand_float(0.f, 100.f) < 4.f) {
@@ -117,6 +92,34 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
 
             mineral *entity_mineral = new mineral(point, mineral_vel);
             game_world->add_entity(entity_mineral);
+        }
+    }
+
+    //TODO: Balance mineral spawn amounts
+    //Asteroids will spawn various sized chunks
+    if (health <= 0) {
+        do_destroy = true;
+        if (bounding_radius > 10.f) {
+            float total_mass = bounding_radius * 2.f;
+            while (total_mass >= 0.f) {
+                float chunk_mass = minalear::rand_float(5.f, total_mass / 1.5f);
+                total_mass -= chunk_mass;
+
+                float chunk_radius = chunk_mass / 2.f;
+                auto chunk_position = glm::vec2(minalear::rand_float(position.x - chunk_radius, position.x + chunk_radius),
+                                                minalear::rand_float(position.y - chunk_radius, position.y + chunk_radius));
+                auto to_asteroid_center = glm::normalize(chunk_position - position);
+
+                //Spawn minerals for small chunks, and spawn asteroids for larger ones
+                if (chunk_mass < 10.f) {
+                    mineral *entity_mineral = new mineral(chunk_position, to_asteroid_center * 12.f);
+                    game_world->add_entity(entity_mineral);
+                }
+                else {
+                    asteroid *entity_asteroid = new asteroid(chunk_radius, chunk_position);
+                    game_world->add_entity(entity_asteroid);
+                }
+            }
         }
     }
 }
