@@ -56,6 +56,7 @@ public:
     float rotation;
     float bounding_radius;
     float friction_coefficient;
+    float movement_speed;
 
     float *buffer_data;
     int vertex_count;
@@ -72,6 +73,7 @@ public:
     void paint_color(glm::vec3 color);
     void set_collision_category(COLLISION_CATEGORIES category);
     void add_collision_type(COLLISION_CATEGORIES category);
+    void seek(glm::vec2 target);
 };
 
 

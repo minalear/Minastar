@@ -18,6 +18,7 @@ game_entity::game_entity() {
     vertex_count = 0;
     do_destroy = false;
     friction_coefficient = 0.9f;
+    movement_speed = 12.f;
 }
 game_entity::~game_entity() {
     if (this->buffer_data) {
@@ -51,4 +52,10 @@ void game_entity::set_collision_category(COLLISION_CATEGORIES category) {
 }
 void game_entity::add_collision_type(COLLISION_CATEGORIES category) {
     collides_with |= (COLLISION_CATEGORIES::All & category);
+}
+void game_entity::seek(glm::vec2 target) {
+    glm::vec2 target_vector = target - position;
+    glm::vec2 adjusted_vel = glm::normalize(target_vector) * movement_speed;
+
+    velocity += adjusted_vel;
 }

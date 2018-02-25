@@ -16,14 +16,10 @@ worker_controller::worker_controller() {
     bullet_timer = 0.f;
     current_state = WORKER_STATES::Mining;
     saved_pos = glm::vec2(0.f);
+
+    owner->movement_speed = WORKER_MOVE_SPEED;
 }
 
-void seek(game_entity *owner, glm::vec2 target) {
-    glm::vec2 target_vector = target - owner->position;
-    glm::vec2 adjusted_vel = glm::normalize(target_vector) * WORKER_MOVE_SPEED;
-
-    owner->velocity += adjusted_vel;
-}
 void worker_controller::update(float dt) {
 
     /* Workers will mine asteroids for minerals until they reach a threshold,
@@ -41,7 +37,7 @@ void worker_controller::update(float dt) {
         //TODO: Investigate why sometimes workers won't seek out nearby minerals
         closest_target = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
         if (closest_target && dist < 125.f) {
-            seek(owner, closest_target->position);
+            owner->seek(closest_target->position);
             return;  //Early return to prevent seeking asteroids
         }
 
@@ -50,7 +46,7 @@ void worker_controller::update(float dt) {
         if (closest_target) {
             //Seek towards asteroids that are too far away, otherwise shoot them
             if (dist > closest_target->bounding_radius + 40.f) {
-                seek(owner, closest_target->position);
+                owner->seek(closest_target->position);
             } else if (dist != 0.f) {
                 //Ensure we're slowing down
                 owner->velocity = owner->velocity * 0.8f;
@@ -90,7 +86,7 @@ void worker_controller::update(float dt) {
             current_state = WORKER_STATES::Return;
         }
         else {
-            seek(owner, campaign.sinistar_entity->position);
+            owner->seek(campaign.sinistar_entity->position);
         }
     }
     else if (current_state == WORKER_STATES::Return) {
@@ -100,7 +96,7 @@ void worker_controller::update(float dt) {
             current_state = WORKER_STATES::Mining;
         }
         else {
-            seek(owner, saved_pos);
+            owner->seek(saved_pos);
         }
     }
 }

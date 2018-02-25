@@ -240,6 +240,7 @@ sinistar::sinistar(glm::vec2 pos) {
     this->entity_type = ENTITY_TYPES::Sinistar;
     this->position = pos;
     this->friction_coefficient = 0.9f;
+    this->movement_speed = 15.f;
 
     this->set_collision_category(COLLISION_CATEGORIES::Enemy);
     this->add_collision_type(COLLISION_CATEGORIES::Player);
@@ -250,12 +251,8 @@ sinistar::sinistar(glm::vec2 pos) {
 void sinistar::update(float dt) {
     //TODO: Consider writing a controller for Sinistar?
     if (campaign.sinistar_released) {
-        float dist_to_player = -1.f;
-        game_entity *player = game_world->find_entity(ENTITY_TYPES::Player, this->position, dist_to_player);
-
-        if (player) {
-            glm::vec2 to_player = glm::normalize(player->position - this->position);
-            this->apply_force(to_player * 12.f);
+        if (campaign.player_entity) {
+            seek(campaign.player_entity->position);
         }
     }
 

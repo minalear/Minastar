@@ -8,9 +8,10 @@
 #include "ship_controller.h"
 
 enum struct WORKER_STATES {
-    Mining,
-    Deliver,
-    Return
+    Mining, //Seeking and mining asteroids
+    Deliver, //Delivering resources to Sinistar
+    Return, //Returning to their old mining position
+    Flee, //Fleeing from Player (calling for soldier support)
 };
 
 class worker_controller: public ship_controller {

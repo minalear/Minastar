@@ -14,6 +14,7 @@ const float PLAYER_SPEED = 12.f;
 
 player_controller::player_controller() {
     bullet_timer = 0.f;
+    owner->movement_speed = PLAYER_SPEED;
 }
 void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();

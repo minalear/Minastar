@@ -98,6 +98,50 @@ void generate_worker_ship(ship *ship) {
     ship->bounding_radius = 2.5f * ship_scale;
     ship->position = glm::vec2(0.f, 0.f);
 }
+void generate_soldier_ship(ship *ship) {
+    int vertex_count = 8;
+    float *buffer_data = new float[vertex_count * 5];
+
+    //Initialize position data to 0.f and color data to 1,0,0 (red)
+    for (int i = 0; i < vertex_count; i++) {
+        buffer_data[i * 5 + 0] = 0.f;
+        buffer_data[i * 5 + 1] = 0.f;
+
+        buffer_data[i * 5 + 2] = 1.f;
+        buffer_data[i * 5 + 3] = 0.f;
+        buffer_data[i * 5 + 4] = 0.f;
+    }
+
+    const float ship_scale = 5.f;
+    buffer_data[ 0] =  1.5f * ship_scale;
+    buffer_data[ 1] =  0.0f * ship_scale;
+
+    buffer_data[ 5] =  0.5f * ship_scale;
+    buffer_data[ 6] =  1.0f * ship_scale;
+
+    buffer_data[10] =  1.5f * ship_scale;
+    buffer_data[11] =  3.0f * ship_scale;
+
+    buffer_data[15] = -1.5f * ship_scale;
+    buffer_data[16] =  1.0f * ship_scale;
+
+    buffer_data[20] = -0.5f * ship_scale;
+    buffer_data[21] =  0.0f * ship_scale;
+
+    buffer_data[25] = -1.5f * ship_scale;
+    buffer_data[26] = -1.0f * ship_scale;
+
+    buffer_data[30] =  1.5f * ship_scale;
+    buffer_data[31] = -3.0f * ship_scale;
+
+    buffer_data[35] =  0.5f * ship_scale;
+    buffer_data[36] = -1.0f * ship_scale;
+
+    ship->vertex_count = vertex_count;
+    ship->buffer_data = buffer_data;
+    ship->bounding_radius = 2.25f * ship_scale;
+    ship->position = glm::vec2(0.f, 0.f);
+}
 
 ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     mineral_count = 0;
@@ -108,8 +152,11 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     if (ship_type == ENTITY_TYPES::Player) {
         generate_player_ship(this);
     }
-    else {
+    else if (ship_type == ENTITY_TYPES::Worker) {
         generate_worker_ship(this);
+    }
+    else {
+        generate_soldier_ship(this);
     }
 }
 
