@@ -9,6 +9,7 @@
 #include "asteroid.h"
 #include "ship.h"
 #include "worker_controller.h"
+#include "soldier_controller.h"
 #include "sinistar.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
@@ -93,10 +94,11 @@ void world::add_entities(game_entity *entities, int count) {
 
 void world::generate_game_world() {
     const int GAME_WORLD_MIN = 0;
-    const int GAME_WORLD_MAX = 5000;
+    const int GAME_WORLD_MAX = WORLD_SIZE;
 
-    const int NUM_ASTEROIDS = 250;
-    const int NUM_WORKERS = 5;
+    const int NUM_ASTEROIDS = 1;
+    const int NUM_WORKERS = 1;
+    const int NUM_SOLDIERS = 0;
 
     add_entity(new sinistar(glm::vec2(0.f)));
 
@@ -117,15 +119,19 @@ void world::generate_game_world() {
         ship *worker = new ship(new worker_controller, ENTITY_TYPES::Worker);
         worker->position = glm::vec2(x, y);
 
-        //Set collision categories
-        worker->set_collision_category(COLLISION_CATEGORIES::Enemy);
-        worker->add_collision_type(COLLISION_CATEGORIES::Player);
-        worker->add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
-        worker->add_collision_type(COLLISION_CATEGORIES::Enemy);
-        worker->add_collision_type(COLLISION_CATEGORIES::Asteroid);
-        worker->add_collision_type(COLLISION_CATEGORIES::Mineral);
-
         add_entity(worker);
+    }
+
+    //Create soldiers
+    for (int i = 0; i < NUM_SOLDIERS; i++) {
+        //Randomly determine position
+        float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+        float y = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+
+        ship *soldier = new ship(new soldier_controller, ENTITY_TYPES::Soldier);
+        soldier->position = glm::vec2(x, y);
+
+        add_entity(soldier);
     }
 }
 void world::generate_buffer_data() {

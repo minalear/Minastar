@@ -9,6 +9,8 @@
 #include "game_entity.h"
 #include "engine/shader_program.h"
 
+const int WORLD_SIZE = 300;
+
 class world {
 private:
     uint32_t vao, vbo;

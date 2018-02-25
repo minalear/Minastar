@@ -10,14 +10,11 @@
 
 const float BULLET_FIRE_RATE = 0.26f;
 const float BULLET_SPEED = 128.f;
-const float WORKER_MOVE_SPEED = 12.f;
 
 worker_controller::worker_controller() {
     bullet_timer = 0.f;
     current_state = WORKER_STATES::Mining;
     saved_pos = glm::vec2(0.f);
-
-    owner->movement_speed = WORKER_MOVE_SPEED;
 }
 
 void worker_controller::update(float dt) {

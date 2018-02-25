@@ -44,12 +44,7 @@ int main(int argc, char *argv[]) {
     world game_world;
 
     ship player_ship(new player_controller, ENTITY_TYPES::Player);
-    player_ship.set_collision_category(COLLISION_CATEGORIES::Player);
-    player_ship.add_collision_type(COLLISION_CATEGORIES::Enemy);
-    player_ship.add_collision_type(COLLISION_CATEGORIES::Enemy_Bullet);
-    player_ship.add_collision_type(COLLISION_CATEGORIES::Asteroid);
-    player_ship.add_collision_type(COLLISION_CATEGORIES::Mineral);
-    player_ship.position = glm::vec2(2500.f);
+    player_ship.position = glm::vec2(WORLD_SIZE / 2.f);
 
     game_world.add_entity(&player_ship);
 
@@ -124,7 +119,7 @@ int main(int argc, char *argv[]) {
 
         //Draw the game world
         game_shader.use();
-        float camera_zoom = 1.f;
+        float camera_zoom = 0.7f;
         glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + (minalear::get_window_width() / 2.f) / camera_zoom,
                                       -player_ship.position.y + (minalear::get_window_height() / 2.f) / camera_zoom);
         view = glm::scale(glm::mat4(1.f), glm::vec3(camera_zoom)) *

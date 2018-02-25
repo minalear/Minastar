@@ -6,6 +6,10 @@
 #include "ship_controller.h"
 #include "campaign.h"
 
+const float WORKER_MOVE_SPEED  = 12.f;
+const float SOLDIER_MOVE_SPEED = 15.f;
+const float PLAYER_MOVE_SPEED  = 12.f;
+
 void generate_player_ship(ship *ship) {
     int vertex_count = 4;
     float *buffer_data = new float[vertex_count * 5];
@@ -31,7 +35,6 @@ void generate_player_ship(ship *ship) {
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = ship_scale;
-    ship->position = glm::vec2(0.f, 0.f);
 }
 void generate_worker_ship(ship *ship) {
     int vertex_count = 15;
@@ -96,7 +99,6 @@ void generate_worker_ship(ship *ship) {
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = 2.5f * ship_scale;
-    ship->position = glm::vec2(0.f, 0.f);
 }
 void generate_soldier_ship(ship *ship) {
     int vertex_count = 8;
@@ -140,23 +142,47 @@ void generate_soldier_ship(ship *ship) {
     ship->vertex_count = vertex_count;
     ship->buffer_data = buffer_data;
     ship->bounding_radius = 2.25f * ship_scale;
-    ship->position = glm::vec2(0.f, 0.f);
 }
 
 ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     mineral_count = 0;
     this->controller = controller;
     this->controller->owner = this;
-    this->entity_type = ship_type;
+    entity_type = ship_type;
+    position = glm::vec2(0.f);
 
+    //Setup type specific parameters
     if (ship_type == ENTITY_TYPES::Player) {
         generate_player_ship(this);
+        movement_speed = PLAYER_MOVE_SPEED;
+
+        set_collision_category(COLLISION_CATEGORIES::Player);
+        add_collision_type(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Enemy_Bullet);
+        add_collision_type(COLLISION_CATEGORIES::Asteroid);
+        add_collision_type(COLLISION_CATEGORIES::Mineral);
     }
     else if (ship_type == ENTITY_TYPES::Worker) {
         generate_worker_ship(this);
+        movement_speed = WORKER_MOVE_SPEED;
+
+        set_collision_category(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Player);
+        add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+        add_collision_type(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Asteroid);
+        add_collision_type(COLLISION_CATEGORIES::Mineral);
     }
     else {
         generate_soldier_ship(this);
+        movement_speed = SOLDIER_MOVE_SPEED;
+
+        set_collision_category(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Player);
+        add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+        add_collision_type(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Asteroid);
+        add_collision_type(COLLISION_CATEGORIES::Mineral);
     }
 }
 

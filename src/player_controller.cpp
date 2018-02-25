@@ -10,17 +10,15 @@
 
 const float BULLET_FIRE_RATE = 0.12f;
 const float BULLET_SPEED = 360.f;
-const float PLAYER_SPEED = 12.f;
 
 player_controller::player_controller() {
     bullet_timer = 0.f;
-    owner->movement_speed = PLAYER_SPEED;
 }
 void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
 
     if (joystick->left_stick_length > 0.15f) {
-        float force_factor = PLAYER_SPEED * joystick->left_stick_length;
+        float force_factor = owner->movement_speed * joystick->left_stick_length;
         owner->apply_force(joystick->left_stick * force_factor);
     }
     if (joystick->right_stick_length > 0.15f) {
