@@ -8,7 +8,7 @@
 #include "SDL2/SDL.h"
 #include "glad/glad.h"
 
-#define PC_BUILD
+#define LAPTOP_BUILD
 
 #ifdef LAPTOP_BUILD
 const int OPENGL_MAJOR_VERSION = 3;
@@ -57,6 +57,11 @@ void minalear::init_opengl() {
 
 void minalear::swap_buffers() {
     SDL_GL_SwapWindow(window);
+}
+
+void minalear::window_cleanup() {
+    SDL_GL_DeleteContext(context);
+    SDL_Quit();
 }
 
 float minalear::dt() {

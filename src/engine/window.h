@@ -9,6 +9,7 @@ namespace minalear {
     void init_game_window(int window_width, int window_height);
     void init_opengl();
     void swap_buffers();
+    void window_cleanup();
     float dt();
 
     int get_window_width();

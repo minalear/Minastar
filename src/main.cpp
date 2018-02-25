@@ -154,5 +154,6 @@ int main(int argc, char *argv[]) {
         SDL_FlushEvent(SDL_JOYAXISMOTION);
     } //end main game loop
 
+    minalear::window_cleanup();
     return 0;
 }
