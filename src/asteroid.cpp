@@ -7,33 +7,66 @@
 #include "world.h"
 #include "mineral.h"
 
-const float ASTEROID_RADIUS_MIN = 12.f;
-const float ASTEROID_RADIUS_MAX = 52.f;
-const float ASTEROID_VARIATION_MIN = 0.87f;
-const float ASTEROID_VARIATION_MAX = 1.21f;
+const float ASTEROID_RADIUS_MIN = 14.f;
+const float ASTEROID_RADIUS_MAX = 72.f;
+const float ASTEROID_ROUGHNESS = 0.51f;
 
 const glm::vec3 ASTEROID_COLOR = glm::vec3(
         137 / 255.f,  //R
         129 / 255.f,  //G
-        114 / 255.f); //B
+        114 / 255.f   //B
+);
+
+void gen_random_shape(float *depth_data, int left_index, int right_index, float displacement) {
+    if ((left_index + 1) == right_index) return;
+    int mid_index = (left_index + right_index) / 2;
+
+    float depth = (depth_data[left_index] + depth_data[right_index]) / 2.f;
+    depth      += minalear::rand_float(-1.f, 1.f) * displacement;
+
+    depth_data[mid_index] = glm::clamp(depth, 0.8f, 1.2f);
+
+    displacement *= ASTEROID_ROUGHNESS;
+    gen_random_shape(depth_data, left_index, mid_index, displacement);
+    gen_random_shape(depth_data, mid_index, right_index, displacement);
+}
 
 void generate_asteroid_shape(asteroid *asteroid, float size) {
-    //TODO: Look into fractal asteroid generation
-    int vertex_count = minalear::rand_int(10, 18);
+    int vertex_count = 72;
+
+    //Temporary buffer for storing depth information, initialize all points to 1
+    float *depth_data = new float[vertex_count];
+    for (int i = 0; i < vertex_count; i++) {
+        depth_data[i] = 1.f;
+    }
+
+    //Generate a random fractal shape
+    gen_random_shape(depth_data, 0, vertex_count - 1, 1.f);
+
+    //Find the average depth
+    float min_depth = 2.f;
+    float max_depth = 0.f;
+    for (int i = 0; i < vertex_count; i++) {
+        if (depth_data[i] < min_depth) min_depth = depth_data[i];
+        if (depth_data[i] > max_depth) max_depth = depth_data[i];
+    }
+    float avg_depth = (min_depth + max_depth) / 2.f;
+
+    //Create asteroid data buffer
     float *buffer_data = new float[vertex_count * 5];
 
     //If a non-zero size is provided, generate a random one
-    const float asteroid_scale = (size != 0.f) ? size : minalear::rand_float(ASTEROID_RADIUS_MIN, ASTEROID_RADIUS_MAX);
+    const float asteroid_scale = ((size != 0.f) ? size : minalear::rand_float(ASTEROID_RADIUS_MIN, ASTEROID_RADIUS_MAX)) * avg_depth;
     const float theta_delta = (2.f * 3.14159f) / vertex_count;
     float theta = 0.f;
 
     for (int i = 0; i < vertex_count; i++) {
         glm::vec2 pos = glm::vec2(cosf(theta), sinf(theta));
-        float rand_scale = minalear::rand_float(ASTEROID_VARIATION_MIN, ASTEROID_VARIATION_MAX);
+        float depth = depth_data[i];
 
         //Position (XY)
-        buffer_data[i * 5 + 0] = pos.x * (asteroid_scale * rand_scale);
-        buffer_data[i * 5 + 1] = pos.y * (asteroid_scale * rand_scale);
+        buffer_data[i * 5 + 0] = pos.x * (asteroid_scale * depth);
+        buffer_data[i * 5 + 1] = pos.y * (asteroid_scale * depth);
 
         //Color (RGB)
         buffer_data[i * 5 + 2] = ASTEROID_COLOR.r;
@@ -42,6 +75,9 @@ void generate_asteroid_shape(asteroid *asteroid, float size) {
 
         theta += theta_delta;
     }
+
+    //Cleanup unused buffer
+    delete[] depth_data;
 
     asteroid->entity_type = ENTITY_TYPES::Asteroid;
     asteroid->vertex_count = vertex_count;

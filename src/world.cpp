@@ -39,7 +39,7 @@ void world::update(float dt) {
         }
 
         //Check for collisions with other entities
-        //TODO: Optimize this by investigating binary partitions
+        //TODO: Optimize this by investigating quad trees
         for (int k = 0; k < entities.size(); k++) {
             glm::vec2 collision_point = glm::vec2(0.f);
             if (i != k && collides_with(*entities[i], *entities[k], collision_point)) {
