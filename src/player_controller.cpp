@@ -25,11 +25,9 @@ void player_controller::update(float dt) {
         owner->rotation = atan2f(joystick->right_stick.y, joystick->right_stick.x);
     }
 
-    bullet_timer += dt;
     if (bullet_timer >= BULLET_FIRE_RATE) {
         //Fire a normal bullet
         if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::R1)) {
-            bullet_timer = 0.f;
             glm::vec2 bullet_velocity = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * BULLET_SPEED;
             shoot(owner->position, bullet_velocity);
         }
@@ -40,4 +38,6 @@ void player_controller::update(float dt) {
             owner->mineral_count--;
         }
     }
+
+    ship_controller::update(dt);
 }

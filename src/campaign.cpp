@@ -19,6 +19,5 @@ void game_campaign::update() {
     //I HUNGER
     if (worker_mineral_count >= 40 && !sinistar_released) {
         sinistar_released = true;
-        //game_world->add_entity(new sinistar(glm::vec2(0.f)));
     }
 }

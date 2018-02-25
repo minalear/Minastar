@@ -8,8 +8,12 @@
 #include "bullet.h"
 #include <iostream>
 
-ship_controller::ship_controller() { }
-void ship_controller::update(float dt) { }
+ship_controller::ship_controller() {
+    bullet_timer = 0.f;
+}
+void ship_controller::update(float dt) {
+    bullet_timer += dt;
+}
 void ship_controller::shoot(glm::vec2 pos, glm::vec2 vel) {
     bullet *entity_bullet = new bullet(pos, vel);
 
@@ -25,4 +29,5 @@ void ship_controller::shoot(glm::vec2 pos, glm::vec2 vel) {
     }
 
     owner->game_world->add_entity(entity_bullet);
+    bullet_timer = 0.f;
 }

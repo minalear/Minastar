@@ -16,7 +16,6 @@ enum struct WORKER_STATES {
 
 class worker_controller: public ship_controller {
 private:
-    float bullet_timer;
     WORKER_STATES current_state;
     glm::vec2 saved_pos;
 

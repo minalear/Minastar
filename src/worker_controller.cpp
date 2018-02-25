@@ -12,7 +12,6 @@ const float BULLET_FIRE_RATE = 0.26f;
 const float BULLET_SPEED = 128.f;
 
 worker_controller::worker_controller() {
-    bullet_timer = 0.f;
     current_state = WORKER_STATES::Mining;
     saved_pos = glm::vec2(0.f);
 }
@@ -22,9 +21,6 @@ void worker_controller::update(float dt) {
     /* Workers will mine asteroids for minerals until they reach a threshold,
      * then they will turn green and run their cargo to Sinistar (currently 0,0)
      */
-
-    //Update timers
-    bullet_timer += dt;
 
     if (current_state == WORKER_STATES::Mining) {
         float dist = -1.f;
@@ -48,18 +44,19 @@ void worker_controller::update(float dt) {
                 //Ensure we're slowing down
                 owner->velocity = owner->velocity * 0.8f;
 
-                //Face the asteroid (in case it is moving)
+                glm::vec2 asteroid_position = closest_target->position;
+                glm::vec2 asteroid_velocity = closest_target->velocity;
 
-                //TODO: Improve targeting (they don't deal with faster moving objects well)
-                glm::vec2 target_real_vel = closest_target->velocity * dt;
-                glm::vec2 to_asteroid = glm::normalize((closest_target->position + target_real_vel) - owner->position);
-                owner->rotation = atan2f(to_asteroid.y, to_asteroid.x);
+                float time_to_target = dist / BULLET_SPEED;
+
+                glm::vec2 target_position = asteroid_position + (asteroid_velocity * time_to_target);
+                glm::vec2 aim_direction = glm::normalize(target_position - owner->position);
+
+                owner->rotation = atan2f(aim_direction.y, aim_direction.x);
 
                 //SHOOT HER
                 if (bullet_timer >= BULLET_FIRE_RATE) {
-                    bullet_timer = 0.f;
-                    glm::vec2 bullet_velocity = (to_asteroid * BULLET_SPEED) + owner->velocity;
-                    shoot(owner->position, bullet_velocity);
+                    shoot(owner->position, aim_direction * BULLET_SPEED);
                 }
             }
         }
@@ -96,4 +93,6 @@ void worker_controller::update(float dt) {
             owner->seek(saved_pos);
         }
     }
+
+    ship_controller::update(dt);
 }

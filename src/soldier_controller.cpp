@@ -7,19 +7,12 @@
 #include "engine/math_utils.h"
 
 const float BULLET_FIRE_RATE = 0.2f;
-const float BULLET_SPEED = 150.f;
+const float BULLET_SPEED = 450.f;
 
 soldier_controller::soldier_controller() {
-    bullet_timer = 0.f;
     current_state = SOLDIER_STATES::Attack;
-
-    owner->movement_speed = 14.f;
-
 }
 void soldier_controller::update(float dt) {
-    //Update timers
-    bullet_timer += dt;
-
     if (current_state == SOLDIER_STATES::Patrol) {
 
     }
@@ -29,20 +22,22 @@ void soldier_controller::update(float dt) {
         if (!player_entity) return; //Check if player pointer is valid
 
         //Seek to the if they are far away, otherwise shoot them
-        float dist_to_player = minalear::distance_square(owner->position, player_entity->position);
-        if (dist_to_player != 0.f && dist_to_player < (250.f * 250.f)) {
+        float dist_to_player = minalear::distance(owner->position, player_entity->position);
+        if (dist_to_player != 0.f && dist_to_player < 250.f) {
             //Ensure we're slowing down
             owner->velocity = owner->velocity * 0.8f;
 
-            //Face the player
-            glm::vec2 target_real_vel = player_entity->velocity * dt;
-            glm::vec2 to_player = glm::normalize((player_entity->position + target_real_vel) - owner->position);
-            owner->rotation = atan2f(to_player.y, to_player.x);
+            glm::vec2 player_position = player_entity->position;
+            glm::vec2 player_velocity = player_entity->velocity;
 
+            float time_to_target = dist_to_player / BULLET_SPEED;
+
+            glm::vec2 target_position = player_position + (player_velocity * time_to_target);
+            glm::vec2 aim_direction = glm::normalize(target_position - owner->position);
+
+            owner->rotation = atan2f(aim_direction.y, aim_direction.x);
             if (bullet_timer >= BULLET_FIRE_RATE) {
-                bullet_timer = 0.f;
-                glm::vec2 bullet_velocity = (to_player * BULLET_SPEED) + owner->velocity;
-                shoot(owner->position, bullet_velocity);
+                shoot(owner->position, aim_direction * BULLET_SPEED);
             }
         }
 
@@ -51,4 +46,6 @@ void soldier_controller::update(float dt) {
     else if (current_state == SOLDIER_STATES::Defend) {
 
     }
+
+    ship_controller::update(dt);
 }

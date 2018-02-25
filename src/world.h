@@ -9,7 +9,7 @@
 #include "game_entity.h"
 #include "engine/shader_program.h"
 
-const int WORLD_SIZE = 300;
+const int WORLD_SIZE = 5000;
 
 class world {
 private:

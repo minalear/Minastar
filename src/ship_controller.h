@@ -10,6 +10,7 @@
 class ship_controller {
 public:
     class ship *owner;
+    float bullet_timer;
 
     ship_controller();
     virtual void update(float dt);

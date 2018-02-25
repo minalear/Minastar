@@ -15,7 +15,6 @@ enum struct SOLDIER_STATES {
 
 class soldier_controller: public ship_controller {
 private:
-    float bullet_timer;
     SOLDIER_STATES current_state;
 
 public:

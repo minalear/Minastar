@@ -96,9 +96,9 @@ void world::generate_game_world() {
     const int GAME_WORLD_MIN = 0;
     const int GAME_WORLD_MAX = WORLD_SIZE;
 
-    const int NUM_ASTEROIDS = 1;
-    const int NUM_WORKERS = 1;
-    const int NUM_SOLDIERS = 0;
+    const int NUM_ASTEROIDS = 150;
+    const int NUM_WORKERS = 10;
+    const int NUM_SOLDIERS = 4;
 
     add_entity(new sinistar(glm::vec2(0.f)));
 
