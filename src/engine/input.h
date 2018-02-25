@@ -24,11 +24,7 @@ namespace minalear {
         Select = 6,
         Guide = 10,
 
-        Left_Trigger,
-        Right_Trigger
-
-        //TODO: Button 11 is unidentified (for ps4 controller)
-        //TODO: Determine best way to test for L2/R2 (trigger) button presses
+        //NOTE: Button 11 is unidentified (for ps4 controller)
     };
 
     struct controller_state {

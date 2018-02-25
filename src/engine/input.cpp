@@ -12,7 +12,7 @@ SDL_Joystick *main_joystick;
 minalear::controller_state *main_controller_ptr;
 
 const float AXIS_LENGTH = SDL_JOYSTICK_AXIS_MAX;
-const float TRIGGER_BUTTON_MIN_VALUE = 0.3f;
+const float TRIGGER_BUTTON_MIN_VALUE = 0.85f;
 
 const int LEFT_JOYSTICK_X_AXIS  = 0;
 const int LEFT_JOYSTICK_Y_AXIS  = 1;
@@ -60,10 +60,10 @@ void minalear::handle_input() {
 
 bool minalear::is_button_down(JOYSTICK_BUTTONS button) {
     //Triggers are special cases
-    if (button == JOYSTICK_BUTTONS::Left_Trigger) {
+    if (button == JOYSTICK_BUTTONS::L3) {
         return (main_controller_ptr->left_trigger >= TRIGGER_BUTTON_MIN_VALUE);
     }
-    else if (button == JOYSTICK_BUTTONS::Right_Trigger) {
+    else if (button == JOYSTICK_BUTTONS::R3) {
         return (main_controller_ptr->right_trigger >= TRIGGER_BUTTON_MIN_VALUE);
     }
 

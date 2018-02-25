@@ -5,9 +5,8 @@
 #include "math_utils.h"
 #include <random>
 
-//TODO: Ensure that rand_int actually works
 int minalear::rand_int(int min, int max) {
-    return (rand() / RAND_MAX) * (max - min) + min;
+    return (int)((rand() / (float)RAND_MAX) * (max - min) + min);
 }
 float minalear::rand_float(float min, float max) {
     return (rand() / (float)RAND_MAX) * (max - min) + min;

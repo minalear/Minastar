@@ -50,7 +50,7 @@ namespace minalear {
     class font {
     public:
         texture *bitmap;
-        font_char *chars; //TODO: Replace this with a hashmap (dictionary?)
+        font_char *chars;
         int num_chars;
 
         block_info info;

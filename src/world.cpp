@@ -17,9 +17,9 @@ bool mark_for_update = false;
 world::world() { }
 world::~world() {
     //TODO: delete causes program crash
-    for (int i = 0; i < entities.size(); i++) {
-        //delete entities[i];
-    }
+    /*for (int i = 0; i < entities.size(); i++) {
+        delete entities[i];
+    }*/
     entities.clear();
 }
 

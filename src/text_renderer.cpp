@@ -48,7 +48,7 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
         valid_character_count++;
     }
 
-    //Initialize buffer data TODO: Very unoptimized
+    //Initialize buffer data
     float *buffer_data = new float[valid_character_count * 24];
 
     float cursor_x = 0.f;

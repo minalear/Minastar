@@ -26,12 +26,7 @@ font::font(const char *image_filename, const char *data_filename) {
     //Each block starts with one byte type identifier, followed by four bytes that gives the size of the block
     //1 - info (header), 2 - common, 3 - pages, 4 - chars, 5 - kerning pairs
 
-    //TODO: Remove the hardcoded value
-    const int NUM_CHARS = 91;
     int char_index = 0;
-    chars = new font_char[NUM_CHARS];
-    num_chars = NUM_CHARS;
-
     while (index_ptr < file_size) {
         //1-byte block type
         int block_type = binary_data[index_ptr++];
@@ -76,6 +71,12 @@ font::font(const char *image_filename, const char *data_filename) {
             index_ptr += block_size;
         }
         else if (block_type == 4) {
+            //Character numbers determined by taking the block size divided by 20.
+            const int NUM_CHARS = (file_size - index_ptr) / 20;
+            chars = new font_char[NUM_CHARS];
+            num_chars = NUM_CHARS;
+
+            //Loop through each block and load character information
             while (char_index < NUM_CHARS) {
                 chars[char_index].id =
                         binary_data[index_ptr + 3] << 24 |
@@ -109,8 +110,8 @@ font::~font() {
     delete[] chars;
 }
 
-//TODO: Replace with hashmap
 font_char font::get_char_info(char ch) {
+    //Basic profiling seems this is fast enough for basic usage.  Keeping for now.
     for (int i = 0; i < num_chars; i++) {
         if (chars[i].ch == ch)
             return chars[i];

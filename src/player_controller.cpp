@@ -9,7 +9,7 @@
 #include "world.h"
 
 const float BULLET_FIRE_RATE = 0.12f;
-const float BULLET_SPEED = 180.f;
+const float BULLET_SPEED = 360.f;
 const float PLAYER_SPEED = 12.f;
 
 player_controller::player_controller() {
@@ -29,14 +29,9 @@ void player_controller::update(float dt) {
     bullet_timer += dt;
     if (bullet_timer >= BULLET_FIRE_RATE) {
         //Fire a normal bullet
-        if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Right_Trigger)) {
+        if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::R1)) {
             bullet_timer = 0.f;
-
-            //Only happens while RUNNING the application, starting it from outside the IDE or with the Debug button works FINE?!
             glm::vec2 bullet_velocity = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * BULLET_SPEED;
-            //shoot(owner->position, bullet_velocity + owner->velocity);
-
-            //TODO: Bullets don't handle properly while aiming while also adding the owner's velocity
             shoot(owner->position, bullet_velocity);
         }
         //Fire a SINIBOMB
