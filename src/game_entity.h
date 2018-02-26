@@ -57,6 +57,7 @@ public:
     float bounding_radius;
     float friction_coefficient;
     float movement_speed;
+    int health, max_health;
 
     float *buffer_data;
     int vertex_count;
@@ -68,12 +69,15 @@ public:
     
     virtual void update(float dt);
     virtual void apply_force(glm::vec2 force);
-    virtual void handle_collision(const game_entity &other, glm::vec2 point);
+    virtual void handle_collision(game_entity &other, glm::vec2 point);
+    virtual void damage(game_entity &other, int amount);
 
     void paint_color(glm::vec3 color);
     void set_collision_category(COLLISION_CATEGORIES category);
     void add_collision_type(COLLISION_CATEGORIES category);
     void seek(glm::vec2 target);
+    void set_health(int amount);
+    void modify_health(int amount);
 };
 
 

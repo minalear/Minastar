@@ -52,8 +52,16 @@ void sinibomb::update(float dt) {
     }
     game_entity::update(dt);
 }
-void sinibomb::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Sinistar || other.entity_type == ENTITY_TYPES::Asteroid) {
-        do_destroy = true;
+void sinibomb::handle_collision(game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Sinistar) {
+        other.damage(*this, 1); //Deals 1 to Sinistar
     }
+    else if (other.entity_type == ENTITY_TYPES::Worker || other.entity_type == ENTITY_TYPES::Soldier) {
+        other.damage(*this, other.health); //Destroy enemy ships
+    }
+    else if (other.entity_type == ENTITY_TYPES::Asteroid) {
+        other.damage(*this, other.health); //Destroy asteroids
+    }
+
+    do_destroy = true;
 }

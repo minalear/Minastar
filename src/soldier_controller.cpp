@@ -41,7 +41,9 @@ void soldier_controller::update(float dt) {
             }
         }
 
-        owner->seek(player_entity->position);
+        if (dist_to_player > 65.f) {
+            owner->seek(player_entity->position);
+        }
     }
     else if (current_state == SOLDIER_STATES::Defend) {
 

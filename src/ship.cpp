@@ -5,10 +5,16 @@
 #include "ship.h"
 #include "ship_controller.h"
 #include "campaign.h"
+#include "mineral.h"
+#include "engine/math_utils.h"
 
+const float PLAYER_MOVE_SPEED  = 12.f;
 const float WORKER_MOVE_SPEED  = 12.f;
 const float SOLDIER_MOVE_SPEED = 15.f;
-const float PLAYER_MOVE_SPEED  = 12.f;
+
+const int PLAYER_HEALTH = 80;
+const int WORKER_HEALTH = 10;
+const int SOLDIER_HEALTH = 15;
 
 void generate_player_ship(ship *ship) {
     int vertex_count = 4;
@@ -155,6 +161,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     if (ship_type == ENTITY_TYPES::Player) {
         generate_player_ship(this);
         movement_speed = PLAYER_MOVE_SPEED;
+        set_health(PLAYER_HEALTH);
 
         set_collision_category(COLLISION_CATEGORIES::Player);
         add_collision_type(COLLISION_CATEGORIES::Enemy);
@@ -165,6 +172,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     else if (ship_type == ENTITY_TYPES::Worker) {
         generate_worker_ship(this);
         movement_speed = WORKER_MOVE_SPEED;
+        set_health(WORKER_HEALTH);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -176,6 +184,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     else {
         generate_soldier_ship(this);
         movement_speed = SOLDIER_MOVE_SPEED;
+        set_health(SOLDIER_HEALTH);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -192,8 +201,25 @@ void ship::update(float dt) {
     controller->update(dt);
     game_entity::update(dt);
 }
-void ship::handle_collision(const game_entity &other, glm::vec2 point) {
+void ship::handle_collision(game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Mineral) {
         mineral_count++;
+    }
+}
+void ship::damage(game_entity &other, int amount) {
+    if (controller) {
+        controller->on_damage(other, amount);
+    }
+
+    game_entity::damage(other, amount);
+
+    //Drop all minerals on death
+    if (health <= 0.f) {
+        for (int i = 0; i < mineral_count; i++) {
+            glm::vec2 mineral_position = glm::vec2(
+                    minalear::rand_float(position.x - bounding_radius, position.x + bounding_radius),
+                    minalear::rand_float(position.y - bounding_radius, position.y + bounding_radius));
+            game_world->add_entity(new mineral(mineral_position, velocity));
+        }
     }
 }

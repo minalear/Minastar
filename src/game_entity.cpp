@@ -19,6 +19,9 @@ game_entity::game_entity() {
     do_destroy = false;
     friction_coefficient = 0.9f;
     movement_speed = 12.f;
+
+    health = 1;
+    max_health = 1;
 }
 game_entity::~game_entity() {
     if (this->buffer_data) {
@@ -36,7 +39,7 @@ void game_entity::update(float dt) {
 void game_entity::apply_force(glm::vec2 force) {
     this->force_accumulator += force;
 }
-void game_entity::handle_collision(const game_entity &other, glm::vec2 point) { }
+void game_entity::handle_collision(game_entity &other, glm::vec2 point) { }
 void game_entity::paint_color(glm::vec3 color) {
     for (int i = 0; i < vertex_count; i++) {
         buffer_data[i * 5 + 2] = color.r;
@@ -45,6 +48,13 @@ void game_entity::paint_color(glm::vec3 color) {
     }
 
     game_world->mark_world_for_update();
+}
+void game_entity::damage(game_entity &other, int amount) {
+    modify_health(-amount);
+
+    if (health <= 0.f) {
+        do_destroy = true;
+    }
 }
 
 void game_entity::set_collision_category(COLLISION_CATEGORIES category) {
@@ -58,4 +68,11 @@ void game_entity::seek(glm::vec2 target) {
     glm::vec2 adjusted_vel = glm::normalize(target_vector) * movement_speed;
 
     velocity += adjusted_vel;
+}
+void game_entity::set_health(int amount) {
+    health = amount;
+    max_health = amount;
+}
+void game_entity::modify_health(int amount) {
+    health = glm::clamp(health + amount, 0, max_health);
 }

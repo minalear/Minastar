@@ -9,7 +9,12 @@
 #include "game_entity.h"
 #include "engine/shader_program.h"
 
-const int WORLD_SIZE = 5000;
+const int GAME_WORLD_MIN = 0;
+const int GAME_WORLD_MAX = 5000;
+
+const int NUM_ASTEROIDS = 150;
+const int NUM_WORKERS = 10;
+const int NUM_SOLDIERS = 4;
 
 class world {
 private:

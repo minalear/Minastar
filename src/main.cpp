@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     world game_world;
 
     ship player_ship(new player_controller, ENTITY_TYPES::Player);
-    player_ship.position = glm::vec2(WORLD_SIZE / 2.f);
+    player_ship.position = glm::vec2(GAME_WORLD_MAX / 2.f);
 
     game_world.add_entity(&player_ship);
 
@@ -130,11 +130,17 @@ int main(int argc, char *argv[]) {
         //Draw UI
         game_shader.set_view_mat4(glm::mat4(1.f));
         bar_renderer.draw_bar(&game_shader,
+                              player_ship.health,
+                              player_ship.max_health,
+                              glm::vec2(10.f, 40.f), glm::vec2(100.f, 12.f),
+                              glm::vec3(141 / 255.f, 198 / 255.f,  63 / 255.f),
+                              glm::vec3( 71 / 255.f,  75 / 255.f,  65 / 255.f));
+        bar_renderer.draw_bar(&game_shader,
                               campaign.sinistar_entity->health,
                               campaign.sinistar_entity->max_health,
-                              glm::vec2(10.f, 40.f), glm::vec2(100.f, 18.f),
-                              glm::vec3(227 / 255.f, 68 / 255.f, 68 / 255.f),
-                              glm::vec3(100 / 255.f, 59 / 255.f, 59 / 255.f));
+                              glm::vec2(10.f, 56.f), glm::vec2(100.f, 12.f),
+                              glm::vec3(198 / 255.f,  63 / 255.f,  63 / 255.f),
+                              glm::vec3(116 / 255.f,  59 / 255.f,  59 / 255.f));
         game_shader.set_view_mat4(view);
 
         std::string ui_text = "minerals " + std::to_string(player_ship.mineral_count) + "\n" +

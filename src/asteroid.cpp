@@ -30,7 +30,6 @@ void gen_random_shape(float *depth_data, int left_index, int right_index, float 
     gen_random_shape(depth_data, left_index, mid_index, displacement);
     gen_random_shape(depth_data, mid_index, right_index, displacement);
 }
-
 void generate_asteroid_shape(asteroid *asteroid, float size) {
     int vertex_count = 72;
 
@@ -84,7 +83,7 @@ void generate_asteroid_shape(asteroid *asteroid, float size) {
     asteroid->buffer_data = buffer_data;
     asteroid->bounding_radius = asteroid_scale;
     asteroid->friction_coefficient = 0.999f;
-    asteroid->health = (int)asteroid_scale;
+    asteroid->set_health((int)asteroid_scale);
 
     asteroid->set_collision_category(COLLISION_CATEGORIES::Asteroid);
     asteroid->add_collision_type(COLLISION_CATEGORIES::Player);
@@ -113,14 +112,8 @@ void asteroid::update(float dt) {
     rotation += 0.1f * dt;
     game_entity::update(dt);
 }
-void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
-    //If the asteroid comes into contact with Sinistar or a Sinibomb, it should automatically die
-    if (other.entity_type == ENTITY_TYPES::Sinibomb || other.entity_type == ENTITY_TYPES::Sinistar) {
-        health = 0;
-    }
-    else if (other.entity_type == ENTITY_TYPES::Bullet) {
-        health -= 4;
-
+void asteroid::handle_collision(game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Bullet) {
         //Rare chance of spawning a mineral on shot
         if (minalear::rand_float(0.f, 100.f) < 4.f) {
             glm::vec2 mineral_vel = -other.velocity;
@@ -130,6 +123,9 @@ void asteroid::handle_collision(const game_entity &other, glm::vec2 point) {
             game_world->add_entity(entity_mineral);
         }
     }
+}
+void asteroid::damage(game_entity &other, int damage) {
+    game_entity::damage(other, damage);
 
     //TODO: Balance mineral spawn amounts
     //Asteroids will spawn various sized chunks

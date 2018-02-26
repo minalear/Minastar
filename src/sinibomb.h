@@ -11,7 +11,7 @@ class sinibomb: public game_entity {
 public:
     sinibomb(glm::vec2 pos);
     void update(float dt) override;
-    void handle_collision(const game_entity &other, glm::vec2 point) override;
+    void handle_collision(game_entity &other, glm::vec2 point) override;
 };
 
 

@@ -12,7 +12,7 @@ class mineral: public game_entity {
 public:
     mineral(glm::vec2 pos, glm::vec2 vel);
     void update(float dt) override;
-    void handle_collision(const game_entity &other, glm::vec2 point) override;
+    void handle_collision(game_entity &other, glm::vec2 point) override;
 };
 
 #endif //SINISTAR_MINERAL_H

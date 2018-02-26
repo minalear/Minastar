@@ -14,6 +14,7 @@ public:
 
     ship_controller();
     virtual void update(float dt);
+    virtual void on_damage(class game_entity &other, int amount);
     void shoot(glm::vec2 pos, glm::vec2 vel);
 };
 

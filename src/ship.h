@@ -15,7 +15,8 @@ public:
 
     ship(ship_controller *controller, ENTITY_TYPES ship_type);
     void update(float dt) override;
-    void handle_collision(const game_entity &other, glm::vec2 point) override;
+    void handle_collision(game_entity &other, glm::vec2 point) override;
+    void damage(game_entity &other, int amount) override;
 };
 
 

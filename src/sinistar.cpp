@@ -6,6 +6,8 @@
 #include "world.h"
 #include "campaign.h"
 
+const int SINISTAR_HEALTH = 200;
+
 void generate_sinistar_shape(sinistar *sinistar) {
     int vertex_count = 68;
     float *buffer_data = new float[vertex_count * 5];
@@ -235,8 +237,7 @@ void generate_sinistar_shape(sinistar *sinistar) {
 sinistar::sinistar(glm::vec2 pos) {
     generate_sinistar_shape(this);
 
-    this->health = 200;
-    this->max_health = 200;
+    set_health(SINISTAR_HEALTH);
     this->entity_type = ENTITY_TYPES::Sinistar;
     this->position = pos;
     this->friction_coefficient = 0.9f;
@@ -259,12 +260,4 @@ void sinistar::update(float dt) {
     game_entity::update(dt);
 }
 
-void sinistar::handle_collision(const game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Sinibomb) {
-        health--;
-
-        if (health <= 0) {
-            do_destroy = true;
-        }
-    }
-}
+void sinistar::handle_collision(game_entity &other, glm::vec2 point) { }

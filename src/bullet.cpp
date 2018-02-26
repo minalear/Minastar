@@ -38,6 +38,7 @@ void generate_bullet_shape(bullet *bullet) {
 
 bullet::bullet(glm::vec2 pos, glm::vec2 vel) {
     generate_bullet_shape(this);
+    this->bullet_damage = 4;
     this->position = pos;
     this->velocity = vel;
     this->friction_coefficient = 1.f; //No friction
@@ -53,6 +54,11 @@ void bullet::update(float dt) {
         do_destroy = true;
     }
 }
-void bullet::handle_collision(const game_entity &other, glm::vec2 point) {
+void bullet::handle_collision(game_entity &other, glm::vec2 point) {
+    //Bullets do nothing against Sinistar, Coward.
+    if (other.entity_type != ENTITY_TYPES::Sinistar) {
+        other.damage(*this, bullet_damage);
+    }
+
     do_destroy = true;
 }

@@ -10,12 +10,20 @@
 
 const float BULLET_FIRE_RATE = 0.12f;
 const float BULLET_SPEED = 360.f;
+const float HEAL_DELAY = 10.f;
 
 player_controller::player_controller() {
     bullet_timer = 0.f;
 }
 void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
+
+    //Delay timer for auto-heal
+    healing_timer += dt;
+    if (healing_timer >= HEAL_DELAY) {
+        //TODO: Ensure this is is FPS independent
+        owner->modify_health(1);
+    }
 
     if (joystick->left_stick_length > 0.15f) {
         float force_factor = owner->movement_speed * joystick->left_stick_length;
@@ -40,4 +48,7 @@ void player_controller::update(float dt) {
     }
 
     ship_controller::update(dt);
+}
+void player_controller::on_damage(class game_entity &other, int amount) {
+    healing_timer = 0.f;
 }

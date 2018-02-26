@@ -8,9 +8,13 @@
 #include "ship_controller.h"
 
 class player_controller: public ship_controller {
+private:
+    float healing_timer = 0.f;
+
 public:
     player_controller();
     void update(float dt) override;
+    void on_damage(class game_entity &other, int amount) override;
 };
 
 
