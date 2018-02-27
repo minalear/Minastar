@@ -125,7 +125,7 @@ void worker_controller::change_state(WORKER_STATES state) {
         saved_pos = owner->position;
     }
     else if (state == WORKER_STATES::Return) {
-        //Pain the ship red
+        //Paint the ship red
         owner->paint_color(glm::vec3(1.f, 0.f, 0.f));
     }
     else if (state == WORKER_STATES::Flee) {

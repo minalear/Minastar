@@ -12,7 +12,7 @@ const float PLAYER_MOVE_SPEED  = 25.f;
 const float WORKER_MOVE_SPEED  = 12.f;
 const float SOLDIER_MOVE_SPEED = 15.f;
 
-const int PLAYER_HEALTH = 80;
+const int PLAYER_HEALTH = 500;
 const int WORKER_HEALTH = 10;
 const int SOLDIER_HEALTH = 15;
 

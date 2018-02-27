@@ -10,11 +10,11 @@
 #include "engine/shader_program.h"
 
 const int GAME_WORLD_MIN = 0;
-const int GAME_WORLD_MAX = 5000;
+const int GAME_WORLD_MAX = 10000;
 
-const int NUM_ASTEROIDS = 150;
-const int NUM_WORKERS = 5;
-const int NUM_SOLDIERS = 5;
+const int NUM_ASTEROIDS = 300;
+const int NUM_WORKERS = 0;
+const int NUM_SOLDIERS = 2500;
 
 class world {
 private:
@@ -40,6 +40,7 @@ public:
 
     game_entity* find_entity(ENTITY_TYPES type);
     game_entity* find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist);
+    bool check_collision(glm::vec2 pos, float radius, game_entity &entity, glm::vec2 &point);
 };
 
 

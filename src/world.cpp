@@ -201,3 +201,13 @@ game_entity* world::find_entity(ENTITY_TYPES type, glm::vec2 pos, float &dist) {
     dist = sqrtf(closest_dist);
     return closest_entity;
 }
+bool world::check_collision(glm::vec2 pos, float radius, game_entity &entity, glm::vec2 &point) {
+    for (int i = 0; i < entities.size(); i++) {
+        if (entities[i]->unique_id == entity.unique_id) continue;
+
+        if (collides_with(*entities[i], pos, radius, point))
+            return true;
+    }
+
+    return false;
+}

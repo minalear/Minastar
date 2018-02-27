@@ -34,6 +34,31 @@ bool collides_with(const game_entity &a, const game_entity &b, glm::vec2 &collis
 
     return false;
 }
+bool collides_with(const game_entity &a, glm::vec2 pos, float radius, glm::vec2 &collision_point) {
+    //Ensure the entity is not going to be destroyed
+    if (a.do_destroy)
+        return false;
+
+    float dist_sqr = minalear::distance_square(a.position, pos);
+    float min_dist = (a.bounding_radius + radius) * (a.bounding_radius + radius);
+
+    if (dist_sqr <= min_dist) { //Valid collision
+        //Calculate the point of collision
+        //The closest possible points found on both bounding circles given the angle between the two objects
+        float A = pos.x - a.position.x;
+        float B = pos.y - a.position.y;
+
+        float theta = atan2f(B, A);
+
+        //Position is given in reference to Object A
+        collision_point.x = cosf(theta) * a.bounding_radius + a.position.x;
+        collision_point.y = sinf(theta) * a.bounding_radius + a.position.y;
+
+        return true;
+    }
+
+    return false;
+}
 void resolve_collision(game_entity &a, game_entity &b, glm::vec2 &collision_point) {
     /*float dist = minalear::distance(a.position, b.position);
     float overlap = a.bounding_radius - (dist - b.bounding_radius);

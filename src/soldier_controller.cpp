@@ -16,15 +16,37 @@ soldier_controller::soldier_controller() {
 void soldier_controller::update(float dt) {
     if (current_state == SOLDIER_STATES::Patrol) {
         //Check if we're close to the player
-        if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
+        //if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
+        if (false) {
             current_state = SOLDIER_STATES::Attack;
         }
         else {
             float wander_radius = 6.f;
             float wander_jitter = 1.f;
 
+            //Wander randomly and avoid obstacles
             wander_target += glm::vec2(minalear::rand_float(-1.f, 1.f), minalear::rand_float(-1.f, 1.f)) * wander_jitter;
             wander_target  = glm::normalize(wander_target) * wander_radius;
+
+            glm::vec2 check_pos = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * 30.f + owner->position;
+            float check_radius = 12.f;
+
+            //Ensure the soldier stays within the map boundaries
+            float dist_to_center = minalear::distance(owner->position, glm::vec2(GAME_WORLD_MAX / 2.f));
+            if (dist_to_center > GAME_WORLD_MAX / 2.f) {
+                float center_strength = dist_to_center / (GAME_WORLD_MAX / 2.f);
+                glm::vec2 to_center = glm::normalize(glm::vec2(GAME_WORLD_MAX / 2.f) - owner->position);
+                wander_target += (to_center * center_strength) * 0.5f;
+            }
+
+            //Obstacle avoidance
+            glm::vec2 point;
+            if (owner->game_world->check_collision(check_pos, check_radius, *owner, point)) {
+                glm::vec2 vector_reflected = -glm::normalize(point - owner->position);
+                float theta = atan2f(vector_reflected.y, vector_reflected.x);
+
+                wander_target += glm::vec2(cosf(theta), sinf(theta)) * 25.f;
+            }
 
             owner->seek(owner->position + wander_target);
         }
