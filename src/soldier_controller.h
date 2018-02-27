@@ -16,10 +16,13 @@ enum struct SOLDIER_STATES {
 class soldier_controller: public ship_controller {
 private:
     SOLDIER_STATES current_state;
+    glm::vec2 wander_target;
+    class game_entity *help_target;
 
 public:
     soldier_controller();
     void update(float dt) override;
+    void on_message(MESSAGE_TYPES &message, game_entity &other) override;
 };
 
 

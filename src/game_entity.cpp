@@ -56,6 +56,7 @@ void game_entity::damage(game_entity &other, int amount) {
         do_destroy = true;
     }
 }
+void game_entity::send_message(MESSAGE_TYPES message, game_entity &sender) { }
 
 void game_entity::set_collision_category(COLLISION_CATEGORIES category) {
     collision_cat = (COLLISION_CATEGORIES::All & category);

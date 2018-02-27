@@ -8,7 +8,7 @@
 #include "mineral.h"
 #include "engine/math_utils.h"
 
-const float PLAYER_MOVE_SPEED  = 12.f;
+const float PLAYER_MOVE_SPEED  = 25.f;
 const float WORKER_MOVE_SPEED  = 12.f;
 const float SOLDIER_MOVE_SPEED = 15.f;
 
@@ -222,4 +222,7 @@ void ship::damage(game_entity &other, int amount) {
             game_world->add_entity(new mineral(mineral_position, velocity));
         }
     }
+}
+void ship::send_message(MESSAGE_TYPES message, game_entity &sender) {
+    controller->on_message(message, sender);
 }

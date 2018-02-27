@@ -63,9 +63,7 @@ void worker_controller::update(float dt) {
 
         //Determine if we should deliver our current payload
         if (owner->mineral_count >= 20) {
-            owner->paint_color(glm::vec3(0.f, 1.f, 0.2f));
-            current_state = WORKER_STATES::Deliver;
-            saved_pos = owner->position;
+            change_state(WORKER_STATES::Deliver);
         }
     }
     else if (current_state == WORKER_STATES::Deliver) {
@@ -73,11 +71,10 @@ void worker_controller::update(float dt) {
         if (!campaign.sinistar_entity) return; //Exit if we cannot find Sinistar
 
         float dist_to_goal = minalear::distance_square(owner->position, campaign.sinistar_entity->position);
-        if (dist_to_goal <= 40.f * 40.f) {
+        if (dist_to_goal <= (40.f * 40.f)) {
             campaign.worker_mineral_count += owner->mineral_count;
             owner->mineral_count = 0;
-            owner->paint_color(glm::vec3(1.f, 0.f, 0.f));
-            current_state = WORKER_STATES::Return;
+            change_state(WORKER_STATES::Return);
         }
         else {
             owner->seek(campaign.sinistar_entity->position);
@@ -86,13 +83,55 @@ void worker_controller::update(float dt) {
     else if (current_state == WORKER_STATES::Return) {
         //Return to our old position and continue mining
         float dist_to_goal = minalear::distance_square(owner->position, saved_pos);
-        if (dist_to_goal <= 40.f * 40.f) {
-            current_state = WORKER_STATES::Mining;
+        if (dist_to_goal <= (40.f * 40.f)) {
+            change_state(WORKER_STATES::Mining);
         }
         else {
             owner->seek(saved_pos);
         }
     }
+    else if (current_state == WORKER_STATES::Flee) {
+        float dist_to_player = minalear::distance_square(owner->position, campaign.player_entity->position);
+        if (dist_to_player >= (400.f * 400.f)) {
+            //Safe distance away, just enter deliver state
+            change_state(WORKER_STATES::Deliver);
+        }
+        else {
+            //Seek away from player
+            glm::vec2 vector_to_player = glm::normalize(glm::vec2(campaign.player_entity->position - owner->position));
+            glm::vec2 target = (owner->position - vector_to_player);
+            owner->seek(target);
+        }
+    }
 
     ship_controller::update(dt);
+}
+void worker_controller::on_damage(game_entity &other, int amount) {
+    //Upon being attacked, send a help message to the nearest soldier and run away
+    if (current_state != WORKER_STATES::Flee) {
+        change_state(WORKER_STATES::Flee);
+
+        float dist_to_soldier = 0.f;
+        game_entity *closest_ally = owner->game_world->find_entity(ENTITY_TYPES::Soldier, owner->position, dist_to_soldier);
+        if (!closest_ally) return; //Cannot call if they don't exist
+
+        closest_ally->send_message(MESSAGE_TYPES::Help, *owner);
+    }
+}
+void worker_controller::change_state(WORKER_STATES state) {
+    if (state == WORKER_STATES::Deliver) {
+        //Paint the ship green, save our previous state
+        owner->paint_color(glm::vec3(141 / 255.f, 198 / 255.f, 63 / 255.f));
+        saved_pos = owner->position;
+    }
+    else if (state == WORKER_STATES::Return) {
+        //Pain the ship red
+        owner->paint_color(glm::vec3(1.f, 0.f, 0.f));
+    }
+    else if (state == WORKER_STATES::Flee) {
+        //Paint the ship yellow
+        owner->paint_color(glm::vec3(242 / 255.f, 230 / 255.f, 100 / 255.f));
+    }
+
+    current_state = state;
 }

@@ -17,6 +17,7 @@ public:
     void update(float dt) override;
     void handle_collision(game_entity &other, glm::vec2 point) override;
     void damage(game_entity &other, int amount) override;
+    void send_message(MESSAGE_TYPES message, game_entity &sender) override;
 };
 
 

@@ -27,6 +27,9 @@ enum struct COLLISION_CATEGORIES {
     Enemy_Bullet = 32,
     All      = 255,
 };
+enum struct MESSAGE_TYPES {
+    Help
+};
 
 inline uint32_t operator | (COLLISION_CATEGORIES a, COLLISION_CATEGORIES b) {
     return (static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
@@ -71,6 +74,7 @@ public:
     virtual void apply_force(glm::vec2 force);
     virtual void handle_collision(game_entity &other, glm::vec2 point);
     virtual void damage(game_entity &other, int amount);
+    virtual void send_message(MESSAGE_TYPES message, game_entity &sender);
 
     void paint_color(glm::vec3 color);
     void set_collision_category(COLLISION_CATEGORIES category);

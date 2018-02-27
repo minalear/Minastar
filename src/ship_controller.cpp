@@ -32,3 +32,4 @@ void ship_controller::shoot(glm::vec2 pos, glm::vec2 vel) {
     owner->game_world->add_entity(entity_bullet);
     bullet_timer = 0.f;
 }
+void ship_controller::on_message(MESSAGE_TYPES &message, game_entity &other) { }
