@@ -6,15 +6,15 @@
 #define SINISTAR_WORLD_H
 
 #include <vector>
-#include "game_entity.h"
+#include "entities/game_entity.h"
 #include "engine/shader_program.h"
 
 const int GAME_WORLD_MIN = 0;
-const int GAME_WORLD_MAX = 10000;
+const int GAME_WORLD_MAX = 8000;
 
-const int NUM_ASTEROIDS = 300;
-const int NUM_WORKERS = 0;
-const int NUM_SOLDIERS = 2500;
+const int NUM_ASTEROIDS = 240;
+const int NUM_WORKERS = 12;
+const int NUM_SOLDIERS = 8;
 
 class world {
 private:

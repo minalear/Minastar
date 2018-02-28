@@ -8,7 +8,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 file(GLOB SOURCE_FILES
         src/*.cpp src/*.h
-        src/engine/*.cpp src/engine/*.h)
+        src/engine/*.cpp src/engine/*.h
+        src/controllers/*.cpp src/controllers/*.h
+        src/entities/*.cpp src/entities/*.h)
+
 file(GLOB SHADER_FILES shaders/*.glsl)
 file(GLOB FONT_FILES fonts/*.fnt fonts/*.png)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders)

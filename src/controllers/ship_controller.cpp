@@ -3,10 +3,9 @@
 //
 
 #include "ship_controller.h"
-#include "ship.h"
-#include "world.h"
-#include "bullet.h"
-#include <iostream>
+#include "../entities/ship.h"
+#include "../world.h"
+#include "../entities/bullet.h"
 
 ship_controller::ship_controller() {
     bullet_timer = 0.f;

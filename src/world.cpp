@@ -6,11 +6,11 @@
 #include "gtc/matrix_transform.hpp"
 #include "collision_handler.h"
 #include "engine/math_utils.h"
-#include "asteroid.h"
-#include "ship.h"
-#include "worker_controller.h"
-#include "soldier_controller.h"
-#include "sinistar.h"
+#include "entities/asteroid.h"
+#include "entities/ship.h"
+#include "entities/sinistar.h"
+#include "controllers/worker_controller.h"
+#include "controllers/soldier_controller.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;

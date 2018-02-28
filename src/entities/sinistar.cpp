@@ -3,8 +3,8 @@
 //
 
 #include "sinistar.h"
-#include "world.h"
-#include "campaign.h"
+#include "../world.h"
+#include "../campaign.h"
 
 const int SINISTAR_HEALTH = 200;
 

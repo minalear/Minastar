@@ -3,10 +3,10 @@
 //
 
 #include "player_controller.h"
-#include "ship.h"
-#include "sinibomb.h"
-#include "engine/input.h"
-#include "world.h"
+#include "../entities/ship.h"
+#include "../entities/sinibomb.h"
+#include "../engine/input.h"
+#include "../world.h"
 
 const float BULLET_FIRE_RATE = 0.12f;
 const float BULLET_SPEED = 360.f;

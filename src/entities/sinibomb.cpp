@@ -3,7 +3,7 @@
 //
 
 #include "sinibomb.h"
-#include "campaign.h"
+#include "../campaign.h"
 
 void generate_sinibomb_shape(sinibomb *bomb) {
     int vertex_count = 4;

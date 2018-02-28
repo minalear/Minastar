@@ -3,8 +3,8 @@
 //
 
 #include "soldier_controller.h"
-#include "campaign.h"
-#include "engine/math_utils.h"
+#include "../campaign.h"
+#include "../engine/math_utils.h"
 
 const float BULLET_FIRE_RATE = 0.2f;
 const float BULLET_SPEED = 450.f;

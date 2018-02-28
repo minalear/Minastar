@@ -6,8 +6,8 @@
 #define SINISTAR_CAMPAIGN_H
 
 #include "world.h"
-#include "ship.h"
-#include "sinistar.h"
+#include "entities/ship.h"
+#include "entities/sinistar.h"
 
 class game_campaign {
 public:

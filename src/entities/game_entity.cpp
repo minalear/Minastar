@@ -3,7 +3,7 @@
 //
 
 #include "game_entity.h"
-#include "world.h"
+#include "../world.h"
 
 int game_entity::next_valid_entity_id = 0;
 

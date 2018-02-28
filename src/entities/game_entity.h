@@ -6,7 +6,6 @@
 #define SINISTAR_GAME_ENTITY_H
 
 #include "glm.hpp"
-//#include "world.h"
 
 enum struct ENTITY_TYPES {
     Asteroid,

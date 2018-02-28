@@ -3,10 +3,10 @@
 //
 
 #include "worker_controller.h"
-#include "ship.h"
-#include "world.h"
-#include "engine/math_utils.h"
-#include "campaign.h"
+#include "../engine/math_utils.h"
+#include "../entities/ship.h"
+#include "../world.h"
+#include "../campaign.h"
 
 const float BULLET_FIRE_RATE = 0.26f;
 const float BULLET_SPEED = 128.f;

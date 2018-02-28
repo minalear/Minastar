@@ -14,8 +14,8 @@
 #include "text_renderer.h"
 #include "bar_renderer.h"
 #include "world.h"
-#include "ship.h"
-#include "player_controller.h"
+#include "entities/ship.h"
+#include "controllers/player_controller.h"
 #include "campaign.h"
 
 int main(int argc, char *argv[]) {
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 
         //Draw the game world
         game_shader.use();
-        float camera_zoom = 0.03f;
+        float camera_zoom = 0.8f;
         glm::vec2 cam_pos = glm::vec2(-player_ship.position.x + (minalear::get_window_width() / 2.f) / camera_zoom,
                                       -player_ship.position.y + (minalear::get_window_height() / 2.f) / camera_zoom);
         view = glm::scale(glm::mat4(1.f), glm::vec3(camera_zoom)) *

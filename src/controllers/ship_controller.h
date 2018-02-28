@@ -6,7 +6,7 @@
 #define SINISTAR_SHIP_CONTROLLER_H
 
 #include "glm.hpp"
-#include "game_entity.h"
+#include "../entities/game_entity.h"
 
 class ship_controller {
 public:

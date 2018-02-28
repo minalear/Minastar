@@ -2,9 +2,9 @@
 // Created by Trevor Fisher on 2/8/2018.
 //
 
-#include "asteroid.h"
-#include "engine/math_utils.h"
-#include "world.h"
+#include "../entities/asteroid.h"
+#include "../engine/math_utils.h"
+#include "../world.h"
 #include "mineral.h"
 
 const float ASTEROID_RADIUS_MIN = 14.f;
