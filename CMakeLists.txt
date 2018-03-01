@@ -10,7 +10,8 @@ file(GLOB SOURCE_FILES
         src/*.cpp src/*.h
         src/engine/*.cpp src/engine/*.h
         src/controllers/*.cpp src/controllers/*.h
-        src/entities/*.cpp src/entities/*.h)
+        src/entities/*.cpp src/entities/*.h
+        src/GUI/*.cpp src/GUI/*.h)
 
 file(GLOB SHADER_FILES shaders/*.glsl)
 file(GLOB FONT_FILES fonts/*.fnt fonts/*.png)
@@ -24,7 +25,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_executable(sinistar ${SOURCE_FILES} C:/Libraries/OpenGL/GLAD/src/glad.c)
-target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB} ${BROFILER_LIB})
+target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB})
 
 add_custom_command(
         TARGET sinistar POST_BUILD
