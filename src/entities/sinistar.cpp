@@ -260,4 +260,8 @@ void sinistar::update(float dt) {
     game_entity::update(dt);
 }
 
-void sinistar::handle_collision(game_entity &other, glm::vec2 point) { }
+void sinistar::handle_collision(game_entity &other, glm::vec2 point) {
+    if (other.entity_type == ENTITY_TYPES::Asteroid) {
+        other.damage(*this, other.health);
+    }
+}

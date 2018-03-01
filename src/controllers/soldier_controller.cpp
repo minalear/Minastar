@@ -16,8 +16,7 @@ soldier_controller::soldier_controller() {
 void soldier_controller::update(float dt) {
     if (current_state == SOLDIER_STATES::Patrol) {
         //Check if we're close to the player
-        //if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
-        if (false) {
+        if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
             current_state = SOLDIER_STATES::Attack;
         }
         else {
