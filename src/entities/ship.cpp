@@ -12,7 +12,8 @@ const float PLAYER_MOVE_SPEED  = 25.f;
 const float WORKER_MOVE_SPEED  = 12.f;
 const float SOLDIER_MOVE_SPEED = 15.f;
 
-const int PLAYER_HEALTH = 500;
+const int PLAYER_HEALTH = 40;
+const int PLAYER_SHIELD = 20;
 const int WORKER_HEALTH = 10;
 const int SOLDIER_HEALTH = 15;
 
@@ -162,6 +163,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         generate_player_ship(this);
         movement_speed = PLAYER_MOVE_SPEED;
         set_health(PLAYER_HEALTH);
+        set_shield(PLAYER_SHIELD);
 
         set_collision_category(COLLISION_CATEGORIES::Player);
         add_collision_type(COLLISION_CATEGORIES::Enemy);
@@ -173,6 +175,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         generate_worker_ship(this);
         movement_speed = WORKER_MOVE_SPEED;
         set_health(WORKER_HEALTH);
+        set_shield(0);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -185,6 +188,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         generate_soldier_ship(this);
         movement_speed = SOLDIER_MOVE_SPEED;
         set_health(SOLDIER_HEALTH);
+        set_shield(0);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -211,7 +215,14 @@ void ship::damage(game_entity &other, int amount) {
         controller->on_damage(other, amount);
     }
 
-    game_entity::damage(other, amount);
+    //Damage carries through shields when it exceeds it (works at 0)
+    if (amount > shield) {
+        game_entity::damage(other, amount - shield);
+        shield = 0;
+    }
+    else {
+        modify_shield(-amount);
+    }
 
     //Drop all minerals on death
     if (health <= 0.f) {
@@ -225,4 +236,12 @@ void ship::damage(game_entity &other, int amount) {
 }
 void ship::send_message(MESSAGE_TYPES message, game_entity &sender) {
     controller->on_message(message, sender);
+}
+
+void ship::set_shield(int amount) {
+    shield = amount;
+    max_shield = amount;
+}
+void ship::modify_shield(int amount) {
+    shield = glm::clamp(shield + amount, 0, max_shield);
 }

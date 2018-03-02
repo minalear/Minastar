@@ -9,7 +9,7 @@
 
 class player_controller: public ship_controller {
 private:
-    float healing_timer = 0.f;
+    float shield_timer = 0.f;
 
 public:
     player_controller();

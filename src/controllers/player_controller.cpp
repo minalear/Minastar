@@ -10,7 +10,10 @@
 
 const float BULLET_FIRE_RATE = 0.12f;
 const float BULLET_SPEED = 360.f;
-const float HEAL_DELAY = 10.f;
+const float RECHARGE_DELAY = 10.f;
+
+//Used for modifying int based shields
+float shield_recharge_buffer = 0.f;
 
 player_controller::player_controller() {
     bullet_timer = 0.f;
@@ -19,10 +22,17 @@ void player_controller::update(float dt) {
     minalear::controller_state *joystick = minalear::get_controller_ptr();
 
     //Delay timer for auto-heal
-    healing_timer += dt;
-    if (healing_timer >= HEAL_DELAY) {
-        //TODO: Ensure this is is FPS independent
-        owner->modify_health(1);
+    shield_timer += dt;
+    if (shield_timer >= RECHARGE_DELAY) {
+        shield_recharge_buffer += 10.f * dt;
+
+        while (shield_recharge_buffer > 1.f) {
+            owner->modify_shield(1);
+            shield_recharge_buffer -= 1.f;
+        }
+    }
+    else {
+        shield_recharge_buffer = 0.f;
     }
 
     if (joystick->left_stick_length > 0.15f) {
@@ -50,5 +60,5 @@ void player_controller::update(float dt) {
     ship_controller::update(dt);
 }
 void player_controller::on_damage(class game_entity &other, int amount) {
-    healing_timer = 0.f;
+    shield_timer = 0.f;
 }

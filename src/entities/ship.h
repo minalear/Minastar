@@ -12,12 +12,15 @@ public:
     class ship_controller *controller;
 
     int mineral_count;
+    int shield, max_shield;
 
     ship(ship_controller *controller, ENTITY_TYPES ship_type);
     void update(float dt) override;
     void handle_collision(game_entity &other, glm::vec2 point) override;
     void damage(game_entity &other, int amount) override;
     void send_message(MESSAGE_TYPES message, game_entity &sender) override;
+    void set_shield(int amount);
+    void modify_shield(int amount);
 };
 
 
