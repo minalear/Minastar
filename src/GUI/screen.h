@@ -6,10 +6,9 @@
 #define SINISTAR_SCREEN_H
 
 class screen {
-private:
+public:
     class screen_manager *manager;
 
-public:
     screen();
     ~screen();
     virtual void update(float dt);

@@ -12,5 +12,4 @@ class start_screen: public screen {
     void draw() override;
 };
 
-
 #endif //SINISTAR_START_SCREEN_H

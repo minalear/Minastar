@@ -3,6 +3,7 @@
 //
 
 #include "start_screen.h"
+#include "screen_manager.h"
 
 void start_screen::update(float dt) {
 

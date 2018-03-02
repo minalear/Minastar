@@ -6,7 +6,7 @@
 #define SINISTAR_BAR_H
 
 #include "glm.hpp"
-#include "engine/shader_program.h"
+#include "../engine/shader_program.h"
 
 class bar_renderer {
 private:

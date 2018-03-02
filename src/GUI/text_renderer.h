@@ -6,8 +6,8 @@
 #define SINISTAR_TEXT_RENDERER_H
 
 #include <string>
-#include "engine/font.h"
-#include "engine/shader_program.h"
+#include "../engine/font.h"
+#include "../engine/shader_program.h"
 #include "glm.hpp"
 
 class text_renderer {

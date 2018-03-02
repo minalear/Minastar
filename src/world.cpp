@@ -11,6 +11,7 @@
 #include "entities/sinistar.h"
 #include "controllers/worker_controller.h"
 #include "controllers/soldier_controller.h"
+#include "controllers/player_controller.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
@@ -93,6 +94,12 @@ void world::add_entities(game_entity *entities, int count) {
 }
 
 void world::generate_game_world() {
+    //Create player
+    ship *player_ship = new ship(new player_controller, ENTITY_TYPES::Player);
+    player_ship->position = glm::vec2(GAME_WORLD_MAX / 2.f);
+    add_entity(player_ship);
+
+    //Add the bad boy
     add_entity(new sinistar(glm::vec2(0.f)));
 
     //Create asteroids
