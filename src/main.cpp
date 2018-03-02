@@ -55,15 +55,14 @@ int main(int argc, char *argv[]) {
 
         minalear::handle_input();
 
-        //Update if time_accumulator is past the threshold
+        //Accumulate time and update logic if past the accumulation time threshold (16ms = 60fps)
+        time_accumulator += minalear::dt();
+
         const float CONST_DT = 0.016f;
         if (time_accumulator >= CONST_DT) {
             screen_manager.update_active_screen(CONST_DT);
             time_accumulator = 0.f;
         }
-
-        //Accumulate time and update logic if past the desired accumulation time
-        time_accumulator += minalear::dt();
 
         screen_manager.draw_active_screen();
 
