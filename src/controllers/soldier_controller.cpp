@@ -92,6 +92,12 @@ void soldier_controller::update(float dt) {
 
     ship_controller::update(dt);
 }
+void soldier_controller::on_damage(game_entity &other, int amount) {
+    //Attack the player if he attacks first and not currently in the Attack state
+    if (current_state != SOLDIER_STATES::Attack && other.entity_type == ENTITY_TYPES::Player) {
+        current_state = SOLDIER_STATES::Attack;
+    }
+}
 void soldier_controller::on_message(MESSAGE_TYPES &message, game_entity &other) {
     if (message == MESSAGE_TYPES::Help) {
         current_state = SOLDIER_STATES::Defend;

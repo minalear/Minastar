@@ -22,6 +22,7 @@ private:
 public:
     soldier_controller();
     void update(float dt) override;
+    void on_damage(game_entity &other, int amount) override;
     void on_message(MESSAGE_TYPES &message, game_entity &other) override;
 };
 
