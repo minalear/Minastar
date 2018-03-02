@@ -21,6 +21,7 @@ public:
     ~text_renderer();
 
     void draw_string(minalear::shader_program *text_shader, std::string str, glm::vec2 pos, glm::vec2 scale);
+    glm::vec2 measure_string(std::string str, glm::vec2 scale);
 };
 
 

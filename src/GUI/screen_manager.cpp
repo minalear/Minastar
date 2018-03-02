@@ -42,8 +42,8 @@ screen_manager::screen_manager() {
     bar_render = new bar_renderer;
     text_render = new text_renderer("Main");
 
-    attach_screen("Start", new start_screen);
-    attach_screen("Game", new game_screen);
+    attach_screen("Start", new start_screen(this));
+    attach_screen("Game", new game_screen(this));
 }
 screen_manager::~screen_manager() {
     delete shape_shader;

@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
     //Screen Manager
     screen_manager screen_manager;
-    screen_manager.switch_screen("Game");
+    screen_manager.switch_screen("Start");
 
     //For having consistent dts for update functions
     double time_accumulator = 0.f;

@@ -8,6 +8,8 @@
 #include "screen.h"
 
 class start_screen: public screen {
+public:
+    start_screen(screen_manager *manager);
     void update(float dt) override;
     void draw() override;
 };

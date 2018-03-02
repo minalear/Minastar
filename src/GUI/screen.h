@@ -9,7 +9,7 @@ class screen {
 public:
     class screen_manager *manager;
 
-    screen();
+    screen(screen_manager *manager);
     ~screen();
     virtual void update(float dt);
     virtual void draw();

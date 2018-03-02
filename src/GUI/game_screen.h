@@ -9,7 +9,7 @@
 
 class game_screen: public screen {
 public:
-    game_screen();
+    game_screen(screen_manager *manager);
     void update(float dt) override;
     void draw() override;
 };

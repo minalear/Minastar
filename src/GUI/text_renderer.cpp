@@ -49,6 +49,7 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
     }
 
     //Initialize buffer data
+    //TODO: Get rid of 'new' here
     float *buffer_data = new float[valid_character_count * 24];
 
     float cursor_x = 0.f;
@@ -132,4 +133,32 @@ void text_renderer::draw_string(minalear::shader_program *text_shader, const std
     glBindVertexArray(0);
 
     delete[] buffer_data;
+}
+glm::vec2 text_renderer::measure_string(std::string str, glm::vec2 scale) {
+    float cursor_x = 0.f;
+    float cursor_y = text_font->common.line_height;
+
+    int ch_index = 0;
+    for (int i = 0; i < str.size(); i++) {
+        char ch = str[i];
+
+        //Skip spaces
+        if (ch == ' ') {
+            cursor_x += text_font->info.font_size;
+            continue;
+        }
+
+        //Adjust cursor for new lines
+        if (ch == '\n') {
+            cursor_x  = 0.f;
+            cursor_y += text_font->common.line_height;
+            continue;
+        }
+
+        minalear::font_char char_data = text_font->get_char_info(ch);
+        cursor_x += char_data.x_advance;
+        ch_index++;
+    }
+
+    return glm::vec2(cursor_x, cursor_y) * scale;
 }

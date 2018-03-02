@@ -4,7 +4,9 @@
 
 #include "screen.h"
 
-screen::screen() { }
+screen::screen(screen_manager *manager) {
+    this->manager = manager;
+}
 screen::~screen() { }
 
 void screen::update(float dt) { }
