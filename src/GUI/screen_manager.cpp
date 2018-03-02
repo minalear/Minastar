@@ -44,6 +44,8 @@ screen_manager::screen_manager() {
 
     attach_screen("Start", new start_screen(this));
     attach_screen("Game", new game_screen(this));
+
+    active_screen = nullptr;
 }
 screen_manager::~screen_manager() {
     delete shape_shader;
@@ -60,7 +62,11 @@ void screen_manager::switch_screen(const std::string name) {
     //Ensure the index is contained in the map
     auto index = screens.find(name);
     if (index != screens.end()) {
+
+        if (active_screen)
+            active_screen->on_deactivate();
         active_screen = index->second;
+        active_screen->on_activate();
     }
 
     active_screen = screens[name];

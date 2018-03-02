@@ -11,6 +11,10 @@ public:
 
     screen(screen_manager *manager);
     ~screen();
+
+    virtual void on_activate();
+    virtual void on_deactivate();
+
     virtual void update(float dt);
     virtual void draw();
 };

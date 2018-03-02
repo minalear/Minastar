@@ -9,5 +9,8 @@ screen::screen(screen_manager *manager) {
 }
 screen::~screen() { }
 
+void screen::on_activate() { }
+void screen::on_deactivate() { }
+
 void screen::update(float dt) { }
 void screen::draw() { }

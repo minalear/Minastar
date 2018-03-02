@@ -19,7 +19,9 @@ public:
     int worker_mineral_count;
 
     game_campaign();
+
     void init(world *game_world);
+    void reset();
     void update();
 };
 

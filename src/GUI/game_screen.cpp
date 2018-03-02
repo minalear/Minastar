@@ -13,7 +13,12 @@
 world game_world;
 ship *player_ship;
 
-game_screen::game_screen(screen_manager *manager) : screen(manager) {
+game_screen::game_screen(screen_manager *manager) : screen(manager) { }
+
+void game_screen::on_activate() {
+    game_world.reset();
+    campaign.reset();
+
     game_world.generate_game_world();
     game_world.generate_buffer_data();
 
@@ -21,6 +26,7 @@ game_screen::game_screen(screen_manager *manager) : screen(manager) {
 
     player_ship = (ship*)game_world.find_entity(ENTITY_TYPES::Player);
 }
+
 void game_screen::update(float dt) {
     game_world.update(dt);
     campaign.update();

@@ -12,6 +12,8 @@ public:
     game_screen(screen_manager *manager);
     void update(float dt) override;
     void draw() override;
+
+    void on_activate() override;
 };
 
 #endif //SINISTAR_GAME_SCREEN_H

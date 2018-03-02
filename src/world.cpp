@@ -12,6 +12,7 @@
 #include "controllers/worker_controller.h"
 #include "controllers/soldier_controller.h"
 #include "controllers/player_controller.h"
+#include "campaign.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
@@ -77,6 +78,14 @@ void world::draw(minalear::shader_program *shader) {
         vertex_count += entities[i]->vertex_count;
     }
     glBindVertexArray(0);
+}
+
+void world::reset() {
+    for (int i = 0; i < entities.size(); i++) {
+        delete entities[i];
+    }
+    entities.clear();
+
 }
 
 void world::add_entity(game_entity *entity) {
