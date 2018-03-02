@@ -15,7 +15,7 @@ start_screen::start_screen(screen_manager *manager) : screen(manager) {
 }
 void start_screen::update(float dt) {
     if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::A)) {
-        manager->switch_screen("Game");
+        manager->switch_screen("Intro");
     }
 }
 void start_screen::draw() {

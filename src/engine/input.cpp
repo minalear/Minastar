@@ -31,6 +31,7 @@ void minalear::init_input() {
     handle_input();
 }
 
+//TODO: Improve control handling (WasUp/Down etc.)
 void minalear::handle_input() {
     //Get the raw data for the left stick (each axis is bound between -1 and 1)
     glm::vec2 raw_left_stick = glm::vec2(

@@ -10,6 +10,12 @@
 #include "../engine/shader_program.h"
 #include "glm.hpp"
 
+enum struct TEXT_LAYOUT {
+    Left,
+    Center,
+    Right
+};
+
 class text_renderer {
 private:
     uint32_t vao, vbo;

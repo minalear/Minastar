@@ -7,6 +7,7 @@
 #include "gtc/matrix_transform.hpp"
 #include "start_screen.h"
 #include "game_screen.h"
+#include "intro_screen.h"
 
 screen_manager::screen_manager() {
     //Initialize shader programs
@@ -44,6 +45,7 @@ screen_manager::screen_manager() {
 
     attach_screen("Start", new start_screen(this));
     attach_screen("Game", new game_screen(this));
+    attach_screen("Intro", new intro_screen(this));
 
     active_screen = nullptr;
 }

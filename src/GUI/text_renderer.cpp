@@ -138,6 +138,8 @@ glm::vec2 text_renderer::measure_string(std::string str, glm::vec2 scale) {
     float cursor_x = 0.f;
     float cursor_y = text_font->common.line_height;
 
+    float max_width = 0.f;
+
     int ch_index = 0;
     for (int i = 0; i < str.size(); i++) {
         char ch = str[i];
@@ -150,6 +152,9 @@ glm::vec2 text_renderer::measure_string(std::string str, glm::vec2 scale) {
 
         //Adjust cursor for new lines
         if (ch == '\n') {
+            if (cursor_x > max_width)
+                max_width = cursor_x;
+
             cursor_x  = 0.f;
             cursor_y += text_font->common.line_height;
             continue;
