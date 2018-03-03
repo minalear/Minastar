@@ -6,7 +6,7 @@
 #include "../world.h"
 #include "../campaign.h"
 
-const int SINISTAR_HEALTH = 200;
+const int SINISTAR_HEALTH = 100;
 
 void generate_sinistar_shape(sinistar *sinistar) {
     int vertex_count = 68;
@@ -241,7 +241,7 @@ sinistar::sinistar(glm::vec2 pos) {
     this->entity_type = ENTITY_TYPES::Sinistar;
     this->position = pos;
     this->friction_coefficient = 0.9f;
-    this->movement_speed = 15.f;
+    this->movement_speed = 35.f;
 
     this->set_collision_category(COLLISION_CATEGORIES::Enemy);
     this->add_collision_type(COLLISION_CATEGORIES::Player);

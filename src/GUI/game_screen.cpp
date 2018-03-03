@@ -39,7 +39,7 @@ void game_screen::update(float dt) {
 }
 void game_screen::draw() {
     //Setup game camera
-    float camera_zoom = 0.2f;
+    float camera_zoom = 0.8f;
     glm::vec2 cam_pos = glm::vec2(-player_ship->position.x + (minalear::get_window_width() / 2.f) / camera_zoom,
                                   -player_ship->position.y + (minalear::get_window_height() / 2.f) / camera_zoom);
     glm::mat4 view    = glm::scale(glm::mat4(1.f), glm::vec3(camera_zoom)) *
