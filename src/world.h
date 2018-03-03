@@ -13,8 +13,9 @@ const int GAME_WORLD_MIN = 0;
 const int GAME_WORLD_MAX = 8000;
 
 const int NUM_ASTEROIDS = 240;
-const int NUM_WORKERS = 12;
-const int NUM_SOLDIERS = 8;
+const int NUM_WORKERS   = 12;
+const int NUM_SOLDIERS  = 8;
+const int NUM_SCAVENGER = 6;
 
 class world {
 private:

@@ -13,6 +13,7 @@
 #include "controllers/soldier_controller.h"
 #include "controllers/player_controller.h"
 #include "campaign.h"
+#include "controllers/scavenger_controller.h"
 
 const int ATTRIBUTE_VERTEX_COUNT = 5;
 bool mark_for_update = false;
@@ -141,6 +142,18 @@ void world::generate_game_world() {
         soldier->position = glm::vec2(x, y);
 
         add_entity(soldier);
+    }
+
+    //Create scavengers
+    for (int i = 0; i < NUM_SCAVENGER; i++) {
+        //Randomly determine position
+        float x = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+        float y = minalear::rand_float(GAME_WORLD_MIN, GAME_WORLD_MAX);
+
+        ship *scavenger = new ship(new scavenger_controller, ENTITY_TYPES::Scavenger);
+        scavenger->position = glm::vec2(x, y);
+
+        add_entity(scavenger);
     }
 }
 void world::generate_buffer_data() {

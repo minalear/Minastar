@@ -8,15 +8,20 @@
 #include "../campaign.h"
 #include "../engine/math_utils.h"
 
-const float PLAYER_MOVE_SPEED  = 25.f;
+const float PLAYER_MOVE_SPEED  = 18.f;
 const float WORKER_MOVE_SPEED  = 12.f;
 const float SOLDIER_MOVE_SPEED = 15.f;
+const float SCAVENGER_MOVE_SPEED = 38.f;
 
 const int PLAYER_HEALTH = 40;
 const int PLAYER_SHIELD = 20;
-const int WORKER_HEALTH = 10;
-const int SOLDIER_HEALTH = 15;
+const float PLAYER_BOOST = 35.f;
 
+const int WORKER_HEALTH = 12;
+const int SOLDIER_HEALTH = 15;
+const int SCAVENGER_HEALTH = 10;
+
+//TODO: Instance these models, rather than generate them each time
 void generate_player_ship(ship *ship) {
     int vertex_count = 4;
     float *buffer_data = new float[vertex_count * 5];
@@ -150,6 +155,49 @@ void generate_soldier_ship(ship *ship) {
     ship->buffer_data = buffer_data;
     ship->bounding_radius = 2.25f * ship_scale;
 }
+void generate_scavenger_ship(ship *ship) {
+    int vertex_count = 8;
+    float *buffer_data = new float[vertex_count * 5];
+
+    //Initialize position data to 0.f and color data to 1,0,0 (red)
+    for (int i = 0; i < vertex_count; i++) {
+        buffer_data[i * 5 + 0] = 0.f;
+        buffer_data[i * 5 + 1] = 0.f;
+
+        buffer_data[i * 5 + 2] = 1.f;
+        buffer_data[i * 5 + 3] = 0.f;
+        buffer_data[i * 5 + 4] = 0.f;
+    }
+
+    const float ship_scale = 6.f;
+    buffer_data[ 0] =  2.0f * ship_scale;
+    buffer_data[ 1] =  0.0f * ship_scale;
+
+    buffer_data[ 5] =  0.0f * ship_scale;
+    buffer_data[ 6] = -0.5f * ship_scale;
+
+    buffer_data[10] = -1.0f * ship_scale;
+    buffer_data[11] = -1.5f * ship_scale;
+
+    buffer_data[15] = -2.0f * ship_scale;
+    buffer_data[16] = -0.5f * ship_scale;
+
+    buffer_data[20] = -1.0f * ship_scale;
+    buffer_data[21] =  0.0f * ship_scale;
+
+    buffer_data[25] = -2.0f * ship_scale;
+    buffer_data[26] =  0.5f * ship_scale;
+
+    buffer_data[30] = -1.0f * ship_scale;
+    buffer_data[31] =  1.5f * ship_scale;
+
+    buffer_data[35] =  0.0f * ship_scale;
+    buffer_data[36] =  0.5f * ship_scale;
+
+    ship->vertex_count = vertex_count;
+    ship->buffer_data = buffer_data;
+    ship->bounding_radius = 2.25f * ship_scale;
+}
 
 ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
     mineral_count = 0;
@@ -164,6 +212,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         movement_speed = PLAYER_MOVE_SPEED;
         set_health(PLAYER_HEALTH);
         set_shield(PLAYER_SHIELD);
+        set_boost(PLAYER_BOOST);
 
         set_collision_category(COLLISION_CATEGORIES::Player);
         add_collision_type(COLLISION_CATEGORIES::Enemy);
@@ -176,6 +225,7 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         movement_speed = WORKER_MOVE_SPEED;
         set_health(WORKER_HEALTH);
         set_shield(0);
+        set_boost(0.f);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -184,11 +234,26 @@ ship::ship(ship_controller* controller, ENTITY_TYPES ship_type) {
         add_collision_type(COLLISION_CATEGORIES::Asteroid);
         add_collision_type(COLLISION_CATEGORIES::Mineral);
     }
-    else {
+    else if (ship_type == ENTITY_TYPES::Soldier) {
         generate_soldier_ship(this);
         movement_speed = SOLDIER_MOVE_SPEED;
         set_health(SOLDIER_HEALTH);
         set_shield(0);
+        set_boost(0.f);
+
+        set_collision_category(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Player);
+        add_collision_type(COLLISION_CATEGORIES::Ally_Bullet);
+        add_collision_type(COLLISION_CATEGORIES::Enemy);
+        add_collision_type(COLLISION_CATEGORIES::Asteroid);
+        //add_collision_type(COLLISION_CATEGORIES::Mineral);
+    }
+    else if (ship_type == ENTITY_TYPES::Scavenger) {
+        generate_scavenger_ship(this);
+        movement_speed = SCAVENGER_MOVE_SPEED;
+        set_health(SCAVENGER_HEALTH);
+        set_shield(0);
+        set_boost(0.f);
 
         set_collision_category(COLLISION_CATEGORIES::Enemy);
         add_collision_type(COLLISION_CATEGORIES::Player);
@@ -244,4 +309,11 @@ void ship::set_shield(int amount) {
 }
 void ship::modify_shield(int amount) {
     shield = glm::clamp(shield + amount, 0, max_shield);
+}
+void ship::set_boost(float amount) {
+    boost = amount;
+    max_boost = amount;
+}
+void ship::modify_boost(float amount) {
+    boost = glm::clamp(boost + amount, 0.f, max_boost);
 }

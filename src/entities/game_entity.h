@@ -12,6 +12,7 @@ enum struct ENTITY_TYPES {
     Player,
     Worker,
     Soldier,
+    Scavenger,
     Bullet,
     Sinistar,
     Sinibomb,

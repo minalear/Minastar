@@ -15,7 +15,6 @@ const std::string INTRO_TEXT =
         "the son of the legendary Zache Vangootson,\n"
         "and you are tasked with dealing with this threat.\n"
         "Defeat Sinistar or perish!";
-glm::vec2 text_size;
 
 intro_screen::intro_screen(screen_manager *manager) : screen(manager) {
     text_size = manager->text_render->measure_string(INTRO_TEXT, glm::vec2(0.5f));

@@ -26,5 +26,4 @@ public:
     void change_state(WORKER_STATES state);
 };
 
-
 #endif //SINISTAR_WORKER_CONTROLLER_H

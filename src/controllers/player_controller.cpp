@@ -36,8 +36,26 @@ void player_controller::update(float dt) {
     }
 
     if (joystick->left_stick_length > 0.15f) {
+        const float FUEL_MODIFIER = dt * 10.f;
+
+        //Calculate boost
+        float desired_boost = joystick->right_trigger;
+        float fuel_usage = desired_boost * FUEL_MODIFIER;
+
+        //Adjust for nearly empty boost
+        if (fuel_usage > owner->boost) {
+            fuel_usage = owner->boost;
+            desired_boost = fuel_usage / FUEL_MODIFIER;
+        }
+
+        //Rescale boost
+        float boost_factor = desired_boost * 2.5f + 1.f;
+
+        //Drain boost
+        owner->modify_boost(-fuel_usage);
+
         float force_factor = owner->movement_speed * joystick->left_stick_length;
-        owner->apply_force(joystick->left_stick * force_factor);
+        owner->apply_force(joystick->left_stick * force_factor * boost_factor);
     }
     if (joystick->right_stick_length > 0.15f) {
         owner->rotation = atan2f(joystick->right_stick.y, joystick->right_stick.x);

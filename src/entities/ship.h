@@ -13,6 +13,7 @@ public:
 
     int mineral_count;
     int shield, max_shield;
+    float boost, max_boost;
 
     ship(ship_controller *controller, ENTITY_TYPES ship_type);
     void update(float dt) override;
@@ -21,6 +22,8 @@ public:
     void send_message(MESSAGE_TYPES message, game_entity &sender) override;
     void set_shield(int amount);
     void modify_shield(int amount);
+    void set_boost(float amount);
+    void modify_boost(float amount);
 };
 
 

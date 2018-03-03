@@ -8,9 +8,12 @@
 #include "world.h"
 #include "entities/ship.h"
 #include "entities/sinistar.h"
+#include "GUI/screen_manager.h"
 
 class game_campaign {
 public:
+    screen_manager *gui_manager;
+
     world *game_world;
     sinistar *sinistar_entity;
     ship *player_entity;
@@ -20,7 +23,7 @@ public:
 
     game_campaign();
 
-    void init(world *game_world);
+    void init(screen_manager *gui_manager, world *game_world);
     void reset();
     void update();
 };
