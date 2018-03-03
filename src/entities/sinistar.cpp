@@ -250,7 +250,6 @@ sinistar::sinistar(glm::vec2 pos) {
 }
 
 void sinistar::update(float dt) {
-    //TODO: Consider writing a controller for Sinistar?
     if (campaign.sinistar_released) {
         if (campaign.player_entity) {
             seek(campaign.player_entity->position);

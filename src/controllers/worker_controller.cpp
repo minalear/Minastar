@@ -27,7 +27,6 @@ void worker_controller::update(float dt) {
         game_entity *closest_target = nullptr;
 
         //Get closest mineral (if within acceptable distance)
-        //TODO: Investigate why sometimes workers won't seek out nearby minerals
         closest_target = owner->game_world->find_entity(ENTITY_TYPES::Mineral, owner->position, dist);
         if (closest_target && dist < 125.f) {
             owner->seek(closest_target->position);

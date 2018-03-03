@@ -8,6 +8,9 @@
 #include "glm.hpp"
 
 namespace minalear {
+
+    const int NUM_JOYSTICK_BUTTONS = 10;
+
     enum struct JOYSTICK_BUTTONS {
         A = 0, //PS4 X
         B = 1, //PS4 O
@@ -31,11 +34,18 @@ namespace minalear {
         glm::vec2 left_stick, right_stick;
         float left_stick_length, right_stick_length;
         float left_trigger, right_trigger;
+
+        bool button_states[NUM_JOYSTICK_BUTTONS];
+
+        void operator= (const controller_state &c_state);
     };
 
     void init_input();
     void handle_input();
     bool is_button_down(JOYSTICK_BUTTONS button);
+
+    bool was_button_down(JOYSTICK_BUTTONS button);
+    bool was_button_up(JOYSTICK_BUTTONS button);
 
     controller_state* get_controller_ptr();
 }

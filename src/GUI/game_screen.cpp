@@ -53,7 +53,7 @@ void game_screen::draw() {
     manager->bar_render->draw_bar(manager->shape_shader,
                                   player_ship->shield,
                                   player_ship->max_shield,
-                                  glm::vec2(10.f, 40.f), glm::vec2(100.f, 16.f),
+                                  glm::vec2(10.f, 10.f), glm::vec2(100.f, 16.f),
                                   glm::vec3( 96 / 255.f, 219 / 255.f, 237 / 255.f),
                                   glm::vec3( 73 / 255.f, 108 / 255.f, 113 / 255.f));
 
@@ -61,7 +61,7 @@ void game_screen::draw() {
     manager->bar_render->draw_bar(manager->shape_shader,
                                   player_ship->health,
                                   player_ship->max_health,
-                                  glm::vec2(10.f, 44.f), glm::vec2(100.f, 12.f),
+                                  glm::vec2(10.f, 14.f), glm::vec2(100.f, 12.f),
                                   glm::vec3(141 / 255.f, 198 / 255.f,  63 / 255.f),
                                   glm::vec3( 71 / 255.f,  75 / 255.f,  65 / 255.f));
 
@@ -73,9 +73,8 @@ void game_screen::draw() {
                          glm::vec3(116 / 255.f,  59 / 255.f,  59 / 255.f));*/
     manager->shape_shader->set_view_mat4(view);
 
-    std::string ui_text = "minerals " + std::to_string(player_ship->mineral_count) + "\n" +
-                          "debug " + std::to_string(campaign.worker_mineral_count);
+    std::string ui_text = "minerals " + std::to_string(player_ship->mineral_count);
 
     manager->text_shader->use();
-    manager->text_render->draw_string(manager->text_shader, ui_text, glm::vec2(10.f), glm::vec2(0.4f));
+    manager->text_render->draw_string(manager->text_shader, ui_text, glm::vec2(10.f, 30.f), glm::vec2(0.32f));
 }

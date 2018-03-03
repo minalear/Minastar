@@ -22,7 +22,7 @@ intro_screen::intro_screen(screen_manager *manager) : screen(manager) {
 }
 
 void intro_screen::update(float dt) {
-    if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y)) {
+    if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Game");
     }
 }
