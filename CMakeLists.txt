@@ -15,21 +15,31 @@ file(GLOB SOURCE_FILES
 
 file(GLOB SHADER_FILES shaders/*.glsl)
 file(GLOB FONT_FILES fonts/*.fnt fonts/*.png)
+file(GLOB AUDIO_FILES audio/*.wav audio/*.mp3 audio/*.ogg)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/shaders)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/fonts)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/audio)
 file(COPY ${SHADER_FILES} DESTINATION ${PROJECT_BINARY_DIR}/shaders)
 file(COPY ${FONT_FILES} DESTINATION ${PROJECT_BINARY_DIR}/fonts)
+file(COPY ${AUDIO_FILES} DESTINATION ${PROJECT_BINARY_DIR}/audio)
 
 find_package(MINGW32 REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(IrrKlang REQUIRED)
 
 add_executable(sinistar ${SOURCE_FILES} C:/Libraries/OpenGL/GLAD/src/glad.c)
-target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB})
+target_link_libraries(sinistar ${MINGW32_LIB} ${SDL2_MAIN_LIB} ${SDL2_LIB} ${OPENGL_LIB} ${IRRKLANG_LIB})
 
 add_custom_command(
         TARGET sinistar POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "C:/Libraries/SDL2/x86/bin/SDL2.dll"
+        $<TARGET_FILE_DIR:sinistar>
+)
+add_custom_command(
+        TARGET sinistar POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "C:/Libraries/irrKlang/bin/winx86-gcc/irrKlang.dll"
         $<TARGET_FILE_DIR:sinistar>
 )

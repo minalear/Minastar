@@ -14,10 +14,12 @@ private:
 
 public:
     intro_screen(screen_manager *manager);
+
     void update(float dt) override;
     void draw() override;
 
     void on_activate() override;
+    void on_deactivate() override;
 };
 
 #endif //SINISTAR_INTRO_SCREEN_H

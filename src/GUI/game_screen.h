@@ -14,6 +14,7 @@ public:
     void draw() override;
 
     void on_activate() override;
+    void on_deactivate() override;
 };
 
 #endif //SINISTAR_GAME_SCREEN_H

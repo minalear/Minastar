@@ -5,6 +5,7 @@
 #include "start_screen.h"
 #include "../engine/window.h"
 #include "../engine/input.h"
+#include "../engine/audio_player.h"
 #include "screen_manager.h"
 
 glm::vec2 text_size, instr_size;
@@ -13,6 +14,7 @@ start_screen::start_screen(screen_manager *manager) : screen(manager) {
     text_size = manager->text_render->measure_string("SINISTAR", glm::vec2(1.f));
     instr_size = manager->text_render->measure_string("Press X to continue", glm::vec2(0.35f));
 }
+
 void start_screen::update(float dt) {
     if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Intro");
@@ -31,4 +33,8 @@ void start_screen::draw() {
     manager->text_shader->use();
     manager->text_render->draw_string(manager->text_shader, "SINISTAR",            title_pos, glm::vec2(1.f));
     manager->text_render->draw_string(manager->text_shader, "Press X to continue", instr_pos, glm::vec2(0.35f));
+}
+
+void start_screen::on_activate() {
+    minalear::audio_engine.play_sound_effect("Sinistar_01");
 }

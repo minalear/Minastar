@@ -4,6 +4,7 @@
 
 #include "game_screen.h"
 #include "../engine/window.h"
+#include "../engine/audio_player.h"
 #include "screen_manager.h"
 #include "gtc/matrix_transform.hpp"
 #include "../world.h"
@@ -25,6 +26,11 @@ void game_screen::on_activate() {
     campaign.init(manager, &game_world);
 
     player_ship = (ship*)game_world.find_entity(ENTITY_TYPES::Player);
+
+    minalear::audio_engine.play_song("Fight_Music", true);
+}
+void game_screen::on_deactivate() {
+    minalear::audio_engine.stop_song("Fight_Music");
 }
 
 void game_screen::update(float dt) {

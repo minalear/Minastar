@@ -8,6 +8,7 @@
 #include "engine/shader_program.h"
 #include "engine/input.h"
 #include "engine/font.h"
+#include "engine/audio_player.h"
 #include "GUI/screen_manager.h"
 
 int main(int argc, char *argv[]) {
@@ -34,6 +35,11 @@ int main(int argc, char *argv[]) {
 
     //Setup controller input
     minalear::init_input();
+
+    //Load audio files
+    minalear::audio_engine.register_audio_file("Sinistar_01", "audio/sinistar.wav");
+    minalear::audio_engine.register_audio_file("Fight_Music", "audio/fight_komiku.ogg");
+    minalear::audio_engine.register_audio_file("Story_Music", "audio/story_komiku.ogg");
 
     //Screen Manager
     screen_manager screen_manager;

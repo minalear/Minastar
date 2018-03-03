@@ -5,6 +5,7 @@
 #include "intro_screen.h"
 #include "../engine/window.h"
 #include "../engine/input.h"
+#include "../engine/audio_player.h"
 #include "screen_manager.h"
 
 const std::string INTRO_TEXT =
@@ -35,5 +36,8 @@ void intro_screen::draw() {
 }
 
 void intro_screen::on_activate() {
-
+    minalear::audio_engine.play_song("Story_Music", true);
+}
+void intro_screen::on_deactivate() {
+    minalear::audio_engine.stop_song("Story_Music");
 }
