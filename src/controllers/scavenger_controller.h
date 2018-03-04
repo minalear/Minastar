@@ -21,6 +21,7 @@ public:
     scavenger_controller();
     void update(float dt) override;
     void on_damage(game_entity &other, int amount) override;
+    void on_death() override;
     void change_state(SCAVENGER_STATES state);
 };
 

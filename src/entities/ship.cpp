@@ -313,6 +313,8 @@ void ship::damage(game_entity &other, int amount) {
                 minalear::audio_engine.play_sound_effect("explosion");
             }
         }
+
+        controller->on_death();
     }
 }
 void ship::send_message(MESSAGE_TYPES message, game_entity &sender) {

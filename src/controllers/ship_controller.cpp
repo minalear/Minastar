@@ -14,6 +14,7 @@ void ship_controller::update(float dt) {
     bullet_timer += dt;
 }
 void ship_controller::on_damage(class game_entity &other, int amount) { }
+void ship_controller::on_death() { }
 void ship_controller::shoot(glm::vec2 pos, glm::vec2 vel) {
     bullet *entity_bullet = new bullet(pos, vel);
 

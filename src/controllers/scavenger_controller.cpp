@@ -67,9 +67,12 @@ void scavenger_controller::update(float dt) {
         }
     }
 }
-void scavenger_controller::on_damage(game_entity &other, int amount) {
-
+void scavenger_controller::on_damage(game_entity &other, int amount) { }
+void scavenger_controller::on_death() {
+    campaign.spawn_new_entity(ENTITY_TYPES::Scavenger);
 }
 void scavenger_controller::change_state(SCAVENGER_STATES state) {
     current_state = state;
 }
+
+

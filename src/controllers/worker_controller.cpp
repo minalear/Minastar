@@ -122,6 +122,9 @@ void worker_controller::on_damage(game_entity &other, int amount) {
         closest_ally->send_message(MESSAGE_TYPES::Help, *owner);
     }
 }
+void worker_controller::on_death() {
+    campaign.spawn_new_entity(ENTITY_TYPES::Worker);
+}
 void worker_controller::change_state(WORKER_STATES state) {
     if (state == WORKER_STATES::Deliver) {
         //Paint the ship green, save our previous state

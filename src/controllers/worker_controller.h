@@ -23,6 +23,7 @@ public:
     worker_controller();
     void update(float dt) override;
     void on_damage(game_entity &other, int amount) override;
+    void on_death() override;
     void change_state(WORKER_STATES state);
 };
 

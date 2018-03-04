@@ -103,6 +103,9 @@ void soldier_controller::on_damage(game_entity &other, int amount) {
         current_state = SOLDIER_STATES::Attack;
     }
 }
+void soldier_controller::on_death() {
+    campaign.spawn_new_entity(ENTITY_TYPES::Soldier);
+}
 void soldier_controller::on_message(MESSAGE_TYPES &message, game_entity &other) {
     if (message == MESSAGE_TYPES::Help && current_state != SOLDIER_STATES::Attack) {
         current_state = SOLDIER_STATES::Defend;

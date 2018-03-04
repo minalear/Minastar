@@ -25,7 +25,7 @@ const std::string CREDITS_TEXT =
                 "http://rolemusic.sawsquarenoise.com/\n\n\n\n"
 
                 "Special Thanks To\n\n"
-                "Max aka Flinnan\n\n\n\n"
+                "Max aka Rothmoss aka Flinnan\n\n\n\n"
                 "The other Trevor\n\n\n\n"
                 "Zache Vangootson\n\n\n\n"
                 "Jack Black\n\n\n\n"

@@ -18,6 +18,8 @@ public:
     sinistar *sinistar_entity;
     ship *player_entity;
 
+    glm::vec2 sinistar_spawn;
+
     bool sinistar_released;
     int worker_mineral_count;
 
@@ -26,6 +28,8 @@ public:
     void init(screen_manager *gui_manager, world *game_world);
     void reset();
     void update();
+
+    void spawn_new_entity(ENTITY_TYPES type);
 };
 
 extern game_campaign campaign;
