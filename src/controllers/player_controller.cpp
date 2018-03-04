@@ -49,6 +49,14 @@ void player_controller::update(float dt) {
             desired_boost = fuel_usage / FUEL_MODIFIER;
         }
 
+        //Sound effects
+        if (desired_boost > 0.f) {
+            minalear::audio_engine.play_song("boost", true); //Song forces the sound to loop
+        }
+        else {
+            minalear::audio_engine.stop_song("boost"); //Song forces the sound to loop
+        }
+
         //Rescale boost
         float boost_factor = desired_boost * 2.5f + 1.f;
 

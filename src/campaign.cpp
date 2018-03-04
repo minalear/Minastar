@@ -3,6 +3,7 @@
 //
 
 #include "campaign.h"
+#include "engine/audio_player.h"
 
 game_campaign campaign;
 game_campaign::game_campaign() {
@@ -28,6 +29,8 @@ void game_campaign::update() {
     //I HUNGER
     if (worker_mineral_count >= 40 && !sinistar_released) {
         sinistar_released = true;
+
+        minalear::audio_engine.play_sound_effect("sinistar_i_live");
     }
 
     //Player loses

@@ -3,10 +3,12 @@
 //
 
 #include "ship.h"
-#include "mineral.h"
+#include "../engine/math_utils.h"
+#include "../engine/audio_player.h"
 #include "../controllers/ship_controller.h"
 #include "../campaign.h"
-#include "../engine/math_utils.h"
+#include "mineral.h"
+#include "debris.h"
 
 const float PLAYER_MOVE_SPEED  = 18.f;
 const float WORKER_MOVE_SPEED  = 12.f;
@@ -273,6 +275,10 @@ void ship::update(float dt) {
 void ship::handle_collision(game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Mineral) {
         mineral_count++;
+
+        if (entity_type == ENTITY_TYPES::Player) {
+            minalear::audio_engine.play_sound_effect("pickup");
+        }
     }
 }
 void ship::damage(game_entity &other, int amount) {
@@ -289,13 +295,23 @@ void ship::damage(game_entity &other, int amount) {
         modify_shield(-amount);
     }
 
-    //Drop all minerals on death
+    //Drop all minerals on death and spawn some debris
     if (health <= 0.f) {
         for (int i = 0; i < mineral_count; i++) {
             glm::vec2 mineral_position = glm::vec2(
                     minalear::rand_float(position.x - bounding_radius, position.x + bounding_radius),
                     minalear::rand_float(position.y - bounding_radius, position.y + bounding_radius));
             game_world->add_entity(new mineral(mineral_position, velocity));
+        }
+        for (int i = 0; i < 8; i++) {
+            glm::vec2 debris_position = glm::vec2(
+                    minalear::rand_float(position.x - bounding_radius, position.x + bounding_radius),
+                    minalear::rand_float(position.y - bounding_radius, position.y + bounding_radius));
+            game_world->add_entity(new debris(debris_position, position, velocity));
+
+            if (minalear::distance_square(position, campaign.player_entity->position) < (400.f * 400.f)) {
+                minalear::audio_engine.play_sound_effect("explosion");
+            }
         }
     }
 }

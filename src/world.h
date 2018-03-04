@@ -17,6 +17,14 @@ const int NUM_WORKERS   = 12;
 const int NUM_SOLDIERS  = 8;
 const int NUM_SCAVENGER = 6;
 
+/*const int GAME_WORLD_MIN = 0;
+const int GAME_WORLD_MAX = 1000;
+
+const int NUM_ASTEROIDS = 0;
+const int NUM_WORKERS   = 1;
+const int NUM_SOLDIERS  = 0;
+const int NUM_SCAVENGER = 0;*/
+
 class world {
 private:
     uint32_t vao, vbo;

@@ -16,9 +16,11 @@ enum struct ENTITY_TYPES {
     Bullet,
     Sinistar,
     Sinibomb,
-    Mineral
+    Mineral,
+    Debris
 };
 enum struct COLLISION_CATEGORIES {
+    None     = 0,
     Player   = 1,
     Enemy    = 2,
     Asteroid = 4,
