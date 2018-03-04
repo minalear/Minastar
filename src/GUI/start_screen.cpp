@@ -11,7 +11,7 @@
 glm::vec2 text_size, instr_size;
 
 start_screen::start_screen(screen_manager *manager) : screen(manager) {
-    text_size = manager->text_render->measure_string("SINISTAR", glm::vec2(1.f));
+    text_size = manager->text_render->measure_string("MINASTAR", glm::vec2(1.f));
     instr_size = manager->text_render->measure_string("Press X to continue", glm::vec2(0.35f));
 }
 
@@ -31,7 +31,7 @@ void start_screen::draw() {
     instr_pos -= instr_size / 2.f;
 
     manager->text_shader->use();
-    manager->text_render->draw_string(manager->text_shader, "SINISTAR",            title_pos, glm::vec2(1.f));
+    manager->text_render->draw_string(manager->text_shader, "MINASTAR",            title_pos, glm::vec2(1.f));
     manager->text_render->draw_string(manager->text_shader, "Press X to continue", instr_pos, glm::vec2(0.35f));
 }
 
