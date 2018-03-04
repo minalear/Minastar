@@ -6,6 +6,7 @@
 #include "../entities/ship.h"
 #include "../entities/sinibomb.h"
 #include "../engine/input.h"
+#include "../engine/audio_player.h"
 #include "../world.h"
 
 const float BULLET_FIRE_RATE = 0.12f;
@@ -66,12 +67,16 @@ void player_controller::update(float dt) {
         if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::R1)) {
             glm::vec2 bullet_velocity = glm::vec2(cosf(owner->rotation), sinf(owner->rotation)) * BULLET_SPEED;
             shoot(owner->position, bullet_velocity);
+
+            minalear::audio_engine.play_sound_effect("player_shot");
         }
         //Fire a SINIBOMB
         else if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::Y) && owner->mineral_count > 0) {
             bullet_timer = 0.f;
             owner->game_world->add_entity(new sinibomb(owner->position));
             owner->mineral_count--;
+
+            minalear::audio_engine.play_sound_effect("missile");
         }
     }
 

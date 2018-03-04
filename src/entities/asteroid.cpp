@@ -4,7 +4,9 @@
 
 #include "../entities/asteroid.h"
 #include "../engine/math_utils.h"
+#include "../engine/audio_player.h"
 #include "../world.h"
+#include "../campaign.h"
 #include "mineral.h"
 
 const float ASTEROID_RADIUS_MIN = 14.f;
@@ -152,6 +154,10 @@ void asteroid::damage(game_entity &other, int damage) {
                     game_world->add_entity(entity_asteroid);
                 }
             }
+        }
+
+        if (minalear::distance_square(position, campaign.player_entity->position) < (400.f * 400.f)) {
+            minalear::audio_engine.play_sound_effect("explosion");
         }
     }
 }

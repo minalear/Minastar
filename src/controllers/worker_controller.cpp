@@ -4,6 +4,7 @@
 
 #include "worker_controller.h"
 #include "../engine/math_utils.h"
+#include "../engine/audio_player.h"
 #include "../entities/ship.h"
 #include "../world.h"
 #include "../campaign.h"
@@ -56,6 +57,10 @@ void worker_controller::update(float dt) {
                 //SHOOT HER
                 if (bullet_timer >= BULLET_FIRE_RATE) {
                     shoot(owner->position, aim_direction * BULLET_SPEED);
+
+                    if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
+                        minalear::audio_engine.play_sound_effect("player_shot");
+                    }
                 }
             }
         }

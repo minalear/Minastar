@@ -37,9 +37,13 @@ int main(int argc, char *argv[]) {
     minalear::init_input();
 
     //Load audio files
-    minalear::audio_engine.register_audio_file("Sinistar_01", "audio/sinistar.wav");
-    minalear::audio_engine.register_audio_file("Fight_Music", "audio/fight_komiku.ogg");
-    minalear::audio_engine.register_audio_file("Story_Music", "audio/story_komiku.ogg");
+    minalear::audio_engine.register_audio_file("sinistar_01", "audio/sinistar.wav");
+    minalear::audio_engine.register_audio_file("fight_music", "audio/fight_komiku.ogg");
+    minalear::audio_engine.register_audio_file("story_music", "audio/story_komiku.ogg");
+
+    minalear::audio_engine.register_audio_file("player_shot", "audio/shot.wav");
+    minalear::audio_engine.register_audio_file("explosion", "audio/explosion.wav");
+    minalear::audio_engine.register_audio_file("missile", "audio/missile.wav");
 
     //Screen Manager
     screen_manager screen_manager;

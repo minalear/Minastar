@@ -27,10 +27,10 @@ void game_screen::on_activate() {
 
     player_ship = (ship*)game_world.find_entity(ENTITY_TYPES::Player);
 
-    minalear::audio_engine.play_song("Fight_Music", true);
+    minalear::audio_engine.play_song("fight_music", true);
 }
 void game_screen::on_deactivate() {
-    minalear::audio_engine.stop_song("Fight_Music");
+    minalear::audio_engine.stop_song("fight_music");
 }
 
 void game_screen::update(float dt) {

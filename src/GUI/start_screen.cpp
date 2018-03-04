@@ -36,5 +36,5 @@ void start_screen::draw() {
 }
 
 void start_screen::on_activate() {
-    minalear::audio_engine.play_sound_effect("Sinistar_01");
+    minalear::audio_engine.play_sound_effect("sinistar_01");
 }

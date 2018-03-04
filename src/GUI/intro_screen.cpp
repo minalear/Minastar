@@ -36,8 +36,8 @@ void intro_screen::draw() {
 }
 
 void intro_screen::on_activate() {
-    minalear::audio_engine.play_song("Story_Music", true);
+    minalear::audio_engine.play_song("story_music", true);
 }
 void intro_screen::on_deactivate() {
-    minalear::audio_engine.stop_song("Story_Music");
+    minalear::audio_engine.stop_song("story_music");
 }

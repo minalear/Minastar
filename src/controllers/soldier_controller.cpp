@@ -3,8 +3,9 @@
 //
 
 #include "soldier_controller.h"
-#include "../campaign.h"
 #include "../engine/math_utils.h"
+#include "../engine/audio_player.h"
+#include "../campaign.h"
 
 const float BULLET_FIRE_RATE = 0.2f;
 const float BULLET_SPEED = 450.f;
@@ -72,6 +73,10 @@ void soldier_controller::update(float dt) {
             owner->rotation = atan2f(aim_direction.y, aim_direction.x);
             if (bullet_timer >= BULLET_FIRE_RATE) {
                 shoot(owner->position, aim_direction * BULLET_SPEED);
+
+                if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
+                    minalear::audio_engine.play_sound_effect("player_shot");
+                }
             }
         }
 
