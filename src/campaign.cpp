@@ -34,7 +34,10 @@ void game_campaign::update() {
     }
 
     //Player loses
-    if (player_entity->health <= 0.f) {
+    if (player_entity->health <= 0) {
         gui_manager->switch_screen("Lose");
+    }
+    else if (sinistar_entity->health <= 0) {
+        gui_manager->switch_screen("Victory");
     }
 }

@@ -38,7 +38,7 @@ void minalear::init_game_window(const int window_width, const int window_height)
     //TODO: Vsync option doesn't seem to affect PC Workstation
     //SDL_GL_SetSwapInterval(0);
 
-    window = SDL_CreateWindow("Sinistar",
+    window = SDL_CreateWindow("Minastar",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               window_width, window_height,

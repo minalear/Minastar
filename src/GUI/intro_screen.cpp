@@ -10,12 +10,12 @@
 
 const std::string INTRO_TEXT =
         "The year is 2007 AD.  A threat from space,\n"
-        "known only as Sinistar, is being constructed\n"
+        "known only as Minastar, is being constructed\n"
         "to destroy the Earth.\n"
-        "You are Avery Johnson vanGootson, \n"
+        "You are Avery Johnson Vangootson, \n"
         "the son of the legendary Zache Vangootson,\n"
         "and you are tasked with dealing with this threat.\n"
-        "Defeat Sinistar or perish!";
+        "Defeat Minastar or perish!";
 
 intro_screen::intro_screen(screen_manager *manager) : screen(manager) {
     text_size = manager->text_render->measure_string(INTRO_TEXT, glm::vec2(0.5f));

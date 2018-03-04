@@ -37,8 +37,9 @@ int main(int argc, char *argv[]) {
     minalear::init_input();
 
     //Load audio files
-    minalear::audio_engine.register_audio_file("fight_music", "audio/fight_komiku.ogg");
-    minalear::audio_engine.register_audio_file("story_music", "audio/story_komiku.ogg");
+    minalear::audio_engine.register_audio_file("fight_music",   "audio/fight_komiku.ogg");
+    minalear::audio_engine.register_audio_file("story_music",   "audio/story_komiku.ogg");
+    minalear::audio_engine.register_audio_file("credits_music", "audio/credits_rolemusic.ogg");
 
     minalear::audio_engine.register_audio_file("player_shot", "audio/shot.wav");
     minalear::audio_engine.register_audio_file("explosion",   "audio/explosion.wav");

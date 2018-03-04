@@ -3,10 +3,19 @@
 //
 
 #include "sinistar.h"
-#include "../world.h"
+#include "../engine/math_utils.h"
+#include "../engine/audio_player.h"
 #include "../campaign.h"
 
 const int SINISTAR_HEALTH = 100;
+const int NUM_QUOTES = 5;
+const std::string QUOTES[NUM_QUOTES] = {
+        "sinistar_beware_coward",
+        "sinistar_hunger",
+        "sinistar_rawr",
+        "sinistar_run",
+        "sinistar_run_coward"
+};
 
 void generate_sinistar_shape(sinistar *sinistar) {
     int vertex_count = 68;
@@ -254,13 +263,24 @@ void sinistar::update(float dt) {
         if (campaign.player_entity) {
             seek(campaign.player_entity->position);
         }
+
+        //Speak every so often to spook the player
+        quote_timer += dt;
+        if (quote_timer > 6.f) {
+            quote_timer = 0.f;
+            minalear::audio_engine.play_sound_effect(QUOTES[minalear::rand_int(0, NUM_QUOTES)]);
+        }
     }
 
     game_entity::update(dt);
 }
 
 void sinistar::handle_collision(game_entity &other, glm::vec2 point) {
-    if (other.entity_type == ENTITY_TYPES::Asteroid || other.entity_type == ENTITY_TYPES::Player) {
+    if (other.entity_type == ENTITY_TYPES::Asteroid) {
         other.damage(*this, other.health);
+    }
+    else if (other.entity_type == ENTITY_TYPES::Player) {
+        other.damage(*this, other.health);
+        minalear::audio_engine.play_sound_effect("sinistar_rawr");
     }
 }

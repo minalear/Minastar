@@ -9,6 +9,7 @@
 #include "game_screen.h"
 #include "intro_screen.h"
 #include "lose_screen.h"
+#include "victory_screen.h"
 
 screen_manager::screen_manager() {
     //Initialize shader programs
@@ -48,6 +49,7 @@ screen_manager::screen_manager() {
     attach_screen("Game", new game_screen(this));
     attach_screen("Intro", new intro_screen(this));
     attach_screen("Lose", new lose_screen(this));
+    attach_screen("Victory", new victory_screen(this));
 
     active_screen = nullptr;
 }

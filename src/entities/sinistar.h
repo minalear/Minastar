@@ -8,6 +8,9 @@
 #include "game_entity.h"
 
 class sinistar: public game_entity {
+private:
+    float quote_timer = 0.f;
+
 public:
     sinistar(glm::vec2 pos);
     void update(float dt) override;
