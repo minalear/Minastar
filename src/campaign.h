@@ -19,6 +19,7 @@ public:
     ship *player_entity;
 
     glm::vec2 sinistar_spawn;
+    float spawn_timer;
 
     bool sinistar_released;
     int worker_mineral_count;
@@ -27,7 +28,7 @@ public:
 
     void init(screen_manager *gui_manager, world *game_world);
     void reset();
-    void update();
+    void update(float dt);
 
     void spawn_new_entity(ENTITY_TYPES type);
 };

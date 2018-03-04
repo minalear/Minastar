@@ -35,7 +35,7 @@ void game_screen::on_deactivate() {
 
 void game_screen::update(float dt) {
     game_world.update(dt);
-    campaign.update();
+    campaign.update(dt);
 }
 void game_screen::draw() {
     //Setup game camera

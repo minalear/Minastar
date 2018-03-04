@@ -85,8 +85,11 @@ void soldier_controller::update(float dt) {
         }
     }
     else if (current_state == SOLDIER_STATES::Defend) {
-        //Seek to the help target and then begin patrolling
-        if (minalear::distance_square(owner->position, help_target->position) < (200.f * 200.f)) {
+        //Seek to the help target and then begin patrolling, but attack player on sight
+        if (minalear::distance_square(owner->position, campaign.player_entity->position) < (400.f * 400.f)) {
+            current_state = SOLDIER_STATES::Attack;
+        }
+        else if (minalear::distance_square(owner->position, help_target->position) < (200.f * 200.f)) {
             wander_target = glm::normalize(help_target->position - owner->position); //Set wander target towards help target
             current_state = SOLDIER_STATES::Patrol;
         }

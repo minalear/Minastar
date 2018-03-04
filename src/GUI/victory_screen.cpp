@@ -24,8 +24,12 @@ const std::string CREDITS_TEXT =
                 "\"The Great Madeja\" by Rolemusic\n\n"
                 "http://rolemusic.sawsquarenoise.com/\n\n\n\n"
 
+                "Sound Effects made with\n\n"
+                "Chiptone by SFB Games\n\n"
+                "http://sfbgames.com/chiptone/\n\n\n\n"
+
                 "Special Thanks To\n\n"
-                "Max aka Rothmoss aka Flinnan\n\n\n\n"
+                "Max Wiens-Evangelista\n\n\n\n"
                 "The other Trevor\n\n\n\n"
                 "Zache Vangootson\n\n\n\n"
                 "Jack Black\n\n\n\n"
@@ -85,6 +89,9 @@ void victory_screen::draw() {
 
 void victory_screen::on_activate() {
     minalear::audio_engine.play_song("credits_music", false);
+    
+    credits_timer = 0.f;
+    move_text = false;
 }
 void victory_screen::on_deactivate() {
     minalear::audio_engine.stop_song("credits_music");

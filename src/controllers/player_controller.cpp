@@ -36,6 +36,7 @@ void player_controller::update(float dt) {
         shield_recharge_buffer = 0.f;
     }
 
+    //Calculate player movement
     if (joystick->left_stick_length > 0.15f) {
         const float FUEL_MODIFIER = dt * 10.f;
 
@@ -70,6 +71,7 @@ void player_controller::update(float dt) {
         owner->rotation = atan2f(joystick->right_stick.y, joystick->right_stick.x);
     }
 
+    //Shooting
     if (bullet_timer >= BULLET_FIRE_RATE) {
         //Fire a normal bullet
         if (minalear::is_button_down(minalear::JOYSTICK_BUTTONS::R1)) {
@@ -86,6 +88,18 @@ void player_controller::update(float dt) {
 
             minalear::audio_engine.play_sound_effect("missile");
         }
+    }
+
+    //Players can sacrifice minerals to repair their ship
+    if (minalear::was_button_down(minalear::JOYSTICK_BUTTONS::B) && owner->mineral_count >= 10 && owner->health < owner->max_health) {
+        owner->mineral_count -= 10;
+        owner->modify_health(10);
+    }
+
+    //Players can also sacrifice minerals to refuel their ship
+    if (minalear::was_button_down(minalear::JOYSTICK_BUTTONS::X) && owner->mineral_count >= 10 && owner->boost < owner->max_boost) {
+        owner->mineral_count -= 10;
+        owner->modify_boost(10);
     }
 
     ship_controller::update(dt);

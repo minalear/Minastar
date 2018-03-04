@@ -45,8 +45,9 @@ void game_campaign::reset() {
     this->game_world = nullptr;
     sinistar_entity = nullptr;
     player_entity = nullptr;
+    spawn_timer = 0.f;
 }
-void game_campaign::update() {
+void game_campaign::update(float dt) {
     //I HUNGER
     if (worker_mineral_count >= 40 && !sinistar_released) {
         sinistar_released = true;
@@ -60,6 +61,13 @@ void game_campaign::update() {
     }
     else if (sinistar_entity->health <= 0) {
         gui_manager->switch_screen("Victory");
+    }
+
+    //If the player approaches an unfinished Sinistar, spawn new soldiers
+    spawn_timer += dt;
+    if (minalear::distance_square(sinistar_entity->position, player_entity->position) < (500.f * 500.f) && spawn_timer >= 8.f) {
+        spawn_new_entity(ENTITY_TYPES::Soldier);
+        spawn_timer = 0.f;
     }
 }
 

@@ -54,7 +54,13 @@ void sinibomb::update(float dt) {
 }
 void sinibomb::handle_collision(game_entity &other, glm::vec2 point) {
     if (other.entity_type == ENTITY_TYPES::Sinistar) {
-        other.damage(*this, 1); //Deals 1 to Sinistar
+        if (campaign.sinistar_released) {
+            other.damage(*this, 1); //Deals 1 to Sinistar
+        }
+        else {
+            //Players can delay his construction
+            campaign.worker_mineral_count--;
+        }
     }
     else if (other.entity_type == ENTITY_TYPES::Worker || other.entity_type == ENTITY_TYPES::Soldier) {
         other.damage(*this, other.health); //Destroy enemy ships
