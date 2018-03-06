@@ -21,7 +21,8 @@ intro_screen::intro_screen(screen_manager *manager) : screen(manager) {
     text_size = manager->text_render->measure_string(INTRO_TEXT, glm::vec2(0.5f));
 }
 
-void intro_screen::update(float dt) {
+void intro_screen::update_fixed(float dt) { }
+void intro_screen::update_realtime() {
     if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Game");
     }

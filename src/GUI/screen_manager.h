@@ -28,7 +28,8 @@ public:
     void attach_screen(const std::string name, screen *screen);
     void switch_screen(const std::string name);
 
-    void update_active_screen(float dt);
+    void update_fixed(float dt);
+    void update_realtime();
     void draw_active_screen();
 };
 

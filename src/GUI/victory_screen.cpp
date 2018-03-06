@@ -54,7 +54,7 @@ victory_screen::victory_screen(screen_manager *manager) : screen(manager) {
     move_text = false;
 }
 
-void victory_screen::update(float dt) {
+void victory_screen::update_fixed(float dt) {
     if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Start");
     }

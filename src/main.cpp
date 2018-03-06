@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     screen_manager screen_manager;
     screen_manager.switch_screen("Start");
 
-    //For having consistent dts for update functions
+    //For having consistent dts for update_fixed functions
     double time_accumulator = 0.f;
 
     //Begin main game loop
@@ -76,15 +76,16 @@ int main(int argc, char *argv[]) {
 
         minalear::handle_input();
 
-        //Accumulate time and update logic if past the accumulation time threshold (16ms = 60fps)
+        //Accumulate time and update_fixed logic if past the accumulation time threshold (16ms = 60fps)
         time_accumulator += minalear::dt();
 
         const float CONST_DT = 0.016f;
         if (time_accumulator >= CONST_DT) {
-            screen_manager.update_active_screen(CONST_DT);
+            screen_manager.update_fixed(CONST_DT);
             time_accumulator = 0.f;
         }
 
+        screen_manager.update_realtime();
         screen_manager.draw_active_screen();
 
         minalear::swap_buffers();

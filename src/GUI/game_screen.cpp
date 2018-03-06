@@ -33,7 +33,7 @@ void game_screen::on_deactivate() {
     minalear::audio_engine.stop_song("fight_music");
 }
 
-void game_screen::update(float dt) {
+void game_screen::update_fixed(float dt) {
     game_world.update(dt);
     campaign.update(dt);
 }

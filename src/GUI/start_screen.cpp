@@ -15,7 +15,8 @@ start_screen::start_screen(screen_manager *manager) : screen(manager) {
     instr_size = manager->text_render->measure_string("Press X to continue", glm::vec2(0.35f));
 }
 
-void start_screen::update(float dt) {
+void start_screen::update_fixed(float dt) { }
+void start_screen::update_realtime() {
     if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Intro");
     }

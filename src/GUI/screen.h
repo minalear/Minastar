@@ -15,7 +15,8 @@ public:
     virtual void on_activate();
     virtual void on_deactivate();
 
-    virtual void update(float dt);
+    virtual void update_fixed(float dt);
+    virtual void update_realtime();
     virtual void draw();
 };
 

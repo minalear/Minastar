@@ -15,7 +15,8 @@ private:
 public:
     lose_screen(screen_manager *manager);
 
-    void update(float dt) override;
+    void update_fixed(float dt) override;
+    void update_realtime() override;
     void draw() override;
 };
 

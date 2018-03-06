@@ -10,7 +10,8 @@
 lose_screen::lose_screen(screen_manager *manager) : screen(manager) {
     text_size = manager->text_render->measure_string("You lose!", glm::vec2(1.f));
 }
-void lose_screen::update(float dt) {
+void lose_screen::update_fixed(float dt) { }
+void lose_screen::update_realtime() {
     if (minalear::was_button_up(minalear::JOYSTICK_BUTTONS::A)) {
         manager->switch_screen("Start");
     }

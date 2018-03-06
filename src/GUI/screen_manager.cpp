@@ -78,8 +78,11 @@ void screen_manager::switch_screen(const std::string name) {
     active_screen = screens[name];
 }
 
-void screen_manager::update_active_screen(float dt) {
-    active_screen->update(dt);
+void screen_manager::update_fixed(float dt) {
+    active_screen->update_fixed(dt);
+}
+void screen_manager::update_realtime() {
+    active_screen->update_realtime();
 }
 void screen_manager::draw_active_screen() {
     active_screen->draw();

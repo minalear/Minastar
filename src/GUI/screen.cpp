@@ -12,5 +12,6 @@ screen::~screen() { }
 void screen::on_activate() { }
 void screen::on_deactivate() { }
 
-void screen::update(float dt) { }
+void screen::update_fixed(float dt) { }
+void screen::update_realtime() { }
 void screen::draw() { }

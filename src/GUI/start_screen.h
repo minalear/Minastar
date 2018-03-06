@@ -11,7 +11,8 @@ class start_screen: public screen {
 public:
     start_screen(screen_manager *manager);
 
-    void update(float dt) override;
+    void update_fixed(float dt) override;
+    void update_realtime() override;
     void draw() override;
 
     void on_activate() override;

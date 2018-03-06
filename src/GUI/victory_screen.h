@@ -17,7 +17,7 @@ private:
 public:
     victory_screen(screen_manager *manager);
 
-    void update(float dt) override;
+    void update_fixed(float dt) override;
     void draw() override;
 
     void on_activate() override;
