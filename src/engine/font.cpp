@@ -72,7 +72,7 @@ font::font(const char *image_filename, const char *data_filename) {
         }
         else if (block_type == 4) {
             //Character numbers determined by taking the block size divided by 20.
-            const int NUM_CHARS = (file_size - index_ptr) / 20;
+            const int NUM_CHARS = (block_size - index_ptr) / 20;
             chars = new font_char[NUM_CHARS];
             num_chars = NUM_CHARS;
 
